@@ -1,0 +1,20 @@
+
+services:
+  mysql:
+    image: mysql:latest  # Dùng image MySQL mới nhất
+    container_name: mysql-container  # Tên của container
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234  # Đặt mật khẩu cho user root
+      MYSQL_DATABASE: tracnghiem  # Tạo cơ sở dữ liệu mặc định
+    ports:
+      - "3303:3306"  # Mở cổng 3306 trên máy chủ và ánh xạ vào cổng 3306 của container
+    volumes:
+      - mysql-data:/var/lib/mysql  # Lưu trữ dữ liệu MySQL vĩnh viễn trên volume
+    networks:
+      - mysql-network  # Kết nối với mạng riêng
+
+volumes:
+  mysql-data:  # Volume dùng để lưu trữ dữ liệu của MySQL
+
+networks:
+  mysql-network:  # Tạo một mạng riêng cho MySQL
