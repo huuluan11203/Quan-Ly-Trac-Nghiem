@@ -95,6 +95,7 @@ public class mainView extends javax.swing.JFrame {
                             //tro ve dang nhap
                             new loginView().setVisible(true);
                             dispose();
+                            //
                         }
                     }
                     
