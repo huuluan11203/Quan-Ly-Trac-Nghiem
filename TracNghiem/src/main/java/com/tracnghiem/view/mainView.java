@@ -7,13 +7,19 @@ package com.tracnghiem.view;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -29,7 +35,6 @@ public class mainView extends javax.swing.JFrame {
     public mainView() {
        
         initComponents();
-        
         cardLayout = (CardLayout) main_panel.getLayout();
         
         //Menu
@@ -83,13 +88,40 @@ public class mainView extends javax.swing.JFrame {
                     // Giữ màu menu được chọn
                     menu.putClientProperty(FlatClientProperties.STYLE, selectedStyle);
                     menu.putClientProperty("selected", true);                 
-                    cardLayout.show(main_panel, menu.getName());
+                    if (!menu.getName().equals("dangxuat")) {
+                        cardLayout.show(main_panel, menu.getName());
+                    }else{                     
+                        if ((int)showLogoutDialog() == JOptionPane.YES_OPTION) {
+                            //tro ve dang nhap
+                            new loginView().setVisible(true);
+                            dispose();
+                        }
+                    }
                     
                 }
             }
         });
     }
-
+    
+   private static int showLogoutDialog() {
+        JPanel panel = new JPanel();
+        panel.setSize(300, 200);
+        panel.add(new JLabel("Bạn có chắc chắn muốn đăng xuất không?"));
+        Object[] options = {"Đăng xuất", "Hủy"};
+        UIManager.put("OptionPane.yesButtonText", "Xác nhận");
+        UIManager.put("OptionPane.noButtonText", "Hủy");
+        int result = JOptionPane.showOptionDialog(
+                null,
+                "Bạn có chắc chắn muốn đăng xuất?",
+                "Xác nhận đăng xuất",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[1] 
+        );
+        return result;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,6 +159,15 @@ public class mainView extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         main_panel = new javax.swing.JPanel();
         cauhoi = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         monhoc = new javax.swing.JPanel();
         sinhvien = new javax.swing.JPanel();
         dethi = new javax.swing.JPanel();
@@ -135,6 +176,7 @@ public class mainView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
+        main.setBackground(new Color(0xeaeaea));
         main.setPreferredSize(new java.awt.Dimension(1200, 750));
 
         left_panel.setMaximumSize(new java.awt.Dimension(180, 32767));
@@ -144,7 +186,7 @@ public class mainView extends javax.swing.JFrame {
         head.setName("Info");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new FlatSVGIcon("icons/user.svg", 35, 35
+        jLabel1.setIcon(new FlatSVGIcon("icons/user.svg", 40, 40
         )
     );
 
@@ -399,6 +441,7 @@ public class mainView extends javax.swing.JFrame {
     menu6.setPreferredSize(new java.awt.Dimension(168, 47));
     menu_panel.add(Box.createVerticalGlue());
     menu_panel.add(Box.createRigidArea(new Dimension(0, 10)));
+    menu6.setName("dangxuat");
 
     jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
     jLabel14.setForeground(new java.awt.Color(255, 255, 255));
@@ -464,17 +507,144 @@ public class mainView extends javax.swing.JFrame {
 
     main_panel.setLayout(new java.awt.CardLayout());
 
+    jPanel1.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
+
+    jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+    jLabel13.setText("Tìm kiếm");
+
+    jTextField2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; ");
+    jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nhập câu hỏi. . . . . . . . . . . . . . . . . . .");
+    jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+
+    jButton1.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
+    jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    jButton1.setIcon(new FlatSVGIcon("icons/search.svg", 25, 25)
+    );
+    jButton1.setText("Tìm");
+    jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton1ActionPerformed(evt);
+        }
+    });
+
+    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+    jPanel1.setLayout(jPanel1Layout);
+    jPanel1Layout.setHorizontalGroup(
+        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jSeparator2)
+        .addGroup(jPanel1Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap(465, Short.MAX_VALUE))
+    );
+    jPanel1Layout.setVerticalGroup(
+        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jSeparator2)
+                    .addGap(47, 47, 47))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(8, 8, 8)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(8, 8, 8))))
+    );
+
+    jPanel2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
+
+    jButton2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #09b2d4; foreground: #ffffff;");
+    jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    jButton2.setIcon(new FlatSVGIcon("icons/add.svg", 30, 30)
+    );
+    jButton2.setText("Tạo mới");
+    jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null}
+        },
+        new String [] {
+            "Câu hỏi", "Đáp án", "Phương án A", "Phương án B", "Phương án C", "Phương án D", "Phương án E"
+        }
+    ));
+    jScrollPane2.setViewportView(jTable1);
+
+    javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+    jPanel2.setLayout(jPanel2Layout);
+    jPanel2Layout.setHorizontalGroup(
+        jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel2Layout.createSequentialGroup()
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton2)
+            .addContainerGap())
+        .addComponent(jScrollPane2)
+    );
+    jPanel2Layout.setVerticalGroup(
+        jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel2Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jButton2)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE))
+    );
+
     cauhoi.putClientProperty(FlatClientProperties.STYLE, "arc: 20; background: #eaeaea");
 
     javax.swing.GroupLayout cauhoiLayout = new javax.swing.GroupLayout(cauhoi);
     cauhoi.setLayout(cauhoiLayout);
     cauhoiLayout.setHorizontalGroup(
         cauhoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 1014, Short.MAX_VALUE)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cauhoiLayout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(cauhoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap())
     );
     cauhoiLayout.setVerticalGroup(
         cauhoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 744, Short.MAX_VALUE)
+        .addGroup(cauhoiLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addContainerGap())
     );
 
     main_panel.add(cauhoi, "cauhoi");
@@ -571,6 +741,10 @@ public class mainView extends javax.swing.JFrame {
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -612,10 +786,13 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JPanel dethi;
     private javax.swing.JPanel diem;
     private javax.swing.JPanel head;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -626,7 +803,13 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel left_panel;
     private javax.swing.JPanel main;
     private javax.swing.JPanel main_panel;

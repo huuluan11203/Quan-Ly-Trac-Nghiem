@@ -52,7 +52,7 @@ public class loginView extends javax.swing.JFrame {
         );
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        title.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        title.setFont(new java.awt.Font("Segoe UI", 1, 42)); // NOI18N
         title.setForeground(Color.decode("#0094ff")
         );
         title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
