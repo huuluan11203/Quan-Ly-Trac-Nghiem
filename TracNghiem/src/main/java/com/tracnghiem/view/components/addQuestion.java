@@ -31,6 +31,7 @@ public class addQuestion extends javax.swing.JPanel {
         initComponents();
         ButtonGroup group = new ButtonGroup();
         selectedButton(group);
+        
     }
 
     /**
