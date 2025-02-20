@@ -6,6 +6,8 @@ package com.tracnghiem.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.view.components.addQuestion;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,6 +16,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -165,10 +170,16 @@ public class mainView extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         monhoc = new javax.swing.JPanel();
         sinhvien = new javax.swing.JPanel();
         dethi = new javax.swing.JPanel();
@@ -529,100 +540,167 @@ public class mainView extends javax.swing.JFrame {
         }
     });
 
+    jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+    jLabel16.setText("Môn học");
+
+    jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+    jLabel17.setText("Chủ đề");
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jSeparator2)
         .addGroup(jPanel1Layout.createSequentialGroup()
             .addContainerGap()
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addContainerGap(465, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(48, 48, 48)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(38, 38, 38))))
+        .addComponent(jSeparator2)
     );
     jPanel1Layout.setVerticalGroup(
         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jSeparator2)
-                    .addGap(47, 47, 47))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(8, 8, 8)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(5, 5, 5))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(8, 8, 8))))
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     jPanel2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
-    jButton2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #09b2d4; foreground: #ffffff;");
+    jButton2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
     jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
     jButton2.setIcon(new FlatSVGIcon("icons/add.svg", 30, 30)
     );
     jButton2.setText("Tạo mới");
     jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton2ActionPerformed(evt);
+        }
+    });
 
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null},
-            {null, null, null, null, null, null, null}
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null, null, null, null, null}
         },
         new String [] {
-            "Câu hỏi", "Đáp án", "Phương án A", "Phương án B", "Phương án C", "Phương án D", "Phương án E"
+            "Mã câu", "Môn học", "Chủ đề", "Câu hỏi", "Độ khó", "Đáp án đúng", "Đáp án A", "Đáp án B", "Đáp án C", "Đáp án D", "Đáp án E"
         }
     ));
     jScrollPane2.setViewportView(jTable1);
+
+    jButton4.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+    jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    jButton4.setIcon(new FlatSVGIcon("icons/detail.svg", 30, 30)
+    );
+    jButton4.setText("Chi tiết");
+    jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+    jButton5.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ee2020; foreground: #ffffff;");
+    jButton5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    jButton5.setIcon(new FlatSVGIcon("icons/delete.svg", 30, 30)
+    );
+    jButton5.setText("Xóa");
+    jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    jButton5.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton5ActionPerformed(evt);
+        }
+    });
 
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel2Layout.createSequentialGroup()
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addContainerGap(744, Short.MAX_VALUE)
+            .addComponent(jButton5)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jButton4)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jButton2)
             .addContainerGap())
-        .addComponent(jScrollPane2)
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1002, Short.MAX_VALUE)
     );
     jPanel2Layout.setVerticalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel2Layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jButton2)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jButton2)
+                .addComponent(jButton4)
+                .addComponent(jButton5))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
     );
 
     cauhoi.putClientProperty(FlatClientProperties.STYLE, "arc: 20; background: #eaeaea");
@@ -746,6 +824,30 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //Open
+        showCustomDialog(this, new addQuestion(), "");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+    
+    
+    private static void showCustomDialog(JFrame parent, JPanel panel, String title) {
+        JDialog dialog = new JDialog(parent, title, true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        
+        // Thêm panel vào dialog
+        dialog.setLayout(new BorderLayout());
+        dialog.add(panel, BorderLayout.CENTER);
+       
+        // Định kích thước dialog
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
+        dialog.setVisible(true);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -789,6 +891,10 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JPanel head;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -796,6 +902,8 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
