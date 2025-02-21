@@ -25,7 +25,7 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
     @Override
     public boolean insert(AnswerDTO t) {
         boolean rs = false;
-        String sql = "INSERT INTO answers(qID, awContent, awPicture, isRight, awStatus) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO answers(qID, awContent, awPictures, isRight, awStatus) VALUES(?,?,?,?,?)";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, t.getQID());
@@ -42,7 +42,7 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
     @Override
     public boolean update(AnswerDTO t) {
         boolean rs = false;
-        String sql = "UPDATE answers SET qID=?, awContent=?, awPicture=?, isRight=?, awStatus=? WHERE awID=?";
+        String sql = "UPDATE answers SET qID=?, awContent=?, awPictures=?, isRight=?, awStatus=? WHERE awID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, t.getQID());
@@ -69,7 +69,7 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
                 rs.add(new AnswerDTO(rsSet.getInt("awID"),
                                      rsSet.getInt("qID"),
                                      rsSet.getString("awContent"),
-                                     rsSet.getString("awPicture"),
+                                     rsSet.getString("awPictures"),
                                      rsSet.getBoolean("isRight"),
                                      rsSet.getInt("awStatus")));
             }
@@ -91,7 +91,7 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
                     rs = new AnswerDTO(rsSet.getInt("awID"),
                                        rsSet.getInt("qID"),
                                        rsSet.getString("awContent"),
-                                       rsSet.getString("awPicture"),
+                                       rsSet.getString("awPictures"),
                                        rsSet.getBoolean("isRight"),
                                        rsSet.getInt("awStatus"));
                 }

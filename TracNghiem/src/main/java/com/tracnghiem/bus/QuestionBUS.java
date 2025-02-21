@@ -5,7 +5,9 @@
 package com.tracnghiem.bus;
 
 import com.tracnghiem.dao.QuestionDAO;
+import com.tracnghiem.dao.TopicDAO;
 import com.tracnghiem.dto.QuestionDTO;
+import com.tracnghiem.dto.TopicDTO;
 import java.util.ArrayList;
 
 /**
@@ -15,13 +17,13 @@ import java.util.ArrayList;
 public class QuestionBUS {
     private final QuestionDAO qDAO = QuestionDAO.getInstance();
     public ArrayList<QuestionDTO> listQ = new ArrayList<>();
-
+    
     public QuestionBUS() {
         this.listQ = qDAO.selectAll();
     }
     
     public ArrayList<QuestionDTO> getAll() {
-        return this.listQ;
+        return qDAO.selectAll();
     }
     
     public QuestionDTO findOne(int id) {
@@ -44,7 +46,6 @@ public class QuestionBUS {
         }
         return false;
     }
-
     public boolean delete(QuestionDTO q) {
         if (qDAO.delete(q.getQID()+ "")) {
             this.listQ.remove(getIndex(q));
@@ -59,8 +60,6 @@ public class QuestionBUS {
         }
         return false;
     }
-    
-    
     public ArrayList<QuestionDTO> search(String key, String type) {
         ArrayList<QuestionDTO> result = new ArrayList<>();
         key = key.toLowerCase();
@@ -92,12 +91,47 @@ public class QuestionBUS {
 
         return result;
     }
-    
     public ArrayList<QuestionDTO> getByTopic(int tpID) {
         ArrayList<QuestionDTO> result = new ArrayList<>();
         for (QuestionDTO i : this.listQ) {
             if (i.getQTopic() == tpID)
                 result.add(i);
+        }
+        return  result;
+    }
+    public ArrayList<QuestionDTO> getByTopicParent(int tpIDParent) {
+        ArrayList<QuestionDTO> result = new ArrayList<>();
+        TopicBUS tBUS = new TopicBUS();
+        
+        ArrayList<TopicDTO> lTp = tBUS.getAllChildTopics(tpIDParent);
+        
+        ArrayList<Integer> topicIds = new ArrayList<>();
+        topicIds.add(tpIDParent);
+        for (TopicDTO topic : lTp) {
+            topicIds.add(topic.getTpID()); // Giả sử TopicDTO có phương thức getId()
+        }
+        
+        for (QuestionDTO i : this.listQ) {
+             if (topicIds.contains(i.getQTopic())) 
+                 result.add(i);
+        }
+        return  result;
+    }
+    public ArrayList<QuestionDTO> getByTopicParentAndChild(int tpIDParent ,int tpIDChild) {
+        ArrayList<QuestionDTO> result = new ArrayList<>();
+        TopicBUS tBUS = new TopicBUS();
+        
+        ArrayList<TopicDTO> lTp = tBUS.getAllChildTopics(tpIDParent);
+        
+        ArrayList<Integer> topicIds = new ArrayList<>();
+        topicIds.add(tpIDParent);
+        for (TopicDTO topic : lTp) {
+            topicIds.add(topic.getTpID()); // Giả sử TopicDTO có phương thức getId()
+        }
+        
+        for (QuestionDTO i : this.listQ) {
+             if (topicIds.contains(i.getQTopic())) 
+                 result.add(i);
         }
         return  result;
     }

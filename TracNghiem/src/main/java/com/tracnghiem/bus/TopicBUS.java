@@ -21,8 +21,39 @@ public class TopicBUS {
         listTp = tpDAO.selectAll();
     }
 
+    public ArrayList<TopicDTO>  getAllParent() {
+        ArrayList<TopicDTO> result = new ArrayList<>();
+        for (TopicDTO t : listTp) {
+            if (t.getTpParent() == 0) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
     public ArrayList<TopicDTO> getAll() {
         return this.listTp;
+    }
+    public ArrayList<TopicDTO> getAllParentTopics(int id) {
+        ArrayList<TopicDTO> result = new ArrayList<>();
+
+        TopicDTO t = findOne(id);
+        result.add(t);
+        if (t.getTpParent() == 0) {
+            return result;
+        }
+        
+        TopicDTO t1 = findOne(t.getTpParent());
+        result.add(t1);
+        if (t1.getTpParent() == 0) {
+            return result;
+        }
+        TopicDTO t2 = findOne(t1.getTpParent());
+        result.add(t2);
+        if (t2.getTpParent() == 0) {
+            return result;
+        }
+
+        return result;
     }
     
     public TopicDTO findOne(int id) {
