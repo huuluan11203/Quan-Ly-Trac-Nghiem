@@ -5,18 +5,15 @@
 package com.tracnghiem.view.components;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Color;
+import com.tracnghiem.dto.QuestionDTO;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.UIManager;
 
 /**
  *
@@ -27,7 +24,7 @@ public class addQuestion extends javax.swing.JPanel {
     /**
      * Creates new form addQuestion
      */
-    public addQuestion() {
+    public addQuestion(QuestionDTO question, boolean active) {
         initComponents();
         ButtonGroup group = new ButtonGroup();
         selectedButton(group);
@@ -117,9 +114,13 @@ public class addQuestion extends javax.swing.JPanel {
         nhap_excel.setText("Nhập từ Excel");
         nhap_excel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        monhocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách môn học");
         monhocCBB.setToolTipText("");
         monhocCBB.setName(""); // NOI18N
 
+        chudeCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách chủ đề");
+
+        baihocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách bài học");
         baihocCBB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 baihocCBBActionPerformed(evt);
@@ -180,10 +181,10 @@ public class addQuestion extends javax.swing.JPanel {
 
         jPanel2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel5.setText("Mã câu hỏi:");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel4.setText("Nội dung câu hỏi:");
 
         jButton6.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
@@ -218,6 +219,7 @@ public class addQuestion extends javax.swing.JPanel {
         tenhinh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         tenhinh.setText("NULL");
 
+        baihocCBB2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         baihocCBB2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dễ", "Khó", "Trung bình" }));
         baihocCBB2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +227,7 @@ public class addQuestion extends javax.swing.JPanel {
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel6.setText("Độ khó:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -283,7 +285,7 @@ public class addQuestion extends javax.swing.JPanel {
 
         jPanel3.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel11.setText("Đáp án:");
 
         panelA.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
@@ -534,8 +536,8 @@ public class addQuestion extends javax.swing.JPanel {
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-private void selectedButton(ButtonGroup buttonGroup) {
+
+    private void selectedButton(ButtonGroup buttonGroup) {
         // Danh sách các JRadioButton
         List<JRadioButton> radioButtons = Arrays.asList(jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton4, jRadioButton5);
 
@@ -560,14 +562,17 @@ private void selectedButton(ButtonGroup buttonGroup) {
         }
     }
 
-// Hàm đặt lại màu tất cả các panel về mặc định
+    // Hàm đặt lại màu tất cả các panel về mặc định
     private void resetPanelColors(List<JPanel> panels) {
         for (JPanel panel : panels) {
             panel.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         }
     }
-
     
+    private void updateAction(QuestionDTO questionDTO){
+        
+    }
+
     private void baihocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_baihocCBBActionPerformed

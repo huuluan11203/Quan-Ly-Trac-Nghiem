@@ -138,6 +138,7 @@
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="monhocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Danh s&#xe1;ch m&#xf4;n h&#x1ecd;c&quot;);"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
@@ -148,6 +149,7 @@
             </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="chudeCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Danh s&#xe1;ch ch&#x1ee7; &#x111;&#x1ec1;&quot;);"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
@@ -161,6 +163,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="baihocCBBActionPerformed"/>
           </Events>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="baihocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Danh s&#xe1;ch b&#xe0;i h&#x1ecd;c&quot;);"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
@@ -258,7 +261,7 @@
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="1"/>
+              <Font name="Segoe UI" size="13" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="M&#xe3; c&#xe2;u h&#x1ecf;i:"/>
           </Properties>
@@ -266,7 +269,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="1"/>
+              <Font name="Segoe UI" size="13" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="N&#x1ed9;i dung c&#xe2;u h&#x1ecf;i:"/>
           </Properties>
@@ -334,6 +337,9 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="baihocCBB2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
                 <StringItem index="0" value="D&#x1ec5;"/>
@@ -352,7 +358,7 @@
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="1"/>
+              <Font name="Segoe UI" size="13" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x110;&#x1ed9; kh&#xf3;:"/>
           </Properties>
@@ -408,7 +414,7 @@
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="1"/>
+              <Font name="Segoe UI" size="13" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x110;&#xe1;p &#xe1;n:"/>
           </Properties>
