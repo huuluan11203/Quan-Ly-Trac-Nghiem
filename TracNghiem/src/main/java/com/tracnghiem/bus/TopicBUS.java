@@ -21,6 +21,15 @@ public class TopicBUS {
         listTp = tpDAO.selectAll();
     }
 
+    public ArrayList<TopicDTO>  getAllParent() {
+        ArrayList<TopicDTO> result = new ArrayList<>();
+        for (TopicDTO t : listTp) {
+            if (t.getTpParent() == 0) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
     public ArrayList<TopicDTO> getAll() {
         return this.listTp;
     }
