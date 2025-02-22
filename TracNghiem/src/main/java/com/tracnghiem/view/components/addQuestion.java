@@ -24,7 +24,7 @@ public class addQuestion extends javax.swing.JPanel {
     /**
      * Creates new form addQuestion
      */
-    public addQuestion(QuestionDTO question, boolean active) {
+    public addQuestion(QuestionDTO question, boolean update) {
         initComponents();
         ButtonGroup group = new ButtonGroup();
         selectedButton(group);

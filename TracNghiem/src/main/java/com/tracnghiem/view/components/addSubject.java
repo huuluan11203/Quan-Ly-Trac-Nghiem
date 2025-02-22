@@ -16,7 +16,7 @@ public class addSubject extends javax.swing.JPanel {
     /**
      * Creates new form addSubject
      */
-    public addSubject(TopicDTO topic, boolean active) {
+    public addSubject(TopicDTO topic, boolean update) {
         initComponents();
     }
 
