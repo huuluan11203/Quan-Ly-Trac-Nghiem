@@ -21,10 +21,18 @@ public class JDBCUtil {
         try {
             // Dang ky MySQL Driver voi DriverManager
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            //Cac thong so
+            
+            /*Cac thong so
+            //Phat
             String url = "jdbc:mySQL://localhost:2434/tracnghiem";
-            String userName = "root";
             String password = "";
+            */
+            
+            // Luan
+            String url = "jdbc:mysql://127.0.0.1:3303/tracnghiem";
+            String password = "1234"; 
+            
+            String userName = "root";         
             //Tao ket noi 
             result = DriverManager.getConnection(url, userName, password);
             

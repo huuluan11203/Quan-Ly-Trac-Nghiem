@@ -17,11 +17,15 @@ public class addUser extends javax.swing.JPanel {
     /**
      * Creates new form addUser
      */
-    public addUser(UserDTO user, boolean active) {
+    public addUser(UserDTO user, boolean update) {
         initComponents();
-        if (user != null && !active) {
-            updateAction(user, active);
+        
+        //update user
+        if (user != null && update) {
+            updateAction(user, update);
         }
+        
+        //
     }
 
     /**
@@ -156,7 +160,7 @@ public class addUser extends javax.swing.JPanel {
     }//GEN-LAST:event_roleCBBActionPerformed
     
     private void updateAction(UserDTO user, boolean active){
-        username.setEnabled(active);
+        username.setEnabled(!active);
         username.setText(Integer.toString(user.getUserID()));
         fullname.setText(user.getUserFullName());
         email.setText(user.getUserEmail());
