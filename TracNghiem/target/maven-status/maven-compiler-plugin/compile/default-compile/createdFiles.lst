@@ -61,6 +61,7 @@ com\tracnghiem\view\loginView$2.class
 com\tracnghiem\view\components\addQuestion.class
 com\tracnghiem\dao\LogDAO.class
 com\tracnghiem\view\components\addQuestion$7.class
+com\tracnghiem\view\components\addQuestion$14.class
 com\tracnghiem\view\mainView$7.class
 com\tracnghiem\view\components\addQuestion$11.class
 com\tracnghiem\view\components\addQuestion$4.class
@@ -74,6 +75,7 @@ com\tracnghiem\bus\QuestionBUS.class
 com\tracnghiem\view\mainView$20.class
 com\tracnghiem\view\components\detailQuestion$7.class
 com\tracnghiem\view\mainView$13.class
+com\tracnghiem\view\components\addQuestion$15.class
 com\tracnghiem\view\components\detailQuestion$10.class
 com\tracnghiem\view\mainView$9.class
 com\tracnghiem\dao\UserDAO.class
@@ -87,6 +89,7 @@ com\tracnghiem\dao\ResultDAO.class
 com\tracnghiem\view\components\detailQuestion$11.class
 com\tracnghiem\dto\ExamDTO.class
 com\tracnghiem\bus\UserBUS.class
+com\tracnghiem\view\components\addQuestion$16.class
 com\tracnghiem\view\components\addSubject$1.class
 com\tracnghiem\view\mainView$14.class
 com\tracnghiem\view\components\detailQuestion$8.class

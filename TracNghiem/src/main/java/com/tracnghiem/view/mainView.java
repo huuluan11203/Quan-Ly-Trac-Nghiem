@@ -39,11 +39,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.KeyEvent;
+
 /**
  *
  * @author huulu
  */
 public class mainView extends javax.swing.JFrame {
+
     
     /*
         boolean update
@@ -51,6 +53,17 @@ public class mainView extends javax.swing.JFrame {
             -> false if add new
     */
     
+
+
+    /**
+     * Creates new form main
+     */
+    /*
+        boolean action from dialog form 
+            -> true if add news
+            -> false if update
+     */
+
     private static String panelName;
     private static CardLayout cardLayout;
     private final QuestionBUS qBUS = new QuestionBUS();
@@ -62,28 +75,26 @@ public class mainView extends javax.swing.JFrame {
     private final Map<String, Integer> topicMapChildren1 = new LinkedHashMap<>();
 
     private ArrayList<QuestionDTO> listQ = new ArrayList<>();
-    
-    
-    
+
     public mainView() {
-       
+
         initComponents();
         cardLayout = (CardLayout) main_panel.getLayout();
-        
+
         //Menu
         List<JPanel> menuList = List.of(menu1, menu2, menu3, menu4, menu5, menu6);
-        menu_panel.putClientProperty(FlatClientProperties.STYLE, "arc: 40; background: #eaeaea");      
-             
+        menu_panel.putClientProperty(FlatClientProperties.STYLE, "arc: 40; background: #eaeaea");
+
         for (JPanel menu : menuList) {
-            menu.putClientProperty("selected", false);  
+            menu.putClientProperty("selected", false);
             addHoverEffect(menu, menuList);
         }
-        
+
         //Hien thi mac dinh
         menu1.putClientProperty(FlatClientProperties.STYLE, "arc: 20; background: #033d67");
         menu1.putClientProperty("selected", true);
         cardLayout.show(main_panel, menu1.getName());
-  
+
         setColumnWidths();
 
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -97,20 +108,18 @@ public class mainView extends javax.swing.JFrame {
                 }
             }
         });
-        
-        
+
         listQ = qBUS.getAll();
         loadTable(listQ);
         loadTpParent(tBUS.getAllParent());
-        
+
         setLocationRelativeTo(null);
     }
 
-    
     private void loadTpParent(ArrayList<TopicDTO> list) {
         topicMapParent.clear();
         topicMapParent.put("--None--", -1);
-        
+
         for (TopicDTO t : list) {
             topicMapParent.put(t.getTpTitle(), t.getTpID());
         }
@@ -121,9 +130,9 @@ public class mainView extends javax.swing.JFrame {
             model.addElement(s);
         }
         cbbF.setModel(model);
-        
 
     }
+
     private void loadTpChild1(int idParent) {
         topicMapChildren1.clear();
         topicMapChildren1.put("--None--", -1);
@@ -140,6 +149,7 @@ public class mainView extends javax.swing.JFrame {
         }
         cbbT.setModel(model);
     }
+
     private void loadTpChild(int idParent) {
         topicMapChildren.clear();
         topicMapChildren.put("--None--", -1);
@@ -192,7 +202,7 @@ public class mainView extends javax.swing.JFrame {
                     rs.add(listQ.get(i));
                 }
             }
-            listQ  = rs;
+            listQ = rs;
         }
 //
         loadTable(listQ);
@@ -213,10 +223,10 @@ public class mainView extends javax.swing.JFrame {
     private void handleSearchQuestion() {
         String key = jtfSearch.getText().toLowerCase().trim();
         if (idTopicChild != -1 || idTopicParent != -1 || !qLevel.equalsIgnoreCase("--none--")) {
-            System.out.println("listQ.size(): "  + listQ.size() + " ____ " + key);
+            System.out.println("listQ.size(): " + listQ.size() + " ____ " + key);
             ArrayList<QuestionDTO> rs = new ArrayList<>();
             for (QuestionDTO q : listQ) {
-                if (q.getQContent().toLowerCase().contains(key.toLowerCase()) ) {
+                if (q.getQContent().toLowerCase().contains(key.toLowerCase())) {
                     rs.add(q);
                 }
             }
@@ -226,21 +236,21 @@ public class mainView extends javax.swing.JFrame {
             loadTable(listQ);
         }
     }
-    
+
     private void refresh() {
         listQ = qBUS.getAll();
         loadTable(listQ);
-        
+
         jtfSearch.setText("");
-        
+
         qIDSelected = -1;
         idTopicParent = -1;
         idTopicChild = -1;
         idTopicChild1 = -1;
         qLevel = "--none--";
-        
+
         loadTpParent(tBUS.getAllParent());
-        
+
         topicMapChildren.clear();
         topicMapChildren.put("--None--", -1);
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -248,7 +258,7 @@ public class mainView extends javax.swing.JFrame {
             model.addElement(s);
         }
         cbbS.setModel(model);
-        
+
         topicMapChildren1.clear();
         topicMapChildren1.put("--None--", -1);
         DefaultComboBoxModel<String> model1 = new DefaultComboBoxModel<>();
@@ -256,13 +266,11 @@ public class mainView extends javax.swing.JFrame {
             model1.addElement(s);
         }
         cbbT.setModel(model1);
-        
-        
+
         cbbLevel.setSelectedIndex(0);
-       
+
     }
-    
-    
+
     private void addHoverEffect(JPanel menu, List<JPanel> allMenus) {
         String defaultStyle = "arc: 20; background: #005b91";
         String hoverStyle = "arc: 20; background: #033d67";
@@ -294,23 +302,23 @@ public class mainView extends javax.swing.JFrame {
                     }
                     // Giữ màu menu được chọn
                     menu.putClientProperty(FlatClientProperties.STYLE, selectedStyle);
-                    menu.putClientProperty("selected", true);                 
+                    menu.putClientProperty("selected", true);
                     if (!menu.getName().equals("dangxuat")) {
                         cardLayout.show(main_panel, menu.getName());
-                    }else{                     
-                        if ((int)showLogoutDialog() == JOptionPane.YES_OPTION) {
+                    } else {
+                        if ((int) showLogoutDialog() == JOptionPane.YES_OPTION) {
                             //tro ve dang nhap
                             new loginView().setVisible(true);
                             dispose();
                             //
                         }
                     }
-                    
+
                 }
             }
         });
     }
-    
+
     private static int showLogoutDialog() {
         JPanel panel = new JPanel();
         panel.setSize(300, 200);
@@ -326,7 +334,7 @@ public class mainView extends javax.swing.JFrame {
                 JOptionPane.WARNING_MESSAGE,
                 null,
                 options,
-                options[1] 
+                options[1]
         );
         return result;
     }
@@ -1859,6 +1867,41 @@ public class mainView extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        if (qIDSelected == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhấp đôi để chọn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int qID = qIDSelected;
+
+        // Hiển thị hộp thoại xác nhận trước khi xóa
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Bạn có chắc chắn muốn xoá câu hỏi ID = " + qID + "?",
+                "Xác nhận xoá",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            boolean check = qBUS.delete(qBUS.findOne(qID));
+
+            if (check) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Xoá thành công câu hỏi ID = " + qID,
+                        "Thông báo",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Xoá thất bại! Vui lòng thử lại.",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } 
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1913,9 +1956,13 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         String selectedTopic = (String) cbbT.getSelectedItem();
         Integer selectedID = topicMapChildren1.get(selectedTopic);
+         // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null) {
+            return;
+        }
         idTopicChild1 = selectedID;
         loadTableByTopic(idTopicParent, idTopicChild, idTopicChild1);
-                cbbLevel.setSelectedIndex(0);
+        cbbLevel.setSelectedIndex(0);
 
     }//GEN-LAST:event_cbbTActionPerformed
 
@@ -1923,6 +1970,10 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         String selectedTopic = (String) cbbF.getSelectedItem();
         Integer selectedID = topicMapParent.get(selectedTopic);
+         // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null) {
+            return;
+        }
         loadTableByTopic(idTopicParent, idTopicChild, idTopicChild1);
         loadTpChild(selectedID);
         idTopicParent = selectedID;
@@ -1934,6 +1985,10 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         String selectedTopic = (String) cbbS.getSelectedItem();
         Integer selectedID = topicMapChildren.get(selectedTopic);
+         // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null) {
+            return;
+        }
         idTopicChild = selectedID;
         loadTableByTopic(idTopicParent, idTopicChild, idTopicChild1);
         loadTpChild1(selectedID);
@@ -1961,10 +2016,11 @@ public class mainView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhấp đôi để chọn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         int qID = qIDSelected;
-        
+
         showCustomDialog(this, new detailQuestion(qID), "Chi tiết");
+        qIDSelected = -1;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jtfSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSearchActionPerformed
@@ -1973,7 +2029,7 @@ public class mainView extends javax.swing.JFrame {
 
     private void jtfSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfSearchKeyPressed
         // TODO add your handling code here:
-    // Kiểm tra nếu phím Enter được nhấn
+        // Kiểm tra nếu phím Enter được nhấn
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             handleSearchQuestion();
         }
@@ -1983,16 +2039,15 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         handleSearchQuestion();
     }//GEN-LAST:event_searchBtnActionPerformed
-    
-    
+
     private static void showCustomDialog(JFrame parent, JPanel panel, String title) {
         JDialog dialog = new JDialog(parent, title, true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        
+
         // Thêm panel vào dialog
         dialog.setLayout(new BorderLayout());
         dialog.add(panel, BorderLayout.CENTER);
-       
+
         // Định kích thước dialog
         dialog.pack();
         dialog.setLocationRelativeTo(parent);

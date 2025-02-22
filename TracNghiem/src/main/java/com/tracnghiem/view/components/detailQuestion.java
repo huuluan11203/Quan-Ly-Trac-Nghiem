@@ -23,6 +23,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -87,6 +89,9 @@ public class detailQuestion extends javax.swing.JPanel {
         
         
         loadDetailQuestion();
+        
+        
+        
     }
     
     /**
@@ -233,6 +238,7 @@ public class detailQuestion extends javax.swing.JPanel {
         noidung.setColumns(20);
         noidung.setRows(5);
         jScrollPane1.setViewportView(noidung);
+        noidung.setEnabled(false);
 
         javax.swing.GroupLayout anhLayout = new javax.swing.GroupLayout(anh);
         anh.setLayout(anhLayout);
@@ -336,6 +342,7 @@ public class detailQuestion extends javax.swing.JPanel {
         dapanA.setColumns(20);
         dapanA.setRows(5);
         jScrollPane2.setViewportView(dapanA);
+        dapanA.setEnabled(false);
 
         panelA.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, 540, 36));
 
@@ -375,6 +382,7 @@ public class detailQuestion extends javax.swing.JPanel {
         dapanB.setColumns(20);
         dapanB.setRows(5);
         jScrollPane3.setViewportView(dapanB);
+        dapanB.setEnabled(false);
 
         panelB.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, 540, 36));
 
@@ -414,6 +422,7 @@ public class detailQuestion extends javax.swing.JPanel {
         dapanC.setColumns(20);
         dapanC.setRows(5);
         jScrollPane4.setViewportView(dapanC);
+        dapanC.setEnabled(false);
 
         panelC.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, 540, 36));
 
@@ -453,6 +462,7 @@ public class detailQuestion extends javax.swing.JPanel {
         dapanD.setColumns(20);
         dapanD.setRows(5);
         jScrollPane5.setViewportView(dapanD);
+        dapanD.setEnabled(false);
 
         panelD.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, 540, 36));
 
@@ -492,6 +502,7 @@ public class detailQuestion extends javax.swing.JPanel {
         dapanE.setColumns(20);
         dapanE.setRows(5);
         jScrollPane6.setViewportView(dapanE);
+        dapanE.setEnabled(false);
 
         panelE.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 21, 540, 36));
 
