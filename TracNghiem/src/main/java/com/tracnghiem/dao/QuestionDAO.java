@@ -112,4 +112,20 @@ public class QuestionDAO implements InterfaceDAO<QuestionDTO> {
         }
         return false;
     }
+    
+    public int getMaxID() {
+        String sql = "SELECT MAX(qID) FROM questions";
+        try (Connection conn = JDBCUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {  // Dùng executeQuery() thay vì executeUpdate()
+
+            if (rs.next()) {
+                return rs.getInt(1); // Lấy giá trị MAX(qID)
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu có lỗi hoặc không có dữ liệu
+    }
+
 }

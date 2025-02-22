@@ -143,5 +143,8 @@ public class QuestionBUS {
         }
         return  result;
     }
+    public int getMaxID() {
+        return qDAO.getMaxID();
+    }
 }
 

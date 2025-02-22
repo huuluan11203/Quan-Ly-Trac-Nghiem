@@ -265,6 +265,9 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="noidung.setEnabled(false);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -421,6 +424,9 @@
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="dapanA.setEnabled(false);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -521,6 +527,9 @@
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="dapanB.setEnabled(false);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -621,6 +630,9 @@
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="dapanC.setEnabled(false);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -721,6 +733,9 @@
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="dapanD.setEnabled(false);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -821,6 +836,9 @@
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="dapanE.setEnabled(false);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>

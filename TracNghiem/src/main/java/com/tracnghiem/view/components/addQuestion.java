@@ -6,12 +6,19 @@ package com.tracnghiem.view.components;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.AnswerBUS;
+import com.tracnghiem.bus.QuestionBUS;
+import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.QuestionDTO;
+import com.tracnghiem.dto.TopicDTO;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -20,7 +27,15 @@ import javax.swing.JRadioButton;
  * @author huulu
  */
 public class addQuestion extends javax.swing.JPanel {
-
+    
+    private final QuestionBUS qBUS = new QuestionBUS();
+    private final TopicBUS tBUS = new TopicBUS();
+    private final AnswerBUS aBUS = new AnswerBUS();
+    private String qLevel = "--none--";
+    private final Map<String, Integer> topicMapParent = new LinkedHashMap<>();
+    private final Map<String, Integer> topicMapChildren = new LinkedHashMap<>();
+    private final Map<String, Integer> topicMapChildren1 = new LinkedHashMap<>();
+    private int tIDSelected = -1;
     /**
      * Creates new form addQuestion
      */
@@ -28,6 +43,13 @@ public class addQuestion extends javax.swing.JPanel {
         initComponents();
         ButtonGroup group = new ButtonGroup();
         selectedButton(group);
+        
+        
+        
+        loadTpParent(tBUS.getAllParent());
+        int newQID = qBUS.getMaxID() + 1;
+        macauhoi.setText(newQID+"");
+        
         
     }
 
@@ -106,6 +128,11 @@ public class addQuestion extends javax.swing.JPanel {
         );
         luu.setText("Lưu");
         luu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        luu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                luuActionPerformed(evt);
+            }
+        });
 
         nhap_excel.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
         nhap_excel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -117,8 +144,18 @@ public class addQuestion extends javax.swing.JPanel {
         monhocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách môn học");
         monhocCBB.setToolTipText("");
         monhocCBB.setName(""); // NOI18N
+        monhocCBB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monhocCBBActionPerformed(evt);
+            }
+        });
 
         chudeCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách chủ đề");
+        chudeCBB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chudeCBBActionPerformed(evt);
+            }
+        });
 
         baihocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách bài học");
         baihocCBB.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +216,10 @@ public class addQuestion extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        chudeCBB.addItem("--None--");
+        chudeCBB.setSelectedIndex(0);
+        baihocCBB.addItem("--None--");
+
         jPanel2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -220,7 +261,7 @@ public class addQuestion extends javax.swing.JPanel {
         tenhinh.setText("NULL");
 
         baihocCBB2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        baihocCBB2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dễ", "Khó", "Trung bình" }));
+        baihocCBB2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--None--", "Easy", "Medium", "Diff" }));
         baihocCBB2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 baihocCBB2ActionPerformed(evt);
@@ -569,12 +610,72 @@ public class addQuestion extends javax.swing.JPanel {
         }
     }
     
+    
+    private void loadTpParent(ArrayList<TopicDTO> list) {
+        topicMapParent.clear();
+        topicMapParent.put("--None--", -1);
+
+        for (TopicDTO t : list) {
+            topicMapParent.put(t.getTpTitle(), t.getTpID());
+        }
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+        for (String s : topicMapParent.keySet()) {
+            model.addElement(s);
+        }
+        monhocCBB.setModel(model);
+
+    }
+
+    private void loadTpChild1(int idParent) {
+        topicMapChildren1.clear();
+        topicMapChildren1.put("--None--", -1);
+
+        ArrayList<TopicDTO> list = tBUS.getChildTopics(idParent);
+
+        for (TopicDTO t : list) {
+            topicMapChildren1.put(t.getTpTitle(), t.getTpID());
+        }
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (String s : topicMapChildren1.keySet()) {
+            model.addElement(s);
+        }
+        baihocCBB.setModel(model);
+    }
+
+    private void loadTpChild(int idParent) {
+        topicMapChildren.clear();
+        topicMapChildren.put("--None--", -1);
+
+        ArrayList<TopicDTO> list = tBUS.getChildTopics(idParent);
+
+        for (TopicDTO t : list) {
+            topicMapChildren.put(t.getTpTitle(), t.getTpID());
+        }
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (String s : topicMapChildren.keySet()) {
+            model.addElement(s);
+        }
+        chudeCBB.setModel(model);
+    }
+    
     private void updateAction(QuestionDTO questionDTO){
         
     }
 
     private void baihocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBBActionPerformed
         // TODO add your handling code here:
+        String selectedTopic = (String) baihocCBB.getSelectedItem();
+        Integer selectedID = topicMapChildren1.get(selectedTopic);
+         // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null) {
+            return;
+        }
+        tIDSelected = selectedID;
+
     }//GEN-LAST:event_baihocCBBActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -624,6 +725,37 @@ public class addQuestion extends javax.swing.JPanel {
     private void baihocCBB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBB2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_baihocCBB2ActionPerformed
+
+    private void monhocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monhocCBBActionPerformed
+        // TODO add your handling code here:
+        String selectedTopic = (String) monhocCBB.getSelectedItem();
+        Integer selectedID = topicMapParent.get(selectedTopic);
+         // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null) {
+            return;
+        }
+        tIDSelected = selectedID;
+        loadTpChild(selectedID);
+        chudeCBB.setSelectedIndex(0);
+    }//GEN-LAST:event_monhocCBBActionPerformed
+
+    private void chudeCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chudeCBBActionPerformed
+        // TODO add your handling code here:
+        String selectedTopic = (String) chudeCBB.getSelectedItem();
+        Integer selectedID = topicMapChildren.get(selectedTopic);
+         // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null) {
+            return;
+        }
+        tIDSelected = selectedID;
+        loadTpChild1(selectedID);
+        baihocCBB.setSelectedIndex(0);
+    }//GEN-LAST:event_chudeCBBActionPerformed
+
+    private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
+        // TODO add your handling code here:
+        System.out.println("id Topic: " + tIDSelected);
+    }//GEN-LAST:event_luuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
