@@ -29,8 +29,11 @@ public class JDBCUtil {
             */
             
             // Luan
-            String url = "jdbc:mysql://127.0.0.1:3303/tracnghiem";
-            String password = "1234"; 
+//            String url = "jdbc:mysql://127.0.0.1:3303/tracnghiem";
+//            String password = "1234"; 
+            // Phat
+            String url = "jdbc:mysql://127.0.0.1:2434/tracnghiem";
+            String password = ""; 
             
             String userName = "root";         
             //Tao ket noi 

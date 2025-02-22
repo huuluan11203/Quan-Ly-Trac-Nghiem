@@ -759,12 +759,12 @@
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="cbbLevel" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jtfSearch" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                                       <Component id="searchBtn" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                                       <Component id="cbbF" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                                       <Component id="cbbS" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                                      <Component id="cbbLevel" alignment="0" min="-2" pref="36" max="-2" attributes="0"/>
                                       <Component id="cbbT" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="refreshBtn" alignment="0" max="32767" attributes="0"/>
@@ -840,6 +840,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbSActionPerformed"/>
                       </Events>
                       <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="cbbS.addItem(&quot;--None--&quot;);"/>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
                     </Component>
