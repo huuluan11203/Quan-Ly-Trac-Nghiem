@@ -86,6 +86,8 @@ public class AnswerBUS {
 
         return result;
     }
-    
+    public int getMaxID() {
+        return aDAO.getMaxID();
+    }
 
 }

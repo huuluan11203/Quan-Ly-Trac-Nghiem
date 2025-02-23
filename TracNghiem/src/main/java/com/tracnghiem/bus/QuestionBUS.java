@@ -106,13 +106,12 @@ public class QuestionBUS {
         ArrayList<TopicDTO> lTp = tBUS.getAllChildTopics(tpIDParent);
         
         ArrayList<Integer> topicIds = new ArrayList<>();
-        topicIds.add(tpIDParent);
         for (TopicDTO topic : lTp) {
             topicIds.add(topic.getTpID()); // Giả sử TopicDTO có phương thức getId()
         }
         
         for (QuestionDTO i : this.listQ) {
-             if (topicIds.contains(i.getQTopic())) 
+             if (topicIds.contains(i.getQTopic()) || i.getQTopic() == tpIDParent) 
                  result.add(i);
         }
         return  result;

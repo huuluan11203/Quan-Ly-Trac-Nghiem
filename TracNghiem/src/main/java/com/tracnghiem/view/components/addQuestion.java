@@ -9,8 +9,11 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.AnswerBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.TopicBUS;
+import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TopicDTO;
+import com.tracnghiem.utils.UploadUtil;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,15 +22,22 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author huulu
  */
 public class addQuestion extends javax.swing.JPanel {
-    
+
     private final QuestionBUS qBUS = new QuestionBUS();
     private final TopicBUS tBUS = new TopicBUS();
     private final AnswerBUS aBUS = new AnswerBUS();
@@ -36,6 +46,14 @@ public class addQuestion extends javax.swing.JPanel {
     private final Map<String, Integer> topicMapChildren = new LinkedHashMap<>();
     private final Map<String, Integer> topicMapChildren1 = new LinkedHashMap<>();
     private int tIDSelected = -1;
+    private int  newQID = -1;
+    private final ArrayList<File> listImg = new ArrayList<>();
+    private final ArrayList<JTextArea> listTextArea = new ArrayList<>();
+    private final ArrayList<JRadioButton> listRBTn = new ArrayList<>();
+    private final ArrayList<JLabel> listLabel = new ArrayList<>();
+    private QuestionDTO q;
+    private ArrayList<AnswerDTO> listA = new ArrayList<>();
+    
     /**
      * Creates new form addQuestion
      */
@@ -44,13 +62,30 @@ public class addQuestion extends javax.swing.JPanel {
         ButtonGroup group = new ButtonGroup();
         selectedButton(group);
         
+        listTextArea.add(dapanA);
+        listTextArea.add(dapanB);
+        listTextArea.add(dapanC);
+        listTextArea.add(dapanD);
+        listTextArea.add(dapanE);
+        
+        listRBTn.add(rbtnA);
+        listRBTn.add(rbtnB);
+        listRBTn.add(rbtnC);
+        listRBTn.add(rbtnD);
+        listRBTn.add(rbtnE);
+        
+        listLabel.add(hinhA);
+        listLabel.add(hinhB);
+        listLabel.add(hinhC);
+        listLabel.add(hinhD);
+        listLabel.add(hinhE);
         
         
+
         loadTpParent(tBUS.getAllParent());
-        int newQID = qBUS.getMaxID() + 1;
-        macauhoi.setText(newQID+"");
-        
-        
+        newQID = qBUS.getMaxID() + 1;
+        macauhoi.setText(newQID + "");
+
     }
 
     /**
@@ -79,8 +114,9 @@ public class addQuestion extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         noidung = new javax.swing.JTextArea();
         anh = new javax.swing.JPanel();
+        qAnh = new javax.swing.JLabel();
         tenhinh = new javax.swing.JLabel();
-        baihocCBB2 = new javax.swing.JComboBox<>();
+        cbbLevel = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -89,35 +125,35 @@ public class addQuestion extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         dapanA = new javax.swing.JTextArea();
         jButton7 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        rbtnA = new javax.swing.JRadioButton();
         hinhA = new javax.swing.JLabel();
         panelB = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         dapanB = new javax.swing.JTextArea();
         jButton8 = new javax.swing.JButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbtnB = new javax.swing.JRadioButton();
         hinhB = new javax.swing.JLabel();
         panelC = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         dapanC = new javax.swing.JTextArea();
         jButton9 = new javax.swing.JButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        rbtnC = new javax.swing.JRadioButton();
         hinhC = new javax.swing.JLabel();
         panelD = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         dapanD = new javax.swing.JTextArea();
         jButton10 = new javax.swing.JButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        rbtnD = new javax.swing.JRadioButton();
         hinhD = new javax.swing.JLabel();
         panelE = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         dapanE = new javax.swing.JTextArea();
         jButton11 = new javax.swing.JButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
+        rbtnE = new javax.swing.JRadioButton();
         hinhE = new javax.swing.JLabel();
 
         jPanel1.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
@@ -250,21 +286,26 @@ public class addQuestion extends javax.swing.JPanel {
         anh.setLayout(anhLayout);
         anhLayout.setHorizontalGroup(
             anhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addComponent(qAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
         );
         anhLayout.setVerticalGroup(
             anhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addComponent(qAnh, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
         );
 
         tenhinh.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         tenhinh.setText("NULL");
+        tenhinh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tenhinhMouseClicked(evt);
+            }
+        });
 
-        baihocCBB2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        baihocCBB2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--None--", "Easy", "Medium", "Diff" }));
-        baihocCBB2.addActionListener(new java.awt.event.ActionListener() {
+        cbbLevel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cbbLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--None--", "Easy", "Medium", "Diff" }));
+        cbbLevel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                baihocCBB2ActionPerformed(evt);
+                cbbLevelActionPerformed(evt);
             }
         });
 
@@ -290,7 +331,7 @@ public class addQuestion extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(baihocCBB2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbbLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(tenhinh, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -318,11 +359,13 @@ public class addQuestion extends javax.swing.JPanel {
                             .addComponent(jLabel4)
                             .addComponent(jButton6)
                             .addComponent(tenhinh)
-                            .addComponent(baihocCBB2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbbLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
+
+        tenhinh.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jPanel3.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
@@ -355,18 +398,24 @@ public class addQuestion extends javax.swing.JPanel {
         });
         panelA.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 34, -1, -1));
 
-        jRadioButton1.setText("Đáp án đúng");
-        jRadioButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        rbtnA.setText("Đáp án đúng");
+        rbtnA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rbtnA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                rbtnAActionPerformed(evt);
             }
         });
-        panelA.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
+        panelA.add(rbtnA, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
 
         hinhA.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         hinhA.setText("NULL");
+        hinhA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hinhAMouseClicked(evt);
+            }
+        });
         panelA.add(hinhA, new org.netbeans.lib.awtextra.AbsoluteConstraints(552, 40, 252, -1));
+        hinhA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         panelB.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         panelB.setPreferredSize(new java.awt.Dimension(810, 60));
@@ -394,18 +443,24 @@ public class addQuestion extends javax.swing.JPanel {
         });
         panelB.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 34, -1, -1));
 
-        jRadioButton2.setText("Đáp án đúng");
-        jRadioButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        rbtnB.setText("Đáp án đúng");
+        rbtnB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rbtnB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                rbtnBActionPerformed(evt);
             }
         });
-        panelB.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
+        panelB.add(rbtnB, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
 
         hinhB.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         hinhB.setText("NULL");
+        hinhB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hinhBMouseClicked(evt);
+            }
+        });
         panelB.add(hinhB, new org.netbeans.lib.awtextra.AbsoluteConstraints(552, 40, 252, -1));
+        hinhB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         panelC.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         panelC.setPreferredSize(new java.awt.Dimension(810, 60));
@@ -433,18 +488,24 @@ public class addQuestion extends javax.swing.JPanel {
         });
         panelC.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 34, -1, -1));
 
-        jRadioButton3.setText("Đáp án đúng");
-        jRadioButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+        rbtnC.setText("Đáp án đúng");
+        rbtnC.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rbtnC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
+                rbtnCActionPerformed(evt);
             }
         });
-        panelC.add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
+        panelC.add(rbtnC, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
 
         hinhC.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         hinhC.setText("NULL");
+        hinhC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hinhCMouseClicked(evt);
+            }
+        });
         panelC.add(hinhC, new org.netbeans.lib.awtextra.AbsoluteConstraints(552, 40, 252, -1));
+        hinhC.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         panelD.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         panelD.setPreferredSize(new java.awt.Dimension(810, 60));
@@ -472,18 +533,24 @@ public class addQuestion extends javax.swing.JPanel {
         });
         panelD.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 34, -1, -1));
 
-        jRadioButton4.setText("Đáp án đúng");
-        jRadioButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+        rbtnD.setText("Đáp án đúng");
+        rbtnD.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rbtnD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
+                rbtnDActionPerformed(evt);
             }
         });
-        panelD.add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
+        panelD.add(rbtnD, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
 
         hinhD.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         hinhD.setText("NULL");
+        hinhD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hinhDMouseClicked(evt);
+            }
+        });
         panelD.add(hinhD, new org.netbeans.lib.awtextra.AbsoluteConstraints(552, 40, 252, -1));
+        hinhD.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         panelE.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         panelE.setPreferredSize(new java.awt.Dimension(810, 60));
@@ -511,18 +578,24 @@ public class addQuestion extends javax.swing.JPanel {
         });
         panelE.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(824, 34, -1, -1));
 
-        jRadioButton5.setText("Đáp án đúng");
-        jRadioButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+        rbtnE.setText("Đáp án đúng");
+        rbtnE.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        rbtnE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
+                rbtnEActionPerformed(evt);
             }
         });
-        panelE.add(jRadioButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
+        panelE.add(rbtnE, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 1, -1, -1));
 
         hinhE.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         hinhE.setText("NULL");
+        hinhE.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hinhEMouseClicked(evt);
+            }
+        });
         panelE.add(hinhE, new org.netbeans.lib.awtextra.AbsoluteConstraints(552, 40, 252, -1));
+        hinhE.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -580,7 +653,7 @@ public class addQuestion extends javax.swing.JPanel {
 
     private void selectedButton(ButtonGroup buttonGroup) {
         // Danh sách các JRadioButton
-        List<JRadioButton> radioButtons = Arrays.asList(jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton4, jRadioButton5);
+        List<JRadioButton> radioButtons = Arrays.asList(rbtnA, rbtnB, rbtnC, rbtnD, rbtnE);
 
         // Danh sách các JPanel tương ứng (panelA, panelB, panelC, panelD, panelE)
         List<JPanel> panels = Arrays.asList(panelA, panelB, panelC, panelD, panelE);
@@ -609,8 +682,7 @@ public class addQuestion extends javax.swing.JPanel {
             panel.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         }
     }
-    
-    
+
     private void loadTpParent(ArrayList<TopicDTO> list) {
         topicMapParent.clear();
         topicMapParent.put("--None--", -1);
@@ -661,77 +733,129 @@ public class addQuestion extends javax.swing.JPanel {
         }
         chudeCBB.setModel(model);
     }
-    
-    private void updateAction(QuestionDTO questionDTO){
-        
+
+    private void updateAction(QuestionDTO questionDTO) {
+
     }
 
     private void baihocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBBActionPerformed
         // TODO add your handling code here:
         String selectedTopic = (String) baihocCBB.getSelectedItem();
         Integer selectedID = topicMapChildren1.get(selectedTopic);
-         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null) {
+        // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null || selectedID == -1) {
             return;
         }
         tIDSelected = selectedID;
 
     }//GEN-LAST:event_baihocCBBActionPerformed
 
+    private void loadPrevImage(String filePath) {
+        ImageIcon icon = new ImageIcon(filePath);
+        Image image = icon.getImage().getScaledInstance(190, 180, Image.SCALE_SMOOTH);
+        qAnh.setIcon(new ImageIcon(image));
+        qAnh.setText(""); // Xóa text mặc định
+    }
+
+    private String uploadImg() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn ảnh từ máy");
+
+        // Chỉ cho phép chọn file ảnh (JPG, PNG, GIF)
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Hình ảnh (JPG, PNG, GIF)", "jpg", "png", "gif");
+        fileChooser.setFileFilter(filter);
+
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            File selectedFile = fileChooser.getSelectedFile();
+            String fileName = selectedFile.getName(); // Lấy tên file
+            String filePath = selectedFile.getAbsolutePath(); // Lấy đường dẫn đầy đủ của ảnh
+
+            
+            for (File file : listImg) {
+                if (file.getName().equals(fileName)) {
+                    JOptionPane.showMessageDialog(null, "Chọn trùng tên hình!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return "Chưa chọn ảnh";
+                }
+            }
+            listImg.add(selectedFile);
+            // Load ảnh vào JLabel
+            loadPrevImage(filePath);
+            return fileName;
+        } else {
+            JOptionPane.showMessageDialog(null, "Chưa chọn file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return "Chưa chọn ảnh";
+        }
+    }
+
+
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        String img = uploadImg();
+        tenhinh.setText(img);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
+        String img = uploadImg();
+        hinhA.setText(img);
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void rbtnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnAActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_rbtnAActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        String img = uploadImg();
+        hinhB.setText(img);
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+    private void rbtnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    }//GEN-LAST:event_rbtnBActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
+        String img = uploadImg();
+        hinhC.setText(img);
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+    private void rbtnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnCActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
+    }//GEN-LAST:event_rbtnCActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
+        String img = uploadImg();
+        hinhD.setText(img);
     }//GEN-LAST:event_jButton10ActionPerformed
 
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+    private void rbtnDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
+    }//GEN-LAST:event_rbtnDActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
+        String img = uploadImg();
+        hinhE.setText(img);
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+    private void rbtnEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnEActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton5ActionPerformed
+    }//GEN-LAST:event_rbtnEActionPerformed
 
-    private void baihocCBB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBB2ActionPerformed
+    private void cbbLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbLevelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_baihocCBB2ActionPerformed
+    }//GEN-LAST:event_cbbLevelActionPerformed
 
     private void monhocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monhocCBBActionPerformed
         // TODO add your handling code here:
         String selectedTopic = (String) monhocCBB.getSelectedItem();
         Integer selectedID = topicMapParent.get(selectedTopic);
-         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null) {
+        // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null || selectedID == -1) {
             return;
         }
         tIDSelected = selectedID;
@@ -743,25 +867,187 @@ public class addQuestion extends javax.swing.JPanel {
         // TODO add your handling code here:
         String selectedTopic = (String) chudeCBB.getSelectedItem();
         Integer selectedID = topicMapChildren.get(selectedTopic);
-         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null) {
+        // Kiểm tra nếu selectedID là null thì không làm gì cả
+        if (selectedID == null || selectedID == -1) {
             return;
         }
         tIDSelected = selectedID;
         loadTpChild1(selectedID);
         baihocCBB.setSelectedIndex(0);
     }//GEN-LAST:event_chudeCBBActionPerformed
+    private boolean validDataAddNew() {
+        if (tIDSelected == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn môn học/chủ đề/bài học!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        if (cbbLevel.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn mức độ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        if (noidung.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập nội dung câu hỏi!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        int d = 0;
+        for (JTextArea t : listTextArea) {
+            if (!t.getText().isEmpty()) d++;
+        }
+        if (d < 2) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập ít nhất 2 đáp án!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false ;
+        }
+        
+        boolean check = false;
+        for (JRadioButton rb : listRBTn) {
+            if (rb.isSelected()) {
+                check = true;
+                break;
+            }
+        }
+        if (!check) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 đáp án đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+       return true;
+    }
+    private void buildDataQuestion() {
+        
+        
+        //Question        
+        int newQTopicID = tIDSelected;
+        String newQContent = noidung.getText();
+        String newQPicture = tenhinh.getText();
+        String newQLevel = (String)cbbLevel.getSelectedItem();
+        int newQStatus = 1;
+        
+        q = new QuestionDTO(newQContent, newQPicture, newQTopicID, newQLevel, newQStatus);
+        
+        //Answer
+        String newAwContent ;
+        String newAwPicture ;
+        boolean newAwIsRight ;
+        int newAwStatus = 1;
+        
+        for (int i = 0; i < listTextArea.size(); i++) {
+            if (!listTextArea.get(i).getText().isEmpty()) {
+                newAwContent = listTextArea.get(i).getText();
+                newAwPicture = listLabel.get(i).getText();
+                
+                if (newAwPicture.equals("NULL") || newAwPicture.equals("Chưa chọn ảnh")) {
+                    newAwPicture = "";
+                }
+                
+                newAwIsRight = listRBTn.get(i).isSelected();
+                
+                AnswerDTO a = new AnswerDTO(newQID, newAwContent, newAwPicture, newAwIsRight, newAwStatus);
+                listA.add(a);
+            }
+        }
+        
+    }
+    
+    private void loadPrevByNameImg(JLabel jblNameImg) {
+        String nameImg = jblNameImg.getText();
+        if (nameImg.isEmpty() || nameImg.equals("NULL") || nameImg.equals("Chưa chọn ảnh")) {
+            JOptionPane.showMessageDialog(null, "Hình ảnh không tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        for (int i = 0; i < listImg.size(); i++) {
+            if (listImg.get(i).getName().equals(nameImg)) {
+                loadPrevImage(listImg.get(i).getAbsolutePath());
+            }
+        }
+    }
+
+    private void tenhinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tenhinhMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            loadPrevByNameImg(tenhinh);
+        }
+    }//GEN-LAST:event_tenhinhMouseClicked
+
+
+    private void hinhAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hinhAMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            loadPrevByNameImg(hinhA);
+        }
+    }//GEN-LAST:event_hinhAMouseClicked
+
+    private void hinhBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hinhBMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            loadPrevByNameImg(hinhB);
+        }
+    }//GEN-LAST:event_hinhBMouseClicked
+
+    private void hinhCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hinhCMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            loadPrevByNameImg(hinhC);
+        }
+    }//GEN-LAST:event_hinhCMouseClicked
+
+    private void hinhDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hinhDMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            loadPrevByNameImg(hinhD);
+        }
+    }//GEN-LAST:event_hinhDMouseClicked
+
+    private void hinhEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hinhEMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            loadPrevByNameImg(hinhE);
+        }
+    }//GEN-LAST:event_hinhEMouseClicked
 
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
-        System.out.println("id Topic: " + tIDSelected);
+        int confirm = JOptionPane.showConfirmDialog(
+            null, "Bạn có muốn lưu dữ liệu không?", "Xác nhận lưu",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (!validDataAddNew()) {
+                return;
+            }
+
+            buildDataQuestion();
+
+            //goi insert
+            if (!qBUS.add(q)) {
+                JOptionPane.showMessageDialog(null, "Lưu câu hỏi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            for (AnswerDTO a : listA) {
+                if (!aBUS.add(a)) {
+                    JOptionPane.showMessageDialog(null, "Lưu đáp án thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            for (File file : listImg) {
+                if (!UploadUtil.uploadToResources(file)) {
+                    JOptionPane.showMessageDialog(null, "Lưu đáp án thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Lưu câu hỏi và đáp án thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_luuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel anh;
     private javax.swing.JComboBox<String> baihocCBB;
-    private javax.swing.JComboBox<String> baihocCBB2;
+    private javax.swing.JComboBox<String> cbbLevel;
     private javax.swing.JComboBox<String> chudeCBB;
     private javax.swing.JTextArea dapanA;
     private javax.swing.JTextArea dapanB;
@@ -794,11 +1080,6 @@ public class addQuestion extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -815,6 +1096,12 @@ public class addQuestion extends javax.swing.JPanel {
     private javax.swing.JPanel panelC;
     private javax.swing.JPanel panelD;
     private javax.swing.JPanel panelE;
+    private javax.swing.JLabel qAnh;
+    private javax.swing.JRadioButton rbtnA;
+    private javax.swing.JRadioButton rbtnB;
+    private javax.swing.JRadioButton rbtnC;
+    private javax.swing.JRadioButton rbtnD;
+    private javax.swing.JRadioButton rbtnE;
     private javax.swing.JLabel tenhinh;
     // End of variables declaration//GEN-END:variables
 }

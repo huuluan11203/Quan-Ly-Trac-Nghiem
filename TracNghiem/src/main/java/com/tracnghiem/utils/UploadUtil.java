@@ -14,7 +14,8 @@ import java.nio.file.Paths;
  * @author X
  */
 public class UploadUtil {
-    private static void uploadToResources(File selectedFile, String type) {
+    public static boolean uploadToResources(File selectedFile) {
+        boolean rs = true;
         try {
             // Đường dẫn tới thư mục resources trong dự án Maven (src/main/resources/images)
             Path destination = Paths.get("src/main/resources/images", selectedFile.getName());
@@ -24,11 +25,12 @@ public class UploadUtil {
 
             // Sao chép file vào thư mục resources
             Files.copy(selectedFile.toPath(), destination);
-
-            System.out.println("File đã được tải lên thư mục resources: " + destination);
+            
         } catch (IOException e) {
             e.printStackTrace();
+            rs = false;
             System.out.println("Đã xảy ra lỗi khi tải file lên.");
         }
+        return rs;
     }
 }

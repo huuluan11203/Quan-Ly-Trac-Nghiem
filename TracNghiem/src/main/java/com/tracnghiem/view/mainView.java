@@ -14,6 +14,7 @@ import com.tracnghiem.view.components.addQuestion;
 import com.tracnghiem.view.components.addSubject;
 import com.tracnghiem.view.components.addUser;
 import com.tracnghiem.view.components.detailQuestion;
+import com.tracnghiem.view.components.updateQuestion;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -148,6 +149,8 @@ public class mainView extends javax.swing.JFrame {
             model.addElement(s);
         }
         cbbT.setModel(model);
+        cbbT.setSelectedIndex(0);
+
     }
 
     private void loadTpChild(int idParent) {
@@ -165,6 +168,7 @@ public class mainView extends javax.swing.JFrame {
             model.addElement(s);
         }
         cbbS.setModel(model);
+        cbbS.setSelectedIndex(0);
     }
 
     private void loadTable(ArrayList<QuestionDTO> list) {
@@ -394,6 +398,7 @@ public class mainView extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
         monhoc = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jSeparator3 = new javax.swing.JSeparator();
@@ -978,6 +983,18 @@ public class mainView extends javax.swing.JFrame {
         }
     });
 
+    jButton9.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+    jButton9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+    jButton9.setIcon(new FlatSVGIcon("icons/edit.svg", 30, 30)
+    );
+    jButton9.setText("Sửa");
+    jButton9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    jButton9.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton9ActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(
@@ -986,11 +1003,13 @@ public class mainView extends javax.swing.JFrame {
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton5)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jButton9)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jButton4)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addComponent(jButton2)
             .addContainerGap())
-        .addComponent(jScrollPane2)
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1040, Short.MAX_VALUE)
     );
     jPanel2Layout.setVerticalGroup(
         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -999,7 +1018,8 @@ public class mainView extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jButton2)
                 .addComponent(jButton4)
-                .addComponent(jButton5))
+                .addComponent(jButton5)
+                .addComponent(jButton9))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
     );
@@ -1862,7 +1882,11 @@ public class mainView extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Open
+        
         showCustomDialog(this, new addQuestion(null, false), "Thêm câu hỏi");
+        
+        
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -1978,6 +2002,7 @@ public class mainView extends javax.swing.JFrame {
         loadTpChild(selectedID);
         idTopicParent = selectedID;
         idTopicChild = -1;
+        idTopicChild1 = -1;
         cbbLevel.setSelectedIndex(0);
     }//GEN-LAST:event_cbbFActionPerformed
 
@@ -1994,7 +2019,7 @@ public class mainView extends javax.swing.JFrame {
         loadTpChild1(selectedID);
         idTopicChild = selectedID;
         idTopicChild1 = -1;
-        cbbT.setSelectedIndex(0);
+//        cbbT.setSelectedIndex(0);
         cbbLevel.setSelectedIndex(0);
     }//GEN-LAST:event_cbbSActionPerformed
 
@@ -2039,6 +2064,19 @@ public class mainView extends javax.swing.JFrame {
         // TODO add your handling code here:
         handleSearchQuestion();
     }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+         if (qIDSelected == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhấp đôi để chọn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int qID = qIDSelected;
+        
+        showCustomDialog(this, new updateQuestion(qBUS.findOne(qID), false), "Chỉnh sửa");
+        qIDSelected = -1;
+    }//GEN-LAST:event_jButton9ActionPerformed
 
     private static void showCustomDialog(JFrame parent, JPanel panel, String title) {
         JDialog dialog = new JDialog(parent, title, true);
@@ -2115,6 +2153,7 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;

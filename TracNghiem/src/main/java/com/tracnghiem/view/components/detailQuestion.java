@@ -210,7 +210,7 @@ public class detailQuestion extends javax.swing.JPanel {
                     .addComponent(monhocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chudeCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(baihocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         jPanel2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
@@ -665,13 +665,8 @@ public class detailQuestion extends javax.swing.JPanel {
             panel.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
         }
     }
-
     
     
-    private void baihocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_baihocCBBActionPerformed
-
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
@@ -725,6 +720,10 @@ public class detailQuestion extends javax.swing.JPanel {
         // TODO add your handling code here:
         loadPrevImage(tenhinh.getText());
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void baihocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_baihocCBBActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
