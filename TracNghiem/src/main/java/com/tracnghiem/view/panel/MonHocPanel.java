@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -33,31 +34,69 @@ public class MonHocPanel extends javax.swing.JPanel {
      */
     public MonHocPanel() {
         initComponents();
+        reloadSubject();
         loadDataSubjectTable();
     }
     
     
     private void loadDataSubjectTable(){
-        ArrayList<TopicDTO> topics = tpBUS.getAll();
-        int stt = 1;
-        
-        
-        DefaultTableModel model = (DefaultTableModel) table_monhoc.getModel();
-        model.setRowCount(0); // Xóa dữ liệu cũ
+        TopicBUS tpBUS = new TopicBUS();
+        List<TopicDTO> topics = tpBUS.getAll();
+        DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"STT","Môn học","Chủ đề","Bài học","Trạng thái"},0)
+        {
+        Class[] types = new Class[]{
+            Integer.class, Object.class, Object.class, Object.class, Object.class
+        };
 
-        if (topics.isEmpty()) {
-            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "","", "", ""});
-            return;
+        boolean[] canEdit = new boolean[]{
+            false, false, false, false, false  // Không cho phép chỉnh sửa ô nào
+        };
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return types[columnIndex];
         }
-        for (TopicDTO t : topics) {
-            model.addRow(new Object[]{
-                stt++,
-                t.getTpParent() == 0 ? "" : t.getTpTitle(),"",
-                t.getTpTitle().isEmpty() ? "" : t.getTpTitle()
-            });
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return false;
         }
-        
-        
+        };
+        int stt = 1;
+        for(TopicDTO topic : topics){
+            String status = "Hoạt động";
+            if(topic.getTpParent() == -1){
+                if(topic.getTpStatus() == 0)
+                    status = "Tạm dừng";
+                model.addRow(new Object[]{
+                    stt++,
+                    topic.getTpTitle(),
+                    "",
+                    "",
+                    status
+                });
+            } else{
+                TopicDTO parent = tpBUS.findOne(topic.getTpParent());
+                if(topic.getTpStatus() == 0)
+                    status = "Tạm dừng";
+                model.addRow(new Object[]{
+                    stt++,
+                    parent.getTpTitle(),
+                    topic.getTpTitle(),
+                    "",
+                    status
+                });
+            }
+        }
+        table_monhoc.setModel(model);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < table_monhoc.getColumnCount(); i++) 
+            table_monhoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        table_monhoc.revalidate();
+        table_monhoc.repaint();
+        twoClickToShowMessageOfRestore(table_monhoc);
     }
     
     private void loadDataSubjectTable(ArrayList<TopicDTO> topics){
@@ -86,7 +125,7 @@ public class MonHocPanel extends javax.swing.JPanel {
         for(TopicDTO topic : topics){
             if(topic.getTpParent() == -1){
                 String parent = "";
-model.addRow(new Object[]{
+                model.addRow(new Object[]{
                     stt++,
                     topic.getTpTitle(),
                     parent,
@@ -170,42 +209,38 @@ model.addRow(new Object[]{
         }
     }
     
-    private ArrayList<TopicDTO> findSubject(){
-        ArrayList<TopicDTO> list = new ArrayList<>();
+    private List<TopicDTO> findSubject(){
+        List<TopicDTO> list = new ArrayList<>();
         TopicBUS tpBUS = new TopicBUS();
-        ArrayList<TopicDTO> topics = tpBUS.getAll();
+        List<TopicDTO> topics = tpBUS.getAll();
         if(!txt_monhoc_timkiem.getText().isEmpty()){
             String normalized = Normalizer.normalize(txt_monhoc_timkiem.getText(), Normalizer.Form.NFD);
             String keyword = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
             Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
             for(TopicDTO topic : topics){
                 Matcher matcher = pattern.matcher(topic.getTpTitle());
-                if(matcher.find()){
+                if(matcher.find())
                     list.add(topic);
-                }
             }
         } else if(cbb_monhoc_monhoc.getSelectedIndex() !=0 && cbb_monhoc_chude.getSelectedIndex() != 0){
-            String normalized_monhoc = Normalizer.normalize(cbb_monhoc_monhoc.getSelectedItem().toString(), Normalizer.Form.NFD);
             String normalized_chude = Normalizer.normalize(cbb_monhoc_chude.getSelectedItem().toString(), Normalizer.Form.NFD);
-            String keyword_monhoc = normalized_monhoc.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-            String keyword_chude = normalized_chude.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");Pattern pattern_monhoc = Pattern.compile(Pattern.quote(keyword_monhoc), Pattern.CASE_INSENSITIVE);
+            String keyword_chude = normalized_chude.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
             Pattern pattern_chude = Pattern.compile(Pattern.quote(keyword_chude), Pattern.CASE_INSENSITIVE);
             TopicDTO selected_chude = tpBUS.findOneTitle(cbb_monhoc_chude.getSelectedItem().toString());
+            System.out.println(selected_chude.toString());
             for (TopicDTO topic : topics) {
-                Matcher matcher_monhoc = pattern_monhoc.matcher(topic.getTpTitle());
                 Matcher matcher_chude = pattern_chude.matcher(topic.getTpTitle());
-                // Kiểm tra nếu môn học khớp và chủ đề là con của môn học đó
-                if (matcher_monhoc.find() && topic.getTpParent() == selected_chude.getTpParent() && matcher_chude.find()) 
+                if (matcher_chude.find() && topic.getTpID() == selected_chude.getTpID())
                     list.add(topic);
             }  
-        } else if(cbb_monhoc_monhoc.getSelectedIndex() !=0){
+        } else if(cbb_monhoc_monhoc.getSelectedIndex() !=0 && cbb_monhoc_chude.getSelectedIndex() == 0){
             String normalized_monhoc = Normalizer.normalize(cbb_monhoc_monhoc.getSelectedItem().toString(), Normalizer.Form.NFD);
             String keyword_monhoc = normalized_monhoc.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
             Pattern pattern_monhoc = Pattern.compile(Pattern.quote(keyword_monhoc), Pattern.CASE_INSENSITIVE);
+            TopicDTO selected_monhoc = tpBUS.findOneTitle(cbb_monhoc_monhoc.getSelectedItem().toString());
             for (TopicDTO topic : topics) {
                 Matcher matcher_monhoc = pattern_monhoc.matcher(topic.getTpTitle());
-                // Kiểm tra nếu môn học khớp và chủ đề là con của môn học đó
-                if (matcher_monhoc.find()) 
+                if (matcher_monhoc.find() || topic.getTpParent() == selected_monhoc.getTpID()) 
                     list.add(topic);
             }
         }
@@ -333,9 +368,9 @@ model.addRow(new Object[]{
 
         jButton7.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton7.setIcon(new FlatSVGIcon("icons/detail.svg", 30, 30)
+        jButton7.setIcon(new FlatSVGIcon("icons/reset.svg", 30, 30)
         );
-        jButton7.setText("Chi tiết");
+        jButton7.setText("Cập  nhật");
         jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -422,7 +457,7 @@ model.addRow(new Object[]{
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        loadDataSubjectTable(findSubject());
+        loadDataSubjectTable((ArrayList<TopicDTO>) findSubject());
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
