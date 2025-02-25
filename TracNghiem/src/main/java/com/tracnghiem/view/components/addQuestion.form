@@ -131,6 +131,9 @@
               <Color id="Hand Cursor"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nhap_excelActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="nhap_excel.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
           </AuxValues>

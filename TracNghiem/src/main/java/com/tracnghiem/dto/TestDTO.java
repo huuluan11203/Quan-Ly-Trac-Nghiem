@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class TestDTO {
     private int testID;
     private String testCode;
-    private String testTitle;
+    private String testTittle;
     private int testTime;
     private int tpID;
     private int numEasy;
@@ -26,7 +26,7 @@ public class TestDTO {
 
     public TestDTO(String testCode, String testTitle, int testTime, int tpID, int numEasy, int numMedium, int numDifficult, int testLimit, LocalDate testDate, int testStatus) {
         this.testCode = testCode;
-        this.testTitle = testTitle;
+        this.testTittle = testTitle;
         this.testTime = testTime;
         this.tpID = tpID;
         this.numEasy = numEasy;
@@ -43,7 +43,7 @@ public class TestDTO {
     public TestDTO(int testID, String testCode, String testTitle, int testTime, int tpID, int numEasy, int numMedium, int numDifficult, int testLimit, LocalDate testDate, int testStatus) {
         this.testID = testID;
         this.testCode = testCode;
-        this.testTitle = testTitle;
+        this.testTittle = testTitle;
         this.testTime = testTime;
         this.tpID = tpID;
         this.numEasy = numEasy;
@@ -56,7 +56,7 @@ public class TestDTO {
 
     @Override
     public String toString() {
-        return "TestDTO{" + "testID=" + testID + ", testCode=" + testCode + ", testTitle=" + testTitle + ", testTime=" + testTime + ", tpID=" + tpID + ", numEasy=" + numEasy + ", numMedium=" + numMedium + ", numDifficult=" + numDifficult + ", testLimit=" + testLimit + ", testDate=" + testDate + ", testStatus=" + testStatus + '}';
+        return "TestDTO{" + "testID=" + testID + ", testCode=" + testCode + ", testTitle=" + testTittle + ", testTime=" + testTime + ", tpID=" + tpID + ", numEasy=" + numEasy + ", numMedium=" + numMedium + ", numDifficult=" + numDifficult + ", testLimit=" + testLimit + ", testDate=" + testDate + ", testStatus=" + testStatus + '}';
     }
 
     public int getTestID() {
@@ -76,11 +76,11 @@ public class TestDTO {
     }
 
     public String getTestTitle() {
-        return testTitle;
+        return testTittle;
     }
 
     public void setTestTitle(String testTitle) {
-        this.testTitle = testTitle;
+        this.testTittle = testTitle;
     }
 
     public int getTestTime() {

@@ -13,6 +13,7 @@ import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TopicDTO;
 import com.tracnghiem.utils.UploadUtil;
+import java.awt.BorderLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +27,18 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.Iterator;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -46,14 +54,14 @@ public class addQuestion extends javax.swing.JPanel {
     private final Map<String, Integer> topicMapChildren = new LinkedHashMap<>();
     private final Map<String, Integer> topicMapChildren1 = new LinkedHashMap<>();
     private int tIDSelected = -1;
-    private int  newQID = -1;
+    private int newQID = -1;
     private final ArrayList<File> listImg = new ArrayList<>();
     private final ArrayList<JTextArea> listTextArea = new ArrayList<>();
     private final ArrayList<JRadioButton> listRBTn = new ArrayList<>();
     private final ArrayList<JLabel> listLabel = new ArrayList<>();
     private QuestionDTO q;
     private ArrayList<AnswerDTO> listA = new ArrayList<>();
-    
+
     /**
      * Creates new form addQuestion
      */
@@ -61,26 +69,24 @@ public class addQuestion extends javax.swing.JPanel {
         initComponents();
         ButtonGroup group = new ButtonGroup();
         selectedButton(group);
-        
+
         listTextArea.add(dapanA);
         listTextArea.add(dapanB);
         listTextArea.add(dapanC);
         listTextArea.add(dapanD);
         listTextArea.add(dapanE);
-        
+
         listRBTn.add(rbtnA);
         listRBTn.add(rbtnB);
         listRBTn.add(rbtnC);
         listRBTn.add(rbtnD);
         listRBTn.add(rbtnE);
-        
+
         listLabel.add(hinhA);
         listLabel.add(hinhB);
         listLabel.add(hinhC);
         listLabel.add(hinhD);
         listLabel.add(hinhE);
-        
-        
 
         loadTpParent(tBUS.getAllParent());
         newQID = qBUS.getMaxID() + 1;
@@ -176,6 +182,11 @@ public class addQuestion extends javax.swing.JPanel {
         );
         nhap_excel.setText("Nhập từ Excel");
         nhap_excel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        nhap_excel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nhap_excelActionPerformed(evt);
+            }
+        });
 
         monhocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách môn học");
         monhocCBB.setToolTipText("");
@@ -704,10 +715,12 @@ public class addQuestion extends javax.swing.JPanel {
         topicMapChildren1.clear();
         topicMapChildren1.put("--None--", -1);
 
-        ArrayList<TopicDTO> list = tBUS.getChildTopics(idParent);
+        if (idParent != -1) {
+            ArrayList<TopicDTO> list = tBUS.getChildTopics(idParent);
 
-        for (TopicDTO t : list) {
-            topicMapChildren1.put(t.getTpTitle(), t.getTpID());
+            for (TopicDTO t : list) {
+                topicMapChildren1.put(t.getTpTitle(), t.getTpID());
+            }
         }
 
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -721,10 +734,12 @@ public class addQuestion extends javax.swing.JPanel {
         topicMapChildren.clear();
         topicMapChildren.put("--None--", -1);
 
-        ArrayList<TopicDTO> list = tBUS.getChildTopics(idParent);
+        if (idParent != -1) {
+            ArrayList<TopicDTO> list = tBUS.getChildTopics(idParent);
 
-        for (TopicDTO t : list) {
-            topicMapChildren.put(t.getTpTitle(), t.getTpID());
+            for (TopicDTO t : list) {
+                topicMapChildren.put(t.getTpTitle(), t.getTpID());
+            }
         }
 
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -772,7 +787,6 @@ public class addQuestion extends javax.swing.JPanel {
             String fileName = selectedFile.getName(); // Lấy tên file
             String filePath = selectedFile.getAbsolutePath(); // Lấy đường dẫn đầy đủ của ảnh
 
-            
             for (File file : listImg) {
                 if (file.getName().equals(fileName)) {
                     JOptionPane.showMessageDialog(null, "Chọn trùng tên hình!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -855,12 +869,13 @@ public class addQuestion extends javax.swing.JPanel {
         String selectedTopic = (String) monhocCBB.getSelectedItem();
         Integer selectedID = topicMapParent.get(selectedTopic);
         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null || selectedID == -1) {
+        if (selectedID == null) {
             return;
         }
         tIDSelected = selectedID;
         loadTpChild(selectedID);
         chudeCBB.setSelectedIndex(0);
+        baihocCBB.setSelectedIndex(0);
     }//GEN-LAST:event_monhocCBBActionPerformed
 
     private void chudeCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chudeCBBActionPerformed
@@ -868,7 +883,7 @@ public class addQuestion extends javax.swing.JPanel {
         String selectedTopic = (String) chudeCBB.getSelectedItem();
         Integer selectedID = topicMapChildren.get(selectedTopic);
         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null || selectedID == -1) {
+        if (selectedID == null) {
             return;
         }
         tIDSelected = selectedID;
@@ -880,26 +895,28 @@ public class addQuestion extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn môn học/chủ đề/bài học!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+
         if (cbbLevel.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn mức độ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+
         if (noidung.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập nội dung câu hỏi!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+
         int d = 0;
         for (JTextArea t : listTextArea) {
-            if (!t.getText().isEmpty()) d++;
+            if (!t.getText().isEmpty()) {
+                d++;
+            }
         }
         if (d < 2) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập ít nhất 2 đáp án!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return false ;
+            return false;
         }
-        
+
         boolean check = false;
         for (JRadioButton rb : listRBTn) {
             if (rb.isSelected()) {
@@ -911,44 +928,44 @@ public class addQuestion extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 đáp án đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-       return true;
+        return true;
     }
+
     private void buildDataQuestion() {
-        
-        
+
         //Question        
         int newQTopicID = tIDSelected;
         String newQContent = noidung.getText();
         String newQPicture = tenhinh.getText();
-        String newQLevel = (String)cbbLevel.getSelectedItem();
+        String newQLevel = (String) cbbLevel.getSelectedItem();
         int newQStatus = 1;
-        
+
         q = new QuestionDTO(newQContent, newQPicture, newQTopicID, newQLevel, newQStatus);
-        
+
         //Answer
-        String newAwContent ;
-        String newAwPicture ;
-        boolean newAwIsRight ;
+        String newAwContent;
+        String newAwPicture;
+        boolean newAwIsRight;
         int newAwStatus = 1;
-        
+
         for (int i = 0; i < listTextArea.size(); i++) {
             if (!listTextArea.get(i).getText().isEmpty()) {
                 newAwContent = listTextArea.get(i).getText();
                 newAwPicture = listLabel.get(i).getText();
-                
+
                 if (newAwPicture.equals("NULL") || newAwPicture.equals("Chưa chọn ảnh")) {
                     newAwPicture = "";
                 }
-                
+
                 newAwIsRight = listRBTn.get(i).isSelected();
-                
+
                 AnswerDTO a = new AnswerDTO(newQID, newAwContent, newAwPicture, newAwIsRight, newAwStatus);
                 listA.add(a);
             }
         }
-        
+
     }
-    
+
     private void loadPrevByNameImg(JLabel jblNameImg) {
         String nameImg = jblNameImg.getText();
         if (nameImg.isEmpty() || nameImg.equals("NULL") || nameImg.equals("Chưa chọn ảnh")) {
@@ -1006,11 +1023,70 @@ public class addQuestion extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_hinhEMouseClicked
 
+    public void importFromExcel(File file) {
+        try (FileInputStream fis = new FileInputStream(file); Workbook workbook = new XSSFWorkbook(fis)) {
+
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            HashMap<String, ArrayList<AnswerDTO>> answerMap = new HashMap<>();
+            ArrayList<QuestionDTO> questionList = new ArrayList<>();
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                if (row.getRowNum() == 0) {
+                    continue; // Bỏ qua tiêu đề
+                }
+                try {
+                    // Đọc dữ liệu câu hỏi
+                    String eqContent = row.getCell(0).getStringCellValue().trim();
+                    String eqPictures = row.getCell(1).getStringCellValue().trim();
+                    int eqTopic = (int) row.getCell(2).getNumericCellValue();
+                    String eqLevel = row.getCell(3).getStringCellValue().trim();
+                    int eqStatus = (int) row.getCell(4).getNumericCellValue();
+
+                    // Đọc dữ liệu đáp án
+                    String awContent = row.getCell(5).getStringCellValue().trim();
+                    String awPicture = row.getCell(6).getStringCellValue().trim();
+                    boolean isRight = row.getCell(7).getBooleanCellValue();
+                    int awStatus = (int) row.getCell(8).getNumericCellValue();
+
+                    boolean isNewQuestion = !answerMap.containsKey(eqContent);
+
+                    if (isNewQuestion) {
+                        // Chỉ tăng newQID khi gặp câu hỏi mới (bỏ qua lần đầu tiên)
+                        if (!questionList.isEmpty()) {
+                            newQID++;
+                        }
+
+                        // Tạo câu hỏi mới và thêm vào danh sách
+                        QuestionDTO question = new QuestionDTO(newQID, eqContent, eqPictures, eqTopic, eqLevel, eqStatus);
+                        questionList.add(question);
+                    }
+                    // Luôn thêm đáp án vào câu hỏi tương ứng
+                    AnswerDTO answer = new AnswerDTO(newQID, awContent, awPicture, isRight, awStatus);
+                    answerMap.putIfAbsent(eqContent, new ArrayList<>());
+                    answerMap.get(eqContent).add(answer);
+
+                } catch (Exception e) {
+                    System.err.println("Lỗi tại dòng " + row.getRowNum() + ": " + e.getMessage());
+                }
+
+            }
+
+            showCustomDialog(null, new previewAddQuestion(questionList, answerMap), "Xem trước");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi đọc file Excel!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
         int confirm = JOptionPane.showConfirmDialog(
-            null, "Bạn có muốn lưu dữ liệu không?", "Xác nhận lưu",
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
+                null, "Bạn có muốn lưu dữ liệu không?", "Xác nhận lưu",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -1040,8 +1116,40 @@ public class addQuestion extends javax.swing.JPanel {
             }
 
             JOptionPane.showMessageDialog(null, "Lưu câu hỏi và đáp án thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            // Đóng dialog sau khi lưu thành công
+            java.awt.Window window = SwingUtilities.getWindowAncestor(this);
+            if (window instanceof JDialog) {
+                ((JDialog) window).dispose();
+            }
         }
     }//GEN-LAST:event_luuActionPerformed
+
+    private void nhap_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nhap_excelActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            importFromExcel(file);
+            
+
+        }
+    }//GEN-LAST:event_nhap_excelActionPerformed
+
+    private static void showCustomDialog(JFrame parent, JPanel panel, String title) {
+        JDialog dialog = new JDialog(parent, title, true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Thêm panel vào dialog
+        dialog.setLayout(new BorderLayout());
+        dialog.add(panel, BorderLayout.CENTER);
+
+        // Định kích thước dialog
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
+        dialog.setVisible(true);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

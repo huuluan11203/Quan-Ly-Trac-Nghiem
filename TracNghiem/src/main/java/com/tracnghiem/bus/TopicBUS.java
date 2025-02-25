@@ -138,7 +138,7 @@ public class TopicBUS {
         for (TopicDTO topic : this.listTp) {
             if (topic.getTpParent() == parentID) {
                 result.add(topic);
-                result.addAll(getAllChildTopics(topic.getTpID())); // Gọi đệ quy để tìm con của con
+                result.addAll(getAllChildTopics(topic.getTpID())); // Gọi đệ quy
             }
         }
 

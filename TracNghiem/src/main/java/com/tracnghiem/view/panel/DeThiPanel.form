@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jPanel7" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jPanel8" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel8" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="jPanel7">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jPanel7.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #ffffff&quot;);"/>
+      </AuxValues>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jTextField5" min="-2" pref="441" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tim_btn1" min="-2" pref="84" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jLabel22" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jDateChooser1" min="-2" pref="153" max="-2" attributes="0"/>
+                  <EmptySpace pref="332" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jDateChooser1" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel22" min="-2" pref="28" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="tim_btn1" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="jTextField5" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace pref="34" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel22">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="15" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="jTextField5">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextField5.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Nh&#x1ead;p . . . . . . . . . . . . . . . . . . .&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="tim_btn1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FlatSVGIcon(&quot;icons/search.svg&quot;, 25, 25)&#xa;    " type="code"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#xec;m"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tim_btn1ActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tim_btn1.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #0bae1d; foreground: #ffffff;&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jDateChooser1.setDateFormatString(&quot;dd/MM/yyyy&quot;);&#xa;jDateChooser1.getDateEditor().setEnabled(false);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jDateChooser1.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10;&quot;);"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel8">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jPanel8.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #ffffff&quot;);"/>
+      </AuxValues>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jButton15" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jButton14" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jButton13" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Component id="jScrollPane5" alignment="0" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButton13" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton14" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton15" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane5" pref="581" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="jButton13">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FlatSVGIcon(&quot;icons/add.svg&quot;, 30, 30)&#xa;    " type="code"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#x1ea1;o m&#x1edb;i"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton13ActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton13.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton14">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FlatSVGIcon(&quot;icons/detail.svg&quot;, 30, 30)&#xa;    " type="code"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Chi ti&#x1ebf;t"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton14.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton15">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FlatSVGIcon(&quot;icons/delete.svg&quot;, 30, 30)&#xa;    " type="code"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton15ActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton15.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #ee2020; foreground: #ffffff;&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTable" name="jTable4">
+              <Properties>
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {},&#xa;    new String [] {&#xa;        &quot;ID&quot;, &quot;M&#xe3; &#x111;&#x1ec1; thi&quot;, &quot;Ti&#xea;u &#x111;&#x1ec1;&quot;, &quot;Ch&#x1ee7; &#x111;&#x1ec1;&quot;, &quot;Ng&#xe0;y thi&quot;, &quot;Gi&#x1edd; l&#xe0;m( ph&#xfa;t)&quot;,&quot;L&#x1b0;&#x1ee3;t&quot;, &quot;SL d&#x1ec5;&quot;, &quot;SL trung&quot;, &quot;SL kh&#xf3;&quot;&#xa;    }&#xa;&#xa;) {&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false, false, false, false, false, false, false, false,false&#xa;    };&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;}" type="code"/>
+                </Property>
+                <Property name="cellSelectionEnabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="true" type="code"/>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="SwingUtilities.invokeLater(() -&gt; setColumnWidthsForTableTest());&#xa;jTable4.setRowSelectionAllowed(true);&#xa;jTable4.setColumnSelectionAllowed(false);&#xa;jTable4.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

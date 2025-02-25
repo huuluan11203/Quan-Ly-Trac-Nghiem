@@ -47,6 +47,9 @@ public class detailQuestion extends javax.swing.JPanel {
     private final ArrayList<JRadioButton> listRBtn = new ArrayList<>();
     private final ArrayList<JLabel> listLabel = new ArrayList<>();
     private final ArrayList<JPanel> listPanel = new ArrayList<>();
+    
+    private QuestionDTO question;
+    private ArrayList<AnswerDTO> listAnswer = new ArrayList<>();
     /**
      * Creates new form addQuestion
      */
@@ -93,7 +96,45 @@ public class detailQuestion extends javax.swing.JPanel {
         
         
     }
-    
+     public detailQuestion(QuestionDTO question, ArrayList<AnswerDTO> listAnswer) {
+        this.question = question;
+        this.listAnswer = listAnswer;
+        
+        initComponents();
+//        ButtonGroup group = new ButtonGroup();
+//        selectedButton(group);
+        
+        listTextArea.add(dapanA);
+        listTextArea.add(dapanB);
+        listTextArea.add(dapanC);
+        listTextArea.add(dapanD);
+        listTextArea.add(dapanE);
+        
+        listLabel.add(hinhA);
+        listLabel.add(hinhB);
+        listLabel.add(hinhC);
+        listLabel.add(hinhD);
+        listLabel.add(hinhE);
+        
+        listRBtn.add(jRadioButton1);
+        listRBtn.add(jRadioButton2);
+        listRBtn.add(jRadioButton3);
+        listRBtn.add(jRadioButton4);
+        listRBtn.add(jRadioButton5);
+        
+        listPanel.add(panelA);
+        listPanel.add(panelB);
+        listPanel.add(panelC);
+        listPanel.add(panelD);
+        listPanel.add(panelE);
+        
+        
+        
+        loadDetailQuestion1();
+        
+        
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -585,10 +626,50 @@ public class detailQuestion extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
+    private void loadDetailQuestion1() {
+        QuestionDTO q =  question;
+        
+//        TopicDTO tp = tBUS.findOne(question.getQTopic());
+        
+        ArrayList<AnswerDTO> listA = listAnswer;
+
+        ArrayList<TopicDTO> listTp = tBUS.getAllParentTopics(q.getQTopic());
+        
+        if (listTp.size() == 3) {
+            monhocCBB.addItem(listTp.get(2).getTpTitle());
+            chudeCBB.addItem(listTp.get(1).getTpTitle());
+            baihocCBB.addItem(listTp.get(0).getTpTitle());
+        }
+        else if (listTp.size() == 2) {
+            monhocCBB.addItem(listTp.get(1).getTpTitle());
+            chudeCBB.addItem(listTp.get(0).getTpTitle());
+        }
+        else monhocCBB.addItem(listTp.get(0).getTpTitle());
+        
+        macauhoi.setText(q.getQID()+"");
+        baihocCBB2.addItem(q.getQLevel());
+        tenhinh.setText(q.getQPictures());
+        noidung.setText(q.getQContent());
+        
+        
+        for (int i = 0; i < listA.size(); i++) {
+            listTextArea.get(i).setText(listA.get(i).getAwContent());
+            listRBtn.get(i).setSelected(listA.get(i).isIsRight());
+            if (listA.get(i).isIsRight()) {
+                List<JPanel> panels = Arrays.asList(panelA, panelB, panelC, panelD, panelE);
+                resetPanelColors(panels);  // Đặt lại màu tất cả panel trước khi đổi màu
+                listPanel.get(i).putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #aaf697;");
+            }
+            listLabel.get(i).setText(listA.get(i).getAwPicture());
+        }
+        
+    }
+    
+    
     private void loadDetailQuestion() {
         QuestionDTO q =  qBUS.findOne(qID);
         
-        TopicDTO tp = tBUS.findOne(q.getQTopic());
+//        TopicDTO tp = tBUS.findOne(q.getQTopic());
         
         ArrayList<AnswerDTO> listA = aBUS.getByQuesID(qID);
 

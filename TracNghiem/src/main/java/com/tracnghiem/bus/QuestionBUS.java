@@ -67,7 +67,7 @@ public class QuestionBUS {
         switch (type) {
             case "Tất cả" -> {
                 for (QuestionDTO i : this.listQ) {
-                    if (i.getQContent().toLowerCase().contains(key) || i.getQLevel().toLowerCase().contains(key)) {
+                    if (i.getQContent().toLowerCase().contains(key) || i.getQLevel().toLowerCase().contains(key) || String.valueOf(i.getQID()).equals(key)) {
                         result.add(i);
                     }
                 }

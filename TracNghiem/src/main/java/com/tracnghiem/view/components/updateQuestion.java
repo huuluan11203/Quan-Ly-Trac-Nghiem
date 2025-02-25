@@ -28,9 +28,11 @@ import javax.swing.JRadioButton;
 import java.io.File;
 import java.net.URL;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -1153,6 +1155,10 @@ public class updateQuestion extends javax.swing.JPanel {
             }
 
             JOptionPane.showMessageDialog(null, "Lưu câu hỏi và đáp án thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            java.awt.Window window = SwingUtilities.getWindowAncestor(this);
+                if (window instanceof JDialog) {
+                    ((JDialog) window).dispose();
+            }
         }
     }//GEN-LAST:event_luuActionPerformed
 

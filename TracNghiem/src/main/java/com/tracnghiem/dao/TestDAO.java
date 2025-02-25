@@ -18,7 +18,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
     }
      @Override
     public boolean insert(TestDTO test) {
-        String sql = "INSERT INTO tests(testCode, testTitle, testTime, tpID, numEasy, numMedium, numDifficult, testLimit, testDate, testStatus) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO test(testCode, testTittle, testTime, tpID, num_easy, num_medium, num_diff, testLimit, testDate, testStatus) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, test.getTestCode());
@@ -40,7 +40,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
 
     @Override
     public boolean update(TestDTO test) {
-        String sql = "UPDATE tests SET testCode=?, testTitle=?, testTime=?, tpID=?, numEasy=?, numMedium=?, numDifficult=?, testLimit=?, testDate=?, testStatus=? WHERE testID=?";
+        String sql = "UPDATE test SET testCode=?, testTittle=?, testTime=?, tpID=?, num_easy=?, num_medium=?, num_diff=?, testLimit=?, testDate=?, testStatus=? WHERE testID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, test.getTestCode());
@@ -64,7 +64,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
     @Override
     public ArrayList<TestDTO> selectAll() {
         ArrayList<TestDTO> tests = new ArrayList<>();
-        String sql = "SELECT * FROM tests WHERE testStatus=1";
+        String sql = "SELECT * FROM test WHERE testStatus=1";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -72,12 +72,12 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
                 tests.add(new TestDTO(
                     rs.getInt("testID"),
                     rs.getString("testCode"),
-                    rs.getString("testTitle"),
+                    rs.getString("testTittle"),
                     rs.getInt("testTime"),
                     rs.getInt("tpID"),
-                    rs.getInt("numEasy"),
-                    rs.getInt("numMedium"),
-                    rs.getInt("numDifficult"),
+                    rs.getInt("num_easy"),
+                    rs.getInt("num_medium"),
+                    rs.getInt("num_diff"),
                     rs.getInt("testLimit"),
                     rs.getDate("testDate").toLocalDate(),
                     rs.getInt("testStatus")
@@ -92,7 +92,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
     @Override
     public TestDTO selectByID(String id) {
         TestDTO test = null;
-        String sql = "SELECT * FROM tests WHERE testID=? AND testStatus=1";
+        String sql = "SELECT * FROM test WHERE testID=? AND testStatus=1";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, Integer.parseInt(id));
@@ -101,12 +101,12 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
                     test = new TestDTO(
                         rs.getInt("testID"),
                         rs.getString("testCode"),
-                        rs.getString("testTitle"),
+                        rs.getString("testTittle"),
                         rs.getInt("testTime"),
                         rs.getInt("tpID"),
-                        rs.getInt("numEasy"),
-                        rs.getInt("numMedium"),
-                        rs.getInt("numDifficult"),
+                        rs.getInt("num_easy"),
+                        rs.getInt("num_medium"),
+                        rs.getInt("num_diff"),
                         rs.getInt("testLimit"),
                         rs.getDate("testDate").toLocalDate(),
                         rs.getInt("testStatus")
@@ -121,7 +121,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
 
     @Override
     public boolean delete(String id) {
-        String sql = "UPDATE tests SET testStatus=0 WHERE testID=?";
+        String sql = "UPDATE test SET testStatus=0 WHERE testID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, Integer.parseInt(id));
@@ -130,6 +130,20 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
             ex.printStackTrace();
         }
         return false;
+    }
+    public int getMaxID() {
+        String sql = "SELECT MAX(testID) FROM test";
+        try (Connection conn = JDBCUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {  // Dùng executeQuery() thay vì executeUpdate()
+
+            if (rs.next()) {
+                return rs.getInt(1); // Lấy giá trị MAX(qID)
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return -1; // Trả về -1 nếu có lỗi hoặc không có dữ liệu
     }
 }
 
