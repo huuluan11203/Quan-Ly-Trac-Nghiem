@@ -31,7 +31,7 @@ public class TopicBUS {
         return result;
     }
     public ArrayList<TopicDTO> getAll() {
-        return this.listTp;
+        return tpDAO.selectAll();
     }
     public ArrayList<TopicDTO> getAllParentTopics(int id) {
         ArrayList<TopicDTO> result = new ArrayList<>();
@@ -59,6 +59,24 @@ public class TopicBUS {
     public TopicDTO findOne(int id) {
         return tpDAO.selectByID(id+"");
     }
+    
+    public TopicDTO findOneTitle(String title){
+        for (TopicDTO t : listTp) {
+            if (t.getTpTitle().equals(title)) {
+                return t;
+            }
+        }
+        return null;
+    }
+    
+     public boolean isExist(String tenmonhoc){
+        for(TopicDTO tpDTO : listTp)
+            if(tpDTO.getTpTitle().equalsIgnoreCase(tenmonhoc))
+                return true;
+        return false;
+        
+    }
+    
     
     public int getIndex(TopicDTO tp) {
         for (int i = 0; i < this.listTp.size(); i++) {

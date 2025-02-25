@@ -6,20 +6,70 @@ package com.tracnghiem.view.components;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.TopicDTO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /**
  *
  * @author huulu
  */
 public class addSubject extends javax.swing.JPanel {
+    private final TopicBUS tpBUS = new TopicBUS();
 
     /**
      * Creates new form addSubject
      */
     public addSubject(TopicDTO topic, boolean update) {
         initComponents();
+        
+        reloadParentIDComboBox();
     }
-
+     private void addContentSubject(){
+         String tenmonhoc = txt_tenmonhoc.getText();
+//        if (tenmonhoc.isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Tên môn học không được để trống!");
+//            return;
+//        }
+//        if (tpBUS.isExist(tenmonhoc)){
+//            JOptionPane.showMessageDialog(this, "Môn học đã tồn tại");
+//            return;
+//        }
+        int parentID = -1;
+        int statusID;
+        if (cbb_parentID.getSelectedIndex() != 0){
+            String parentTitle = cbb_parentID.getSelectedItem() != null ? cbb_parentID.getSelectedItem().toString() : "";
+            TopicDTO parentTopic = tpBUS.findOneTitle(parentTitle);
+            if (parentTopic != null)
+                parentID = parentTopic.getTpID();
+        }
+        if (cbb_trangthai.getSelectedItem().toString().equalsIgnoreCase("Hoạt động")){
+            statusID = 1;
+        } else{
+            statusID = 0;
+        }
+        TopicDTO tpDTO = new TopicDTO(tenmonhoc, parentID, statusID);
+        boolean result = tpBUS.add(tpDTO);
+        if (result) {
+            JOptionPane.showMessageDialog(this, "Thêm môn học thành công!");
+            reloadParentIDComboBox();
+            txt_tenmonhoc.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Thêm môn học thất bại!");
+        }
+        return;
+    } 
+      private void reloadParentIDComboBox(){
+         cbb_parentID.setEditable(false);
+        cbb_parentID.removeAllItems();
+        cbb_parentID.addItem("Chọn môn học/Chủ đề chính");
+        ArrayList<TopicDTO> topics = tpBUS.getAll();
+        for(TopicDTO topic : topics)
+            if(topic.getTpStatus() != 0)
+                    cbb_parentID.addItem(""+topic.getTpTitle());
+    }
+     
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,11 +84,11 @@ public class addSubject extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_tenmonhoc = new javax.swing.JTextField();
         luu = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        baihocCBB = new javax.swing.JComboBox<>();
-        parentID = new javax.swing.JComboBox<>();
+        cbb_trangthai = new javax.swing.JComboBox<>();
+        cbb_parentID = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
@@ -53,8 +103,8 @@ public class addSubject extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("Chọn môn học / chủ đề chính:");
 
-        jTextField1.putClientProperty(FlatClientProperties.STYLE, "arc: 10; ");
-        jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nhập tên môn học hoặc chủ đề");
+        txt_tenmonhoc.putClientProperty(FlatClientProperties.STYLE, "arc: 10; ");
+        txt_tenmonhoc.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nhập tên môn học hoặc chủ đề");
 
         luu.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
         luu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -62,19 +112,24 @@ public class addSubject extends javax.swing.JPanel {
         );
         luu.setText("Lưu");
         luu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        baihocCBB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hoạt động", "Tạm dừng" }));
-        baihocCBB.addActionListener(new java.awt.event.ActionListener() {
+        luu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                baihocCBBActionPerformed(evt);
+                luuActionPerformed(evt);
             }
         });
 
-        parentID.setEditable(true);
-        parentID.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Danh sách môn học" );
-        parentID.addActionListener(new java.awt.event.ActionListener() {
+        cbb_trangthai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hoạt động", "Tạm dừng" }));
+        cbb_trangthai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                parentIDActionPerformed(evt);
+                cbb_trangthaiActionPerformed(evt);
+            }
+        });
+
+        cbb_parentID.setEditable(true);
+        cbb_parentID.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Danh sách môn học" );
+        cbb_parentID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbb_parentIDActionPerformed(evt);
             }
         });
 
@@ -91,15 +146,15 @@ public class addSubject extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
+                    .addComponent(txt_tenmonhoc)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
                         .addComponent(luu))
-                    .addComponent(parentID, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(baihocCBB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbb_parentID, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbb_trangthai, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -120,17 +175,17 @@ public class addSubject extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_tenmonhoc, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(parentID, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbb_parentID, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(baihocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbb_trangthai, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(59, Short.MAX_VALUE))
         );
 
@@ -161,17 +216,37 @@ public class addSubject extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void baihocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baihocCBBActionPerformed
+    private void cbb_trangthaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_trangthaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_baihocCBBActionPerformed
+    }//GEN-LAST:event_cbb_trangthaiActionPerformed
 
-    private void parentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parentIDActionPerformed
+    private void cbb_parentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_parentIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_parentIDActionPerformed
+    }//GEN-LAST:event_cbb_parentIDActionPerformed
+
+    private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
+        // TODO add your handling code here:
+         String tenmonhoc = txt_tenmonhoc.getText();
+        if (tenmonhoc.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên môn học không được để trống!");
+            return;
+        }
+        if (tpBUS.isExist(tenmonhoc)){
+            JOptionPane.showMessageDialog(this, "Môn học đã tồn tại");
+            return;
+        }
+        if (!tenmonhoc.isEmpty()){
+            int result = JOptionPane.showConfirmDialog(this,"Xác nhận thêm môn học ?","Xác nhận",JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION){
+                addContentSubject();
+            }
+        }
+    }//GEN-LAST:event_luuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> baihocCBB;
+    private javax.swing.JComboBox<String> cbb_parentID;
+    private javax.swing.JComboBox<String> cbb_trangthai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -180,8 +255,7 @@ public class addSubject extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton luu;
-    private javax.swing.JComboBox<String> parentID;
+    private javax.swing.JTextField txt_tenmonhoc;
     // End of variables declaration//GEN-END:variables
 }

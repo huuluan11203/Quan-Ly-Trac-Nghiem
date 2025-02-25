@@ -58,7 +58,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField1" max="32767" attributes="0"/>
+                          <Component id="txt_tenmonhoc" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -66,8 +66,8 @@
                               <EmptySpace pref="402" max="32767" attributes="0"/>
                               <Component id="luu" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="parentID" alignment="1" max="32767" attributes="0"/>
-                          <Component id="baihocCBB" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cbb_parentID" alignment="1" max="32767" attributes="0"/>
+                          <Component id="cbb_trangthai" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -94,17 +94,17 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField1" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="txt_tenmonhoc" min="-2" pref="35" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="parentID" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="cbb_parentID" min="-2" pref="36" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="baihocCBB" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="cbb_trangthai" min="-2" pref="36" max="-2" attributes="0"/>
                       <EmptySpace pref="59" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -135,9 +135,9 @@
                 <Property name="text" type="java.lang.String" value="Ch&#x1ecd;n m&#xf4;n h&#x1ecd;c / ch&#x1ee7; &#x111;&#x1ec1; ch&#xed;nh:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="txt_tenmonhoc">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextField1.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Nh&#x1ead;p t&#xea;n m&#xf4;n h&#x1ecd;c ho&#x1eb7;c ch&#x1ee7; &#x111;&#x1ec1;&quot;);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txt_tenmonhoc.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;txt_tenmonhoc.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Nh&#x1ead;p t&#xea;n m&#xf4;n h&#x1ecd;c ho&#x1eb7;c ch&#x1ee7; &#x111;&#x1ec1;&quot;);"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="luu">
@@ -153,13 +153,16 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="luuActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="luu.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #0bae1d; foreground: #ffffff;&quot;);"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
             </Component>
-            <Component class="javax.swing.JComboBox" name="baihocCBB">
+            <Component class="javax.swing.JComboBox" name="cbb_trangthai">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="2">
@@ -169,21 +172,21 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="baihocCBBActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbb_trangthaiActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JComboBox" name="parentID">
+            <Component class="javax.swing.JComboBox" name="cbb_parentID">
               <Properties>
-                <Property name="editable" type="boolean" value="true" postCode="parentID.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,&quot;Danh s&#xe1;ch m&#xf4;n h&#x1ecd;c&quot; );"/>
+                <Property name="editable" type="boolean" value="true" postCode="cbb_parentID.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,&quot;Danh s&#xe1;ch m&#xf4;n h&#x1ecd;c&quot; );"/>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="0"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="parentIDActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbb_parentIDActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

@@ -17,6 +17,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.JComponent;
 import javax.swing.JSpinner;
+import javax.swing.text.NumberFormatter;
 /**
  *
  * @author huulu
@@ -243,6 +244,13 @@ public class addTest extends javax.swing.JPanel {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
+        // Định dạng lại phần nhập số (loại bỏ dấu phân cách)
+        JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) jSpinner2.getEditor();
+        JFormattedTextField textField1 = editor1.getTextField();
+        NumberFormatter formatter1 = (NumberFormatter) textField1.getFormatter();
+        formatter1.setAllowsInvalid(false);  // Không cho phép nhập ký tự không hợp lệ
+        formatter1.setCommitsOnValidEdit(true); // Tự động cập nhật khi nhập số hợp lệ
+
         jPanel3.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -400,6 +408,12 @@ public class addTest extends javax.swing.JPanel {
                 }
             }
         });
+        // Định dạng lại phần nhập số (loại bỏ dấu phân cách)
+        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner1.getEditor();
+        JFormattedTextField textField = editor.getTextField();
+        NumberFormatter formatter = (NumberFormatter) textField.getFormatter();
+        formatter.setAllowsInvalid(false);  // Không cho phép nhập ký tự không hợp lệ
+        formatter.setCommitsOnValidEdit(true); // Tự động cập nhật khi nhập số hợp lệ
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

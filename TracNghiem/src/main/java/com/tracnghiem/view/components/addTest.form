@@ -354,6 +354,7 @@
         </Component>
         <Component class="javax.swing.JSpinner" name="jSpinner2">
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// &#x110;&#x1ecb;nh d&#x1ea1;ng l&#x1ea1;i ph&#x1ea7;n nh&#x1ead;p s&#x1ed1; (lo&#x1ea1;i b&#x1ecf; d&#x1ea5;u ph&#xe2;n c&#xe1;ch)&#xa;        JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) jSpinner2.getEditor();&#xa;        JFormattedTextField textField1 = editor1.getTextField();&#xa;        NumberFormatter formatter1 = (NumberFormatter) textField1.getFormatter();&#xa;        formatter1.setAllowsInvalid(false);  // Kh&#xf4;ng cho ph&#xe9;p nh&#x1ead;p k&#xfd; t&#x1ef1; kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;        formatter1.setCommitsOnValidEdit(true); // T&#x1ef1; &#x111;&#x1ed9;ng c&#x1ead;p nh&#x1ead;t khi nh&#x1ead;p s&#x1ed1; h&#x1ee3;p l&#x1ec7;"/>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(model1)"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="SpinnerNumberModel model1 = new SpinnerNumberModel(1, 1, 10, 1);"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jSpinner2.putClientProperty(FlatClientProperties.STYLE, &quot;arc :10;&quot;);"/>
@@ -559,6 +560,7 @@
         </Component>
         <Component class="javax.swing.JSpinner" name="jSpinner1">
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// &#x110;&#x1ecb;nh d&#x1ea1;ng l&#x1ea1;i ph&#x1ea7;n nh&#x1ead;p s&#x1ed1; (lo&#x1ea1;i b&#x1ecf; d&#x1ea5;u ph&#xe2;n c&#xe1;ch)&#xa;        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner1.getEditor();&#xa;        JFormattedTextField textField = editor.getTextField();&#xa;        NumberFormatter formatter = (NumberFormatter) textField.getFormatter();&#xa;        formatter.setAllowsInvalid(false);  // Kh&#xf4;ng cho ph&#xe9;p nh&#x1ead;p k&#xfd; t&#x1ef1; kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;        formatter.setCommitsOnValidEdit(true); // T&#x1ef1; &#x111;&#x1ed9;ng c&#x1ead;p nh&#x1ead;t khi nh&#x1ead;p s&#x1ed1; h&#x1ee3;p l&#x1ec7;"/>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(model)"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="SpinnerNumberModel model = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jSpinner1.putClientProperty(FlatClientProperties.STYLE, &quot;arc :10;&quot;);"/>

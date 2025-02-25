@@ -928,6 +928,9 @@ public class addQuestion extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 đáp án đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        
+        //
+        
         return true;
     }
 

@@ -14,10 +14,12 @@ import com.tracnghiem.bus.TestBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.view.components.addTest;
 import java.awt.BorderLayout;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
@@ -169,6 +171,19 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         jDateChooser1.setDateFormatString("dd/MM/yyyy");
         jDateChooser1.getDateEditor().setEnabled(false);
+        // Lấy JTextField từ JDateChooser
+        JTextField dateTextField = ((JTextField) jDateChooser1.getDateEditor().getUiComponent());
+
+        // Áp dụng bo góc cho JTextField bên trong JDateChooser
+        dateTextField.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
+        // Lấy nút chọn ngày (JButton)
+        JButton calendarButton = (JButton) jDateChooser1.getCalendarButton();
+
+        // Tuỳ chỉnh nút chọn ngày
+        calendarButton.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        calendarButton.setIcon(new FlatSVGIcon("icons/calendar.svg", 30, 30));  // Đổi icon thành emoji lịch (hoặc setIcon)
+        calendarButton.setFocusPainted(false);
+        calendarButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jPanel8.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
@@ -276,12 +291,10 @@ public class DeThiPanel extends javax.swing.JPanel {
     private void tim_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tim_btn1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tim_btn1ActionPerformed
-
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
         showCustomDialog(null, new addTest(null, false), "Thêm bài thi");
     }//GEN-LAST:event_jButton13ActionPerformed
-
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton15ActionPerformed
