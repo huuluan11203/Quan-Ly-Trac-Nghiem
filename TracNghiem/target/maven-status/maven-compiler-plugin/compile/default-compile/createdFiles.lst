@@ -36,7 +36,6 @@ com\tracnghiem\view\components\updateQuestion$10.class
 com\tracnghiem\view\panel\CauHoiPanel$9.class
 com\tracnghiem\config\JDBCUtil.class
 com\tracnghiem\dto\QuestionDTO.class
-com\tracnghiem\view\components\addTest$NumericDocumentFilter.class
 com\tracnghiem\view\panel\CauHoiPanel.class
 com\tracnghiem\dto\ResultDTO.class
 com\tracnghiem\view\components\updateQuestion$18.class
@@ -120,7 +119,6 @@ com\tracnghiem\view\panel\DiemPanel.class
 com\tracnghiem\view\panel\CauHoiPanel$6.class
 com\tracnghiem\view\components\previewAddQuestion$2.class
 com\tracnghiem\view\components\updateQuestion$6.class
-com\tracnghiem\view\components\addTest$7.class
 com\tracnghiem\view\components\detailQuestion$7.class
 com\tracnghiem\view\components\addQuestion$15.class
 com\tracnghiem\view\components\updateQuestion$21.class
@@ -139,7 +137,6 @@ com\tracnghiem\view\components\addTest.class
 com\tracnghiem\view\components\addQuestion$6.class
 com\tracnghiem\dao\ResultDAO.class
 com\tracnghiem\view\components\updateQuestion$15.class
-com\tracnghiem\view\components\addTest$6.class
 com\tracnghiem\view\components\detailQuestion$11.class
 com\tracnghiem\view\panel\CauHoiPanel$7.class
 com\tracnghiem\dto\ExamDTO.class

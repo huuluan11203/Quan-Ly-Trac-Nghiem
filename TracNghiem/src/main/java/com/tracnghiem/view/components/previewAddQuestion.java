@@ -86,8 +86,12 @@ public class previewAddQuestion extends javax.swing.JPanel {
             
             
             if (check) {
-                
+                    
                 JOptionPane.showMessageDialog(null, "Import dữ liệu thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                 java.awt.Window window = SwingUtilities.getWindowAncestor(this);
+                if (window instanceof JDialog) {
+                    ((JDialog) window).dispose();
+                }
             }
             else {
                 

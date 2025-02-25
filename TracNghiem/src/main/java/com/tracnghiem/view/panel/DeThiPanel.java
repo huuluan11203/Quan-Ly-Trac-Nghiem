@@ -279,7 +279,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
-        showCustomDialog(null, new addTest(), "Thêm bài thi");
+        showCustomDialog(null, new addTest(null, false), "Thêm bài thi");
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
