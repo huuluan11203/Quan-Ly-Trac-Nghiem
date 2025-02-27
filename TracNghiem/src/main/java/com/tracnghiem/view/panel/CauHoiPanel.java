@@ -554,19 +554,25 @@ public class CauHoiPanel extends javax.swing.JPanel {
 
     private void cbbFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbFActionPerformed
         // TODO add your handling code here:
-
+//        if (isUpdatingComboBox) return;  // Nếu đang cập nhật thì bỏ qua
+//        isUpdatingComboBox = true; // Đánh dấu đang cập nhật combobox khác
         String selectedTopic = (String) cbbF.getSelectedItem();
         Integer selectedID = topicMapParent.get(selectedTopic);
         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null) {
+        if (selectedID == null) {            
+//            isUpdatingComboBox = false; // Xong việc, bỏ cờ
+
             return;
         }
-        loadTableByTopic(idTopicParent, idTopicChild, idTopicChild1);
+//        loadTableByTopic(idTopicParent, idTopicChild, idTopicChild1);
         loadTpChild(selectedID);
         idTopicParent = selectedID;
         idTopicChild = -1;
         idTopicChild1 = -1;
         cbbLevel.setSelectedIndex(0);
+        
+//        isUpdatingComboBox = false; // Xong việc, bỏ cờ
+
     }//GEN-LAST:event_cbbFActionPerformed
 
     private void cbbSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSActionPerformed

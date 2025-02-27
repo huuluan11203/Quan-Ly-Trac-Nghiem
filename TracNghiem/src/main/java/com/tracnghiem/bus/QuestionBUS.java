@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 public class QuestionBUS {
     private final QuestionDAO qDAO = QuestionDAO.getInstance();
-    public ArrayList<QuestionDTO> listQ = new ArrayList<>();
+    public static ArrayList<QuestionDTO> listQ = new ArrayList<>();
     
     public QuestionBUS() {
-        this.listQ = qDAO.selectAll();
+        listQ = qDAO.selectAll();
     }
     
     public ArrayList<QuestionDTO> getAll() {
@@ -32,7 +32,7 @@ public class QuestionBUS {
     
     public int getIndex(QuestionDTO q) {
         for (int i = 0; i < this.listQ.size(); i++) {
-            if (this.listQ.get(i).getQID()== q.getQID()) {
+            if (listQ.get(i).getQID()== q.getQID()) {
                 return i;
             }
         }
@@ -41,21 +41,21 @@ public class QuestionBUS {
 
     public boolean add(QuestionDTO q) {
         if (qDAO.insert(q)) {
-            this.listQ.add(q);
+            listQ.add(q);
             return true;
         }
         return false;
     }
     public boolean delete(QuestionDTO q) {
         if (qDAO.delete(q.getQID()+ "")) {
-            this.listQ.remove(getIndex(q));
+            listQ.remove(getIndex(q));
             return true;
         }
         return false;
     }
     public boolean update(QuestionDTO q) {
         if (qDAO.update(q)) {
-            this.listQ.set(getIndex(q), q);
+            listQ.set(getIndex(q), q);
             return true;
         }
         return false;
@@ -66,21 +66,21 @@ public class QuestionBUS {
 
         switch (type) {
             case "Tất cả" -> {
-                for (QuestionDTO i : this.listQ) {
+                for (QuestionDTO i : listQ) {
                     if (i.getQContent().toLowerCase().contains(key) || i.getQLevel().toLowerCase().contains(key) || String.valueOf(i.getQID()).equals(key)) {
                         result.add(i);
                     }
                 }
             }
             case "Mức độ" -> {
-                for (QuestionDTO i : this.listQ) {
+                for (QuestionDTO i : listQ) {
                     if (i.getQLevel().toLowerCase().contains(key)) {
                         result.add(i);
                     }
                 }
             }
             case "Nội dung" -> {
-                for (QuestionDTO i : this.listQ) {
+                for (QuestionDTO i : listQ) {
                     if (i.getQContent().toLowerCase().contains(key)) {
                         result.add(i);
                     }
@@ -93,13 +93,14 @@ public class QuestionBUS {
     }
     public ArrayList<QuestionDTO> getByTopic(int tpID) {
         ArrayList<QuestionDTO> result = new ArrayList<>();
-        for (QuestionDTO i : this.listQ) {
+        for (QuestionDTO i : listQ) {
             if (i.getQTopic() == tpID)
                 result.add(i);
         }
         return  result;
     }
     public ArrayList<QuestionDTO> getByTopicParent(int tpIDParent) {
+//        listQ = qDAO.selectAll();
         ArrayList<QuestionDTO> result = new ArrayList<>();
         TopicBUS tBUS = new TopicBUS();
         
@@ -110,13 +111,14 @@ public class QuestionBUS {
             topicIds.add(topic.getTpID()); // Giả sử TopicDTO có phương thức getId()
         }
         
-        for (QuestionDTO i : this.listQ) {
+        for (QuestionDTO i : listQ) {
              if (topicIds.contains(i.getQTopic()) || i.getQTopic() == tpIDParent) 
                  result.add(i);
         }
         return  result;
     }
     public ArrayList<QuestionDTO> getByTopicParentAndChild(int tpIDParent ,int tpIDChild) {
+//        listQ = qDAO.selectAll();
         ArrayList<QuestionDTO> result = new ArrayList<>();
         TopicBUS tBUS = new TopicBUS();
         
@@ -128,7 +130,7 @@ public class QuestionBUS {
             topicIds.add(topic.getTpID()); // Giả sử TopicDTO có phương thức getId()
         }
         
-        for (QuestionDTO i : this.listQ) {
+        for (QuestionDTO i : listQ) {
              if (topicIds.contains(i.getQTopic())) 
                  result.add(i);
         }
@@ -136,12 +138,21 @@ public class QuestionBUS {
     }
     public ArrayList<QuestionDTO> getByLevel(String level) {
         ArrayList<QuestionDTO> result = new ArrayList<>();
-        for (QuestionDTO i : this.listQ) {
+        for (QuestionDTO i : listQ) {
             if (i.getQLevel().equalsIgnoreCase(level))
                 result.add(i);
         }
         return  result;
     }
+    public boolean isExist(String q, int tpID) {
+        for (QuestionDTO i : listQ) {
+            if (i.getQContent().equalsIgnoreCase(q) && tpID == i.getQTopic())
+                return true;
+        }
+        return  false;
+    }
+    
+    
     public int getMaxID() {
         return qDAO.getMaxID();
     }

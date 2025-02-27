@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public class AnswerBUS {
 
     private final AnswerDAO aDAO = AnswerDAO.getInstance();
-    public ArrayList<AnswerDTO> listAns = new ArrayList<>();
+    public static ArrayList<AnswerDTO> listAns = new ArrayList<>();
 
     public AnswerBUS() {
-        this.listAns = aDAO.selectAll();
+        listAns = aDAO.selectAll();
     }
 
     public ArrayList<AnswerDTO> getAll() {
@@ -30,8 +30,8 @@ public class AnswerBUS {
     }
 
     public int getIndex(AnswerDTO a) {
-        for (int i = 0; i < this.listAns.size(); i++) {
-            if (this.listAns.get(i).getAwID() == a.getAwID()) {
+        for (int i = 0; i < listAns.size(); i++) {
+            if (listAns.get(i).getAwID() == a.getAwID()) {
                 return i;
             }
         }
@@ -40,7 +40,7 @@ public class AnswerBUS {
 
     public boolean add(AnswerDTO a) {
         if (aDAO.insert(a)) {
-            this.listAns.add(a);
+            listAns.add(a);
             return true;
         }
         return false;
@@ -48,7 +48,7 @@ public class AnswerBUS {
 
     public boolean delete(AnswerDTO a) {
         if (aDAO.delete(a.getAwID() + "")) {
-            this.listAns.remove(getIndex(a));
+            listAns.remove(getIndex(a));
             return true;
         }
         return false;
@@ -56,7 +56,7 @@ public class AnswerBUS {
 
     public boolean update(AnswerDTO a) {
         if (aDAO.update(a)) {
-            this.listAns.set(getIndex(a), a);
+            listAns.set(getIndex(a), a);
             return true;
         }
         return false;
@@ -66,7 +66,7 @@ public class AnswerBUS {
         ArrayList<AnswerDTO> result = new ArrayList<>();
         key = key.toLowerCase();
 
-        for (AnswerDTO i : this.listAns) {
+        for (AnswerDTO i : listAns) {
             if (i.getAwContent().toLowerCase().contains(key)) {
                 result.add(i);
             }
@@ -78,7 +78,7 @@ public class AnswerBUS {
     public ArrayList<AnswerDTO> getByQuesID(int qID) {
         ArrayList<AnswerDTO> result = new ArrayList<>();
 
-        for (AnswerDTO i : this.listAns) {
+        for (AnswerDTO i : listAns) {
             if (i.getQID() == qID) {
                 result.add(i);
             }
@@ -86,6 +86,10 @@ public class AnswerBUS {
 
         return result;
     }
+    
+    
+    
+    
     public int getMaxID() {
         return aDAO.getMaxID();
     }

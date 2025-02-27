@@ -7,6 +7,7 @@ package com.tracnghiem.bus;
 
 import com.tracnghiem.dao.TestDAO;
 import com.tracnghiem.dto.TestDTO;
+import java.time.LocalDate;
 import java.util.ArrayList;
 /**
  *
@@ -14,10 +15,10 @@ import java.util.ArrayList;
  */
 public class TestBUS {
      private final TestDAO testDAO = TestDAO.getInstance();
-    public ArrayList<TestDTO> listTest = new ArrayList<>();
+    public static ArrayList<TestDTO> listTest = new ArrayList<>();
 
     public TestBUS() {
-        this.listTest = testDAO.selectAll();
+        listTest = testDAO.selectAll();
     }
 
     public ArrayList<TestDTO> getAll() {
@@ -30,8 +31,8 @@ public class TestBUS {
     
 
     public int getIndex(TestDTO test) {
-        for (int i = 0; i < this.listTest.size(); i++) {
-            if (this.listTest.get(i).getTestID() == test.getTestID()) {
+        for (int i = 0; i < listTest.size(); i++) {
+            if (listTest.get(i).getTestID() == test.getTestID()) {
                 return i;
             }
         }
@@ -40,7 +41,7 @@ public class TestBUS {
 
     public boolean add(TestDTO test) {
         if (testDAO.insert(test)) {
-            this.listTest.add(test);
+            listTest.add(test);
             return true;
         }
         return false;
@@ -48,7 +49,7 @@ public class TestBUS {
 
     public boolean delete(TestDTO test) {
         if (testDAO.delete(test.getTestID() + "")) {
-            this.listTest.remove(getIndex(test));
+            listTest.remove(getIndex(test));
             return true;
         }
         return false;
@@ -56,25 +57,56 @@ public class TestBUS {
 
     public boolean update(TestDTO test) {
         if (testDAO.update(test)) {
-            this.listTest.set(getIndex(test), test);
+            listTest.set(getIndex(test), test);
             return true;
-        }
+        } 
         return false;
     }
 
-//    public ArrayList<TestDTO> search(String key) {
-//        ArrayList<TestDTO> result = new ArrayList<>();
-//        key = key.toLowerCase();
-//
-//        for (TestDTO test : this.listTest) {
-//            if (test.getTestCode().toLowerCase().contains(key) ||
-//                test.getTestTitle().toLowerCase().contains(key) ||
-//                String.valueOf(test.getTestID()).equals(key)) {
-//                result.add(test);
-//            }
-//        }
-//        return result;
-//    }
+    public ArrayList<TestDTO> search(String key) {
+        ArrayList<TestDTO> result = new ArrayList<>();
+        key = key.toLowerCase();
+        TopicBUS tpBUS = new TopicBUS();
+
+        for (TestDTO test : listTest) {
+            if (test.getTestCode().toLowerCase().contains(key) ||
+                test.getTestTitle().toLowerCase().contains(key) ||
+                String.valueOf(test.getTestID()).equals(key) ||
+                tpBUS.findOne(test.getTpID()).getTpTitle().toLowerCase().contains(key)
+                    ) {
+                result.add(test);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<TestDTO> search(String key, LocalDate date) {
+        ArrayList<TestDTO> result = new ArrayList<>();
+        key = key.toLowerCase();
+        TopicBUS tpBUS = new TopicBUS();
+
+        for (TestDTO test : listTest) {
+            if (test.getTestCode().toLowerCase().contains(key) ||
+                test.getTestTitle().toLowerCase().contains(key) ||
+                String.valueOf(test.getTestID()).equals(key) ||
+                tpBUS.findOne(test.getTpID()).getTpTitle().toLowerCase().contains(key)
+                    ) {
+                result.add(test);
+            }
+        }
+        
+        if (result.isEmpty()) {
+            return result;
+        }
+        
+        for (int i = result.size() - 1; i >= 0; i--) {
+            if (!result.get(i).getTestDate().isEqual(date)) {
+                result.remove(i);
+            }
+        }
+        
+        return result;
+    }
 //
 //    
 

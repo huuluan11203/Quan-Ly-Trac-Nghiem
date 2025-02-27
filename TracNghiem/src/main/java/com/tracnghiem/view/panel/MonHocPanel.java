@@ -38,24 +38,62 @@ public class MonHocPanel extends javax.swing.JPanel {
     
     
     private void loadDataSubjectTable(){
-        ArrayList<TopicDTO> topics = tpBUS.getAll();
-        int stt = 1;
-        
-        
+        TopicBUS tpBUS = new TopicBUS();
+//        DefaultTableModel model = new DefaultTableModel(
+//            new Object[]{"STT","Môn học","Chủ đề","Bài học","Trạng thái"},0)
+//        {
+//        Class[] types = new Class[]{
+//            Integer.class, Object.class, Object.class, Object.class, Object.class
+//        };
+//
+//        boolean[] canEdit = new boolean[]{
+//            false, false, false, false, false  // Không cho phép chỉnh sửa ô nào
+//        };
+//
+//        @Override
+//        public Class<?> getColumnClass(int columnIndex) {
+//            return types[columnIndex];
+//        }
+//
+//        @Override
+//        public boolean isCellEditable(int rowIndex, int columnIndex) {
+//            return false;
+//        }
+//        };
         DefaultTableModel model = (DefaultTableModel) table_monhoc.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
-
-        if (topics.isEmpty()) {
-            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "","", "", ""});
-            return;
+        int stt = 1;
+        for(TopicDTO topic : tpBUS.getAll()){
+            if(topic.getTpParent() == -1){
+                String parent = "";model.addRow(new Object[]{
+                    stt++,
+                    topic.getTpTitle(),
+                    parent,
+                    topic.getTpID(),
+                    topic.getTpStatus()
+                });
+            } else{
+                TopicDTO parent = tpBUS.findOne(topic.getTpParent());
+                if (parent != null) 
+                model.addRow(new Object[]{
+                    stt++,
+                    parent.getTpTitle(),
+                    topic.getTpTitle(),
+                    topic.getTpID(),
+                    topic.getTpStatus()
+                });
+            }
         }
-        for (TopicDTO t : topics) {
-            model.addRow(new Object[]{
-                stt++,
-                t.getTpParent() == 0 ? "" : t.getTpTitle(),"",
-                t.getTpTitle().isEmpty() ? "" : t.getTpTitle()
-            });
-        }
+        table_monhoc.setModel(model);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < table_monhoc.getColumnCount(); i++) 
+            table_monhoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        table_monhoc.revalidate();
+        table_monhoc.repaint();
+        twoClickToShowMessageOfRestore(table_monhoc);
+    
+    
         
         
     }

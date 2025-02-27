@@ -55,7 +55,7 @@ public class QuestionDAO implements InterfaceDAO<QuestionDTO> {
     @Override
     public ArrayList<QuestionDTO> selectAll() {
         ArrayList<QuestionDTO> questions = new ArrayList<>();
-        String sql = "SELECT * FROM questions WHERE qStatus=1";
+        String sql = "SELECT * FROM questions";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -78,7 +78,7 @@ public class QuestionDAO implements InterfaceDAO<QuestionDTO> {
     @Override
     public QuestionDTO selectByID(String id) {
         QuestionDTO question = null;
-        String sql = "SELECT * FROM questions WHERE qID=? AND qStatus=1";
+        String sql = "SELECT * FROM questions WHERE qID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, Integer.parseInt(id));

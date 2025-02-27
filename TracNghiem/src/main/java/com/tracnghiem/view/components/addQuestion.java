@@ -869,7 +869,7 @@ public class addQuestion extends javax.swing.JPanel {
         String selectedTopic = (String) monhocCBB.getSelectedItem();
         Integer selectedID = topicMapParent.get(selectedTopic);
         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null) {
+        if (selectedID == null || selectedID == -1) {
             return;
         }
         tIDSelected = selectedID;
@@ -883,7 +883,7 @@ public class addQuestion extends javax.swing.JPanel {
         String selectedTopic = (String) chudeCBB.getSelectedItem();
         Integer selectedID = topicMapChildren.get(selectedTopic);
         // Kiểm tra nếu selectedID là null thì không làm gì cả
-        if (selectedID == null) {
+        if (selectedID == null || selectedID == -1) {
             return;
         }
         tIDSelected = selectedID;
@@ -930,6 +930,12 @@ public class addQuestion extends javax.swing.JPanel {
         }
         
         //
+        
+        if (qBUS.isExist(noidung.getText().trim(), tIDSelected)) {
+            JOptionPane.showMessageDialog(null, "Nội dung câu hỏi đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
         
         return true;
     }

@@ -14,9 +14,15 @@ import com.tracnghiem.bus.TestBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.view.components.addTest;
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -31,6 +37,9 @@ public class DeThiPanel extends javax.swing.JPanel {
     private final TestBUS tBUS = new TestBUS();
     private final TopicBUS tpBUS = new TopicBUS();
     private ArrayList<TestDTO> listT = new ArrayList<>();
+    private LocalDate dateSelected;
+    private int tIDSelected = -1;
+    
     /**
      * Creates new form DeThiPanel
      */
@@ -38,6 +47,35 @@ public class DeThiPanel extends javax.swing.JPanel {
         initComponents();
         
         listT = tBUS.getAll();
+        
+        
+        jDateChooser1.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("date".equals(evt.getPropertyName())) {
+                    Date selectedDate = jDateChooser1.getDate();
+                    if (selectedDate != null) {
+                        LocalDate localDate = selectedDate.toInstant()
+                                .atZone(ZoneId.systemDefault()) // Chuyển đổi theo múi giờ hệ thống
+                                .toLocalDate();
+                        dateSelected = localDate;    
+                    }
+                    
+                }
+            }
+        });
+
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) { // Kiểm tra click đúp
+                    int row = jTable4.getSelectedRow();
+                    if (row != -1) {
+                        tIDSelected = (int) jTable4.getValueAt(row, 0);
+                    }
+                }
+            }
+        });
         
         
 
@@ -80,6 +118,33 @@ public class DeThiPanel extends javax.swing.JPanel {
         }
     }
     
+    private void handleSearch() {
+        String key = textFieldSearch.getText();
+        
+        if (dateSelected == null) {
+            if (key.trim().isEmpty()) {
+                 JOptionPane.showMessageDialog(null, "Nhập từ khoá để tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
+            loadTable(tBUS.search(key));
+        } else {
+            loadTable(tBUS.search(key, dateSelected));
+        }
+    
+    }
+    
+    private void refresh() {
+        listT = tBUS.getAll();
+        textFieldSearch.setText("");
+        dateSelected = null;
+        jDateChooser1.setDate(null);
+        tIDSelected = -1;
+        
+        
+        
+        loadTable(listT);
+    }
+    
     // DÙNG CHUNG
     public static void showCustomDialog(JFrame parent, JPanel panel, String title) {
         JDialog dialog = new JDialog(parent, title, true);
@@ -106,9 +171,11 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         jPanel7 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        textFieldSearch = new javax.swing.JTextField();
         tim_btn1 = new javax.swing.JButton();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jButton16 = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
@@ -121,9 +188,9 @@ public class DeThiPanel extends javax.swing.JPanel {
         jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel22.setText("Tìm kiếm");
 
-        jTextField5.putClientProperty(FlatClientProperties.STYLE, "arc: 10; ");
-        jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nhập . . . . . . . . . . . . . . . . . . .");
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        textFieldSearch.putClientProperty(FlatClientProperties.STYLE, "arc: 10; ");
+        textFieldSearch.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nhập . . . . . . . . . . . . . . . . . . .");
+        textFieldSearch.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         tim_btn1.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
         tim_btn1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -139,6 +206,23 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         jDateChooser1.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
 
+        jButton16.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        jButton16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton16.setText("X");
+        jButton16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+
+        refreshBtn.setIcon(new FlatSVGIcon("icons/refresh.svg", 30 ,30)) ;
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -147,25 +231,32 @@ public class DeThiPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tim_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(332, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tim_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(textFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -184,6 +275,7 @@ public class DeThiPanel extends javax.swing.JPanel {
         calendarButton.setIcon(new FlatSVGIcon("icons/calendar.svg", 30, 30));  // Đổi icon thành emoji lịch (hoặc setIcon)
         calendarButton.setFocusPainted(false);
         calendarButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        refreshBtn.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
 
         jPanel8.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
@@ -252,7 +344,7 @@ public class DeThiPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton13)
                 .addContainerGap())
-            .addComponent(jScrollPane5)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1040, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,6 +382,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
     private void tim_btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tim_btn1ActionPerformed
         // TODO add your handling code here:
+        handleSearch();
     }//GEN-LAST:event_tim_btn1ActionPerformed
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
@@ -299,18 +392,31 @@ public class DeThiPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton15ActionPerformed
 
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+        jDateChooser1.setDate(null);
+        dateSelected = null;
+    }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        // TODO add your handling code here:
+        refresh();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JTextField textFieldSearch;
     private javax.swing.JButton tim_btn1;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class TopicBUS {
 
     private final TopicDAO tpDAO = TopicDAO.getInstance();
-    public ArrayList<TopicDTO> listTp = new ArrayList<>();
+    public static ArrayList<TopicDTO> listTp = new ArrayList<>();
 
     public TopicBUS() {
         listTp = tpDAO.selectAll();
@@ -30,6 +30,7 @@ public class TopicBUS {
         }
         return result;
     }
+    
     public ArrayList<TopicDTO> getAll() {
         return tpDAO.selectAll();
     }
@@ -79,8 +80,8 @@ public class TopicBUS {
     
     
     public int getIndex(TopicDTO tp) {
-        for (int i = 0; i < this.listTp.size(); i++) {
-            if (this.listTp.get(i).getTpID() == tp.getTpID()) {
+        for (int i = 0; i < listTp.size(); i++) {
+            if (listTp.get(i).getTpID() == tp.getTpID()) {
                 return i;
             }
         }
@@ -89,7 +90,7 @@ public class TopicBUS {
 
     public boolean add(TopicDTO tp) {
         if (tpDAO.insert(tp)) {
-            this.listTp.add(tp);
+            listTp.add(tp);
             return true;
         }
         return false;
@@ -103,14 +104,14 @@ public class TopicBUS {
 
         // Nếu không có topic con thì xóa
         if (tpDAO.delete(tp.getTpID() + "")) {
-            this.listTp.remove(getIndex(tp));
+            listTp.remove(getIndex(tp));
             return true;
         }
         return false;
     }
     public boolean update(TopicDTO tp) {
         if (tpDAO.update(tp)) {
-            this.listTp.set(getIndex(tp), tp);
+            listTp.set(getIndex(tp), tp);
             return true;
         }
         return false;
@@ -120,17 +121,16 @@ public class TopicBUS {
         ArrayList<TopicDTO> result = new ArrayList<>();
         key = key.toLowerCase();
 
-        for (TopicDTO i : this.listTp) {
+        for (TopicDTO i : listTp) {
             if (i.getTpTitle().toLowerCase().contains(key) || (i.getTpID() + "").toLowerCase().contains(key)) {
                 result.add(i);
             }
         }
-
         return result;
     }
     // Hàm kiểm tra topic có topic con không
     private boolean hasChildTopics(int parentID) {
-        for (TopicDTO topic : this.listTp) {
+        for (TopicDTO topic : listTp) {
             if (topic.getTpParent() == parentID) {
                 return true; // Có ít nhất một topic con
             }
@@ -141,7 +141,7 @@ public class TopicBUS {
     public ArrayList<TopicDTO> getChildTopics(int parentID) {
         ArrayList<TopicDTO> childTopics = new ArrayList<>();
 
-        for (TopicDTO topic : this.listTp) {
+        for (TopicDTO topic : listTp) {
             if (topic.getTpParent() == parentID) {
                 childTopics.add(topic);
             }
@@ -153,7 +153,7 @@ public class TopicBUS {
     public ArrayList<TopicDTO> getAllChildTopics(int parentID) {
         ArrayList<TopicDTO> result = new ArrayList<>();
 
-        for (TopicDTO topic : this.listTp) {
+        for (TopicDTO topic : listTp) {
             if (topic.getTpParent() == parentID) {
                 result.add(topic);
                 result.addAll(getAllChildTopics(topic.getTpID())); // Gọi đệ quy
