@@ -11,6 +11,7 @@ import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TopicDTO;
 import com.tracnghiem.view.components.addQuestion;
+import com.tracnghiem.view.components.addSubject;
 import com.tracnghiem.view.components.detailQuestion;
 import com.tracnghiem.view.components.updateQuestion;
 import com.tracnghiem.view.loginView;
@@ -26,6 +27,8 @@ import javax.swing.table.TableColumnModel;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -635,9 +638,21 @@ public class CauHoiPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cbbLevelActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //Open
+        addQuestion panel = new addQuestion(null, false);
 
-        mainView.showCustomDialog(null, new addQuestion(null, false), "Thêm câu hỏi");
+        // Gọi showCustomDialog() và lấy JDialog
+        JDialog dialog = mainView.showCustomDialog(null, panel, "Thêm câu hỏi");
+
+        // Thêm WindowListener để reload dữ liệu khi dialog đóng
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // load table 
+            }
+        });
+
+        // Hiển thị dialog
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

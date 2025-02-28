@@ -8,13 +8,17 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.TopicDTO;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author huulu
  */
 public class addSubject extends javax.swing.JPanel {
+
     private final TopicBUS tpBUS = new TopicBUS();
 
     /**
@@ -22,54 +26,86 @@ public class addSubject extends javax.swing.JPanel {
      */
     public addSubject(TopicDTO topic, boolean update) {
         initComponents();
-        
-        reloadParentIDComboBox();
+        if (update && topic != null) {
+            setTopic(topic);
+        }else{
+            reload();
+        }
+
     }
-     private void addContentSubject(){
-         String tenmonhoc = txt_tenmonhoc.getText();
-//        if (tenmonhoc.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Tên môn học không được để trống!");
-//            return;
-//        }
-//        if (tpBUS.isExist(tenmonhoc)){
-//            JOptionPane.showMessageDialog(this, "Môn học đã tồn tại");
-//            return;
-//        }
-        int parentID = -1;
-        int statusID;
-        if (cbb_parentID.getSelectedIndex() != 0){
-            String parentTitle = cbb_parentID.getSelectedItem() != null ? cbb_parentID.getSelectedItem().toString() : "";
-            TopicDTO parentTopic = tpBUS.findOneTitle(parentTitle);
-            if (parentTopic != null)
-                parentID = parentTopic.getTpID();
-        }
-        if (cbb_trangthai.getSelectedItem().toString().equalsIgnoreCase("Hoạt động")){
-            statusID = 1;
-        } else{
-            statusID = 0;
-        }
-        TopicDTO tpDTO = new TopicDTO(tenmonhoc, parentID, statusID);
-        boolean result = tpBUS.add(tpDTO);
-        if (result) {
-            JOptionPane.showMessageDialog(this, "Thêm môn học thành công!");
-            reloadParentIDComboBox();
-            txt_tenmonhoc.setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Thêm môn học thất bại!");
-        }
-        return;
-    } 
-      private void reloadParentIDComboBox(){
-         cbb_parentID.setEditable(false);
-        cbb_parentID.removeAllItems();
-        cbb_parentID.addItem("Chọn môn học/Chủ đề chính");
-        ArrayList<TopicDTO> topics = tpBUS.getAll();
-        for(TopicDTO topic : topics)
-            if(topic.getTpStatus() != 0)
-                    cbb_parentID.addItem(""+topic.getTpTitle());
+    
+    private void setTopic(TopicDTO topic){
+        id.setText(String.valueOf(topic.getTpID()));
+        txt_tenmonhoc.setText(topic.getTpTitle());
+        cbb_parentID.setSelectedItem(topic);
     }
-     
-     
+    
+    private void addNewTopic() {
+        String tenmonhoc = txt_tenmonhoc.getText().trim(); // Giả sử lấy từ TextField
+        int selectedParentId = getSelectedParentId(); // Lấy tpParent từ combobox
+
+        // Kiểm tra xem tên môn học đã tồn tại trong cùng chủ đề cha chưa
+        if (tpBUS.isExistWithParent(tenmonhoc, selectedParentId)) {
+            JOptionPane.showMessageDialog(this, "Môn học '" + tenmonhoc + "' đã tồn tại trong cùng chủ đề");
+            return;
+        }
+
+        // Nếu không trùng, thêm mới topic
+        TopicDTO newTopic = new TopicDTO();
+        newTopic.setTpTitle(tenmonhoc);
+        newTopic.setTpParent(selectedParentId);
+        newTopic.setTpStatus(1); // Giả sử 1 là active
+        tpBUS.add(newTopic);
+
+        JOptionPane.showMessageDialog(this, "Thêm môn học thành công");
+        loadParentIDComboBox(); // Cập nhật lại combobox nếu cần
+    }
+
+    private int getSelectedParentId() {
+        String selectedTitle = (String) cbb_parentID.getSelectedItem();
+        if (selectedTitle.equals("--Trống--")) {
+            return 0; // Giả sử 0 là gốc
+        }
+
+        // Tìm tpID tương ứng với tpTitle từ danh sách topic
+        List<TopicDTO> topics = tpBUS.getAll();
+        for (TopicDTO topic : topics) {
+            if (topic.getTpTitle().equals(selectedTitle)) {
+                return topic.getTpID();
+            }
+        }
+        return 0; // Mặc định trả về 0 nếu không tìm thấy
+    }
+
+    private void reload() {
+        id.setText(Integer.toString(tpBUS.getNextID()));
+        loadParentIDComboBox();
+        cbb_parentID.setSelectedIndex(0);
+    }
+
+    private int getParentID() {
+        if (cbb_parentID.getSelectedIndex() <= 0) {
+            return 0; // Nếu chưa chọn hoặc chọn mặc định, trả về 0
+        }
+        Object selectedItem = cbb_parentID.getSelectedItem();
+        if (selectedItem == null) {
+            return 0;
+        }
+
+        String parentTitle = selectedItem.toString();
+        TopicDTO parentTopic = tpBUS.findOneTitle(parentTitle);
+
+        return (parentTopic != null) ? parentTopic.getTpID() : 0; // Nếu không tìm thấy, cũng trả về 0
+    }
+
+    private int getStatusID() {
+        Object selectedItem = cbb_trangthai.getSelectedItem();
+        if (selectedItem == null) {
+            return 0; // Mặc định là 0 nếu không có gì được chọn
+        }
+        return selectedItem.toString().equalsIgnoreCase("Hoạt động") ? 1 : 0;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,7 +118,7 @@ public class addSubject extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        id = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txt_tenmonhoc = new javax.swing.JTextField();
         luu = new javax.swing.JButton();
@@ -97,8 +133,8 @@ public class addSubject extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel1.setText("Mã môn học:");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setText("NULL");
+        id.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        id.setText("NULL");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("Chọn môn học / chủ đề chính:");
@@ -125,7 +161,6 @@ public class addSubject extends javax.swing.JPanel {
             }
         });
 
-        cbb_parentID.setEditable(true);
         cbb_parentID.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Danh sách môn học" );
         cbb_parentID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,7 +185,7 @@ public class addSubject extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
+                        .addComponent(id)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
                         .addComponent(luu))
                     .addComponent(cbb_parentID, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -170,7 +205,7 @@ public class addSubject extends javax.swing.JPanel {
                 .addGap(5, 5, 5)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(luu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
@@ -221,34 +256,56 @@ public class addSubject extends javax.swing.JPanel {
     }//GEN-LAST:event_cbb_trangthaiActionPerformed
 
     private void cbb_parentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_parentIDActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_cbb_parentIDActionPerformed
 
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
-         String tenmonhoc = txt_tenmonhoc.getText();
+        String tenmonhoc = txt_tenmonhoc.getText();
         if (tenmonhoc.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tên môn học không được để trống!");
             return;
         }
-        if (tpBUS.isExist(tenmonhoc)){
-            JOptionPane.showMessageDialog(this, "Môn học đã tồn tại");
-            return;
-        }
-        if (!tenmonhoc.isEmpty()){
-            int result = JOptionPane.showConfirmDialog(this,"Xác nhận thêm môn học ?","Xác nhận",JOptionPane.YES_NO_OPTION);
-            if(result == JOptionPane.YES_OPTION){
-                addContentSubject();
+        if (!tenmonhoc.isEmpty()) {
+            int result = JOptionPane.showConfirmDialog(this, "Xác nhận thêm môn học ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                addNewTopic();
+
             }
         }
     }//GEN-LAST:event_luuActionPerformed
+
+    private void loadParentIDComboBox() {
+        cbb_parentID.removeAllItems();
+        cbb_parentID.addItem("--Trống--");
+        cbb_parentID.setSelectedIndex(0);
+
+        List<TopicDTO> topics = tpBUS.getAll();
+        if (topics == null || topics.isEmpty()) {
+            return;
+        }
+
+        Map<Integer, TopicDTO> topicMap = new HashMap<>();
+        for (TopicDTO topic : topics) {
+            topicMap.put(topic.getTpID(), topic);
+        }
+
+        for (TopicDTO topic : topics) {
+            if (topic.getTpStatus() != 0) {
+                if (topic.getTpParent() == 0
+                        || (topicMap.containsKey(topic.getTpParent()) && topicMap.get(topic.getTpParent()).getTpParent() == 0)) {
+                    cbb_parentID.addItem(topic.getTpTitle());
+                }
+            }
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_parentID;
     private javax.swing.JComboBox<String> cbb_trangthai;
+    private javax.swing.JLabel id;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

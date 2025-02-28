@@ -12,8 +12,14 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.TestBUS;
 import com.tracnghiem.bus.TopicBUS;
+import com.tracnghiem.view.components.addSubject;
 import com.tracnghiem.view.components.addTest;
+import com.tracnghiem.view.components.chooseExam;
+import com.tracnghiem.view.mainView;
 import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -146,8 +152,8 @@ public class DeThiPanel extends javax.swing.JPanel {
     }
     
     // DÙNG CHUNG
-    public static void showCustomDialog(JFrame parent, JPanel panel, String title) {
-        JDialog dialog = new JDialog(parent, title, true);
+   public static void showCustomDialog(JButton button, JPanel panel, String title) {
+        JDialog dialog = new JDialog(); // Không cần JFrame parent
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Thêm panel vào dialog
@@ -156,7 +162,14 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         // Định kích thước dialog
         dialog.pack();
-        dialog.setLocationRelativeTo(parent);
+
+        // Lấy vị trí của button trên màn hình
+        Point buttonLocation = button.getLocationOnScreen();
+        int buttonHeight = button.getHeight();
+
+        // Đặt vị trí dialog ngay dưới button
+        dialog.setLocation(buttonLocation.x-button.getWidth()*2, buttonLocation.y - button.getHeight());
+
         dialog.setVisible(true);
     }
     
@@ -385,8 +398,21 @@ public class DeThiPanel extends javax.swing.JPanel {
         handleSearch();
     }//GEN-LAST:event_tim_btn1ActionPerformed
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
-        showCustomDialog(null, new addTest(null, false), "Thêm bài thi");
+        chooseExam panel = new chooseExam();
+
+        // Gọi showCustomDialog() và lấy JDialog
+        JDialog dialog = mainView.showCustomDialog(null, panel, "");
+
+        // Thêm WindowListener để reload dữ liệu khi dialog đóng
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                //
+            }
+        });
+
+        // Hiển thị dialog
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButton13ActionPerformed
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:

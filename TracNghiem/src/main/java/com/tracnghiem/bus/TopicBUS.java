@@ -21,7 +21,7 @@ public class TopicBUS {
         listTp = tpDAO.selectAll();
     }
 
-    public ArrayList<TopicDTO>  getAllParent() {
+    public ArrayList<TopicDTO> getAllParent() {
         ArrayList<TopicDTO> result = new ArrayList<>();
         for (TopicDTO t : listTp) {
             if (t.getTpParent() == 0) {
@@ -30,10 +30,26 @@ public class TopicBUS {
         }
         return result;
     }
-    
+
     public ArrayList<TopicDTO> getAll() {
         return tpDAO.selectAll();
     }
+
+    public int getNextID() {
+        return tpDAO.getNextID();
+    }
+
+    public boolean isExistWithParent(String tpTitle, int tpParent) {
+        listTp = tpDAO.selectAll();
+        for (TopicDTO topic : listTp) {
+            // Kiểm tra trùng cả tiêu đề và chủ đề cha
+            if (topic.getTpTitle().equalsIgnoreCase(tpTitle) && topic.getTpParent() == tpParent) {
+                return true; // Đã tồn tại
+            }
+        }
+        return false; // Chưa tồn tại
+    }
+    
     public ArrayList<TopicDTO> getAllParentTopics(int id) {
         ArrayList<TopicDTO> result = new ArrayList<>();
 
@@ -42,7 +58,7 @@ public class TopicBUS {
         if (t.getTpParent() == 0) {
             return result;
         }
-        
+
         TopicDTO t1 = findOne(t.getTpParent());
         result.add(t1);
         if (t1.getTpParent() == 0) {
@@ -56,12 +72,12 @@ public class TopicBUS {
 
         return result;
     }
-    
+
     public TopicDTO findOne(int id) {
-        return tpDAO.selectByID(id+"");
+        return tpDAO.selectByID(id + "");
     }
-    
-    public TopicDTO findOneTitle(String title){
+
+    public TopicDTO findOneTitle(String title) {
         for (TopicDTO t : listTp) {
             if (t.getTpTitle().equals(title)) {
                 return t;
@@ -69,16 +85,17 @@ public class TopicBUS {
         }
         return null;
     }
-    
-     public boolean isExist(String tenmonhoc){
-        for(TopicDTO tpDTO : listTp)
-            if(tpDTO.getTpTitle().equalsIgnoreCase(tenmonhoc))
+
+    public boolean isExist(String tenmonhoc) {
+        for (TopicDTO tpDTO : listTp) {
+            if (tpDTO.getTpTitle().equalsIgnoreCase(tenmonhoc)) {
                 return true;
+            }
+        }
         return false;
-        
+
     }
-    
-    
+
     public int getIndex(TopicDTO tp) {
         for (int i = 0; i < listTp.size(); i++) {
             if (listTp.get(i).getTpID() == tp.getTpID()) {
@@ -109,6 +126,7 @@ public class TopicBUS {
         }
         return false;
     }
+
     public boolean update(TopicDTO tp) {
         if (tpDAO.update(tp)) {
             listTp.set(getIndex(tp), tp);
@@ -116,7 +134,7 @@ public class TopicBUS {
         }
         return false;
     }
-    
+
     public ArrayList<TopicDTO> search(String key) {
         ArrayList<TopicDTO> result = new ArrayList<>();
         key = key.toLowerCase();
@@ -128,6 +146,7 @@ public class TopicBUS {
         }
         return result;
     }
+
     // Hàm kiểm tra topic có topic con không
     private boolean hasChildTopics(int parentID) {
         for (TopicDTO topic : listTp) {
@@ -137,7 +156,7 @@ public class TopicBUS {
         }
         return false; // Không có topic con
     }
-    
+
     public ArrayList<TopicDTO> getChildTopics(int parentID) {
         ArrayList<TopicDTO> childTopics = new ArrayList<>();
 
@@ -149,7 +168,7 @@ public class TopicBUS {
 
         return childTopics;
     }
-    
+
     public ArrayList<TopicDTO> getAllChildTopics(int parentID) {
         ArrayList<TopicDTO> result = new ArrayList<>();
 

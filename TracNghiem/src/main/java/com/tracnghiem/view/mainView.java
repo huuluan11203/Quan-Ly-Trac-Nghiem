@@ -24,6 +24,7 @@ import com.tracnghiem.view.panel.SinhVienPanel;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -53,15 +54,11 @@ import java.awt.event.KeyEvent;
  */
 public class mainView extends javax.swing.JFrame {
 
-    
     /*
         boolean update
             -> true if update
             -> false if add new
-    */
-    
-
-
+     */
     /**
      * Creates new form main
      */
@@ -70,7 +67,6 @@ public class mainView extends javax.swing.JFrame {
             -> true if add news
             -> false if update
      */
-    
     private static String panelName;
     private static CardLayout cardLayout;
     private final QuestionBUS qBUS = new QuestionBUS();
@@ -82,16 +78,14 @@ public class mainView extends javax.swing.JFrame {
     private final Map<String, Integer> topicMapChildren1 = new LinkedHashMap<>();
     private ArrayList<QuestionDTO> listQ = new ArrayList<>();
 
-    
-    
     private boolean isUpdatingComboBox = false;
-    
-    private final CauHoiPanel cauhoi= new CauHoiPanel();
+
+    private final CauHoiPanel cauhoi = new CauHoiPanel();
     private final MonHocPanel monhoc = new MonHocPanel();
     private final SinhVienPanel sinhvien = new SinhVienPanel();
-    private final DeThiPanel dethi= new DeThiPanel();
+    private final DeThiPanel dethi = new DeThiPanel();
     private final DiemPanel diem = new DiemPanel();
-    
+
     public mainView() {
 
         initComponents();
@@ -106,32 +100,61 @@ public class mainView extends javax.swing.JFrame {
             addHoverEffect(menu, menuList);
         }
 
-        
-        
-        
         main_panel.add(cauhoi, "cauhoi");
         main_panel.add(dethi, "dethi");
         main_panel.add(monhoc, "monhoc");
         main_panel.add(diem, "diem");
         main_panel.add(sinhvien, "sinhvien");
-        
-        
+
         //Hien thi mac dinh
         menu1.putClientProperty(FlatClientProperties.STYLE, "arc: 20; background: #033d67");
         menu1.putClientProperty("selected", true);
         cardLayout.show(main_panel, menu1.getName());
 
-        
         setLocationRelativeTo(null);
-        
+
     }
 
-    
-    
-    
-    
     // DÙNG CHUNG
-    public static void showCustomDialog(JFrame parent, JPanel panel, String title) {
+    public void showPanel(String name) {
+
+        // Xóa panel cũ nếu đã tồn tại
+        for (Component comp : main_panel.getComponents()) {
+            if (comp.getName() != null && comp.getName().equals(name)) {
+                main_panel.remove(comp);
+                break;
+            }
+        }
+
+        // Tạo panel mới và thêm vào CardLayout
+        JPanel newPanel = createNewPanel(name);
+        newPanel.setName(name);
+        main_panel.add(newPanel, name);
+        main_panel.revalidate();
+        main_panel.repaint();
+
+        // Hiển thị panel mới
+        cardLayout.show(main_panel, name);
+    }
+
+    private JPanel createNewPanel(String name) {
+        switch (name) {
+            case "cauhoi":
+                return new CauHoiPanel();
+            case "dethi":
+                return new DeThiPanel();
+            case "monhoc":
+                return new MonHocPanel();
+            case "diem":
+                return new DiemPanel();
+            case "sinhvien":
+                return new SinhVienPanel();
+            default:
+                return new JPanel(); // Trả về panel trống nếu không tìm thấy
+        }
+    }
+
+    public static JDialog showCustomDialog(JFrame parent, JPanel panel, String title) {
         JDialog dialog = new JDialog(parent, title, true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -142,9 +165,11 @@ public class mainView extends javax.swing.JFrame {
         // Định kích thước dialog
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
-        dialog.setVisible(true);
+
+        return dialog; // Trả về JDialog để có thể thêm listener
     }
-    
+
+
     private void addHoverEffect(JPanel menu, List<JPanel> allMenus) {
         String defaultStyle = "arc: 20; background: #005b91";
         String hoverStyle = "arc: 20; background: #033d67";
@@ -178,7 +203,8 @@ public class mainView extends javax.swing.JFrame {
                     menu.putClientProperty(FlatClientProperties.STYLE, selectedStyle);
                     menu.putClientProperty("selected", true);
                     if (!menu.getName().equals("dangxuat")) {
-                        cardLayout.show(main_panel, menu.getName());
+                        //cardLayout.show(main_panel, menu.getName());
+                        showPanel(menu.getName());
                     } else {
                         if ((int) showLogoutDialog() == JOptionPane.YES_OPTION) {
                             //tro ve dang nhap
@@ -615,8 +641,6 @@ public class mainView extends javax.swing.JFrame {
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    
 
     /**
      * @param args the command line arguments
