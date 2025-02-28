@@ -23,7 +23,7 @@ public class ExamDAO implements InterfaceDAO<ExamDTO>{
    @Override
     public boolean insert(ExamDTO exam) {
         boolean rs = false;
-        String sql = "INSERT INTO exams(testCode, exOrder, exCode, exQuesIDs) VALUES(?,?,?,?)";
+            String sql = "INSERT INTO exams(testCode, exOrder, exCode, ex_quesIDs) VALUES(?,?,?,?)";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, exam.getTestCode());
@@ -40,7 +40,7 @@ public class ExamDAO implements InterfaceDAO<ExamDTO>{
     @Override
     public boolean update(ExamDTO exam) {
         boolean rs = false;
-        String sql = "UPDATE exams SET testCode=?, exOrder=?, exQuesIDs=? WHERE exCode=?";
+        String sql = "UPDATE exams SET testCode=?, exOrder=?, ex_quesIDs=? WHERE exCode=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, exam.getTestCode());
@@ -66,7 +66,7 @@ public class ExamDAO implements InterfaceDAO<ExamDTO>{
                     rsSet.getString("testCode"),
                     rsSet.getString("exOrder"),
                     rsSet.getString("exCode"),
-                    rsSet.getString("exQuesIDs")
+                    rsSet.getString("ex_quesIDs")
                 ));
             }
         } catch (SQLException ex) {
@@ -88,7 +88,7 @@ public class ExamDAO implements InterfaceDAO<ExamDTO>{
                         rsSet.getString("testCode"),
                         rsSet.getString("exOrder"),
                         rsSet.getString("exCode"),
-                        rsSet.getString("exQuesIDs")
+                        rsSet.getString("ex_quesIDs")
                     );
                 }
             }
@@ -111,4 +111,6 @@ public class ExamDAO implements InterfaceDAO<ExamDTO>{
         }
         return rs;
     }
+    
+    
 }

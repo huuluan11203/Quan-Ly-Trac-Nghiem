@@ -44,49 +44,72 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="levelCBB" alignment="0" min="-2" pref="175" max="-2" attributes="0"/>
-                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="parentID" min="-2" pref="175" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="jTextField8" min="-2" pref="441" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="levelCBB" alignment="0" min="-2" pref="175" max="-2" attributes="0"/>
+                                      <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="tim_btn1" min="-2" pref="84" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="parentID" min="-2" pref="175" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                          <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jTextField8" min="-2" pref="441" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="tim_btn1" min="-2" pref="84" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="tim_btn2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="tim_btn3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                                      <Component id="quantityExams" min="-2" pref="470" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="tim_btn2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="tim_btn3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton5" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                              <Component id="jSpinner2" min="-2" pref="470" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="totalEasy" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="totalMedium" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="totalDiff" min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="totalQuestion" min="-2" pref="45" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -118,7 +141,23 @@
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="totalQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                          <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="totalDiff" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="totalMedium" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="totalEasy" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                  </Group>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="160" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -126,7 +165,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jSpinner2" min="-2" pref="37" max="-2" attributes="0"/>
+                  <Component id="quantityExams" min="-2" pref="37" max="-2" attributes="0"/>
                   <EmptySpace pref="14" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -275,7 +314,7 @@
             <Component class="javax.swing.JTable" name="jTable2">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;M&#xe3; c&#xe2;u h&#x1ecf;i&quot;, &quot;N&#x1ed9;i dung&quot;, &quot;Ch&#x1ee7; &#x111;&#x1ec1;&quot;,&quot;&#x110;&#x1ed9; kh&#xf3;&quot;&#xa;    }&#xa;) {&#xa;boolean[] canEdit = new boolean [] {&#xa;    false, false, false, false&#xa;};&#xa;&#xa;public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;    return canEdit [columnIndex];&#xa;}&#xa;&#xa;}&#xa;" type="code"/>
+                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;M&#xe3; c&#xe2;u h&#x1ecf;i&quot;, &quot;N&#x1ed9;i dung&quot;, &quot;Ch&#x1ee7; &#x111;&#x1ec1;&quot;,&quot;&#x110;&#x1ed9; kh&#xf3;&quot;&#xa;    }&#xa;) {&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false, false, false&#xa;    };&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;&#xa;}&#xa;" type="code"/>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="SwingUtilities.invokeLater(() -&gt; setColumnWidths());">
                   <TableColumnModel selectionModel="0"/>
@@ -343,12 +382,12 @@
             <Property name="text" type="java.lang.String" value="T&#x1ea1;o &#x111;&#x1ec1; thi:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JSpinner" name="jSpinner2">
+        <Component class="javax.swing.JSpinner" name="quantityExams">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// &#x110;&#x1ecb;nh d&#x1ea1;ng l&#x1ea1;i ph&#x1ea7;n nh&#x1ead;p s&#x1ed1; (lo&#x1ea1;i b&#x1ecf; d&#x1ea5;u ph&#xe2;n c&#xe1;ch)&#xa;        JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) jSpinner2.getEditor();&#xa;        JFormattedTextField textField1 = editor1.getTextField();&#xa;        NumberFormatter formatter1 = (NumberFormatter) textField1.getFormatter();&#xa;        formatter1.setAllowsInvalid(false);  // Kh&#xf4;ng cho ph&#xe9;p nh&#x1ead;p k&#xfd; t&#x1ef1; kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;        formatter1.setCommitsOnValidEdit(true); // T&#x1ef1; &#x111;&#x1ed9;ng c&#x1ead;p nh&#x1ead;t khi nh&#x1ead;p s&#x1ed1; h&#x1ee3;p l&#x1ec7;"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// &#x110;&#x1ecb;nh d&#x1ea1;ng l&#x1ea1;i ph&#x1ea7;n nh&#x1ead;p s&#x1ed1; (lo&#x1ea1;i b&#x1ecf; d&#x1ea5;u ph&#xe2;n c&#xe1;ch)&#xa;        JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) quantityExams.getEditor();&#xa;        JFormattedTextField textField1 = editor1.getTextField();&#xa;        NumberFormatter formatter1 = (NumberFormatter) textField1.getFormatter();&#xa;        formatter1.setAllowsInvalid(false);  // Kh&#xf4;ng cho ph&#xe9;p nh&#x1ead;p k&#xfd; t&#x1ef1; kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;        formatter1.setCommitsOnValidEdit(true); // T&#x1ef1; &#x111;&#x1ed9;ng c&#x1ead;p nh&#x1ead;t khi nh&#x1ead;p s&#x1ed1; h&#x1ee3;p l&#x1ec7;"/>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(model1)"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="SpinnerNumberModel model1 = new SpinnerNumberModel(1, 1, 10, 1);"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jSpinner2.putClientProperty(FlatClientProperties.STYLE, &quot;arc :10;&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="quantityExams.putClientProperty(FlatClientProperties.STYLE, &quot;arc :10;&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
@@ -379,6 +418,70 @@
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton5.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #ee2020; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
+        <Component class="javax.swing.JLabel" name="jLabel16">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="T&#x1ed5;ng s&#x1ed1; c&#xe2;u"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="totalQuestion">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel17">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="SL kh&#xf3;"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="totalDiff">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel18">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="SL trung"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="totalMedium">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="totalEasy">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel19">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="SL d&#x1ec5;"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel3">
@@ -392,16 +495,28 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField5" alignment="0" min="-2" pref="441" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel1" alignment="0" min="-2" pref="49" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel2" min="-2" pref="110" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="testTitle" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jDateChooser1" alignment="0" min="-2" pref="155" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextField7" min="-2" pref="259" max="-2" attributes="0"/>
+                              <Component id="testCode" min="-2" pref="259" max="-2" attributes="0"/>
                               <Component id="jLabel15" min="-2" pref="157" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -409,7 +524,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jTextField6" min="-2" pref="135" max="-2" attributes="0"/>
+                          <Component id="testTime" min="-2" pref="135" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="time" min="-2" pref="34" max="-2" attributes="0"/>
                       </Group>
@@ -419,19 +534,15 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jButton16" min="-2" pref="35" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="luu" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                              <Component id="jSpinner1" min="-2" pref="99" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="jLabel1" min="-2" pref="73" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="testLimit" min="-2" pref="99" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -446,15 +557,18 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField5" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="testTitle" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                               <Component id="monhocCBB" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                              <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton16" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -465,7 +579,7 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                          <Component id="jTextField6" min="-2" pref="35" max="-2" attributes="0"/>
+                          <Component id="testTime" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                       <Component id="time" alignment="1" min="-2" pref="36" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
@@ -478,12 +592,12 @@
                               <Group type="102" attributes="0">
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jSpinner1" min="-2" pref="37" max="-2" attributes="0"/>
+                                  <Component id="testLimit" min="-2" pref="37" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jTextField7" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="testCode" min="-2" pref="35" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -517,14 +631,14 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField5">
+        <Component class="javax.swing.JTextField" name="testTitle">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="0"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextField5.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;jTextField5.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;T&#xea;n b&#xe0;i ki&#x1ec3;m tra&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="testTitle.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;testTitle.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;T&#xea;n b&#xe0;i ki&#x1ec3;m tra&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -543,15 +657,15 @@
             <Property name="text" type="java.lang.String" value="Th&#x1edd;i gian l&#xe0;m b&#xe0;i"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField6">
+        <Component class="javax.swing.JTextField" name="testTime">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="0"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="((AbstractDocument) jTextField6.getDocument()).setDocumentFilter(new DocumentFilter() {&#xa;            @Override&#xa;            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)&#xa;                    throws BadLocationException {&#xa;                if (string.matches(&quot;\\d+&quot;)) { // Ch&#x1ec9; cho ph&#xe9;p s&#x1ed1;&#xa;                    super.insertString(fb, offset, string, attr);&#xa;                }&#xa;            }&#xa;&#xa;            @Override&#xa;            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)&#xa;                    throws BadLocationException {&#xa;                if (text.matches(&quot;\\d+&quot;)) { // Ch&#x1ec9; cho ph&#xe9;p s&#x1ed1;&#xa;                    super.replace(fb, offset, length, text, attrs);&#xa;                }&#xa;            }&#xa;        });"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextField6.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;jTextField6.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Th&#x1edd;i gian (Ph&#xfa;t)&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="((AbstractDocument) testTime.getDocument()).setDocumentFilter(new DocumentFilter() {&#xa;            @Override&#xa;            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)&#xa;                    throws BadLocationException {&#xa;                if (string.matches(&quot;\\d+&quot;)) { // Ch&#x1ec9; cho ph&#xe9;p s&#x1ed1;&#xa;                    super.insertString(fb, offset, string, attr);&#xa;                }&#xa;            }&#xa;&#xa;            @Override&#xa;            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)&#xa;                    throws BadLocationException {&#xa;                if (text.matches(&quot;\\d+&quot;)) { // Ch&#x1ec9; cho ph&#xe9;p s&#x1ed1;&#xa;                    super.replace(fb, offset, length, text, attrs);&#xa;                }&#xa;            }&#xa;        });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="testTime.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;testTime.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Th&#x1edd;i gian (Ph&#xfa;t)&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="time">
@@ -578,12 +692,12 @@
             <Property name="text" type="java.lang.String" value="S&#x1ed1; l&#x1ea7;n l&#xe0;m b&#xe0;i"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JSpinner" name="jSpinner1">
+        <Component class="javax.swing.JSpinner" name="testLimit">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// &#x110;&#x1ecb;nh d&#x1ea1;ng l&#x1ea1;i ph&#x1ea7;n nh&#x1ead;p s&#x1ed1; (lo&#x1ea1;i b&#x1ecf; d&#x1ea5;u ph&#xe2;n c&#xe1;ch)&#xa;        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) jSpinner1.getEditor();&#xa;        JFormattedTextField textField = editor.getTextField();&#xa;        NumberFormatter formatter = (NumberFormatter) textField.getFormatter();&#xa;        formatter.setAllowsInvalid(false);  // Kh&#xf4;ng cho ph&#xe9;p nh&#x1ead;p k&#xfd; t&#x1ef1; kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;        formatter.setCommitsOnValidEdit(true); // T&#x1ef1; &#x111;&#x1ed9;ng c&#x1ead;p nh&#x1ead;t khi nh&#x1ead;p s&#x1ed1; h&#x1ee3;p l&#x1ec7;"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// &#x110;&#x1ecb;nh d&#x1ea1;ng l&#x1ea1;i ph&#x1ea7;n nh&#x1ead;p s&#x1ed1; (lo&#x1ea1;i b&#x1ecf; d&#x1ea5;u ph&#xe2;n c&#xe1;ch)&#xa;        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) testLimit.getEditor();&#xa;        JFormattedTextField textField = editor.getTextField();&#xa;        NumberFormatter formatter = (NumberFormatter) textField.getFormatter();&#xa;        formatter.setAllowsInvalid(false);  // Kh&#xf4;ng cho ph&#xe9;p nh&#x1ead;p k&#xfd; t&#x1ef1; kh&#xf4;ng h&#x1ee3;p l&#x1ec7;&#xa;        formatter.setCommitsOnValidEdit(true); // T&#x1ef1; &#x111;&#x1ed9;ng c&#x1ead;p nh&#x1ead;t khi nh&#x1ead;p s&#x1ed1; h&#x1ee3;p l&#x1ec7;"/>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(model)"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="SpinnerNumberModel model = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jSpinner1.putClientProperty(FlatClientProperties.STYLE, &quot;arc :10;&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="testLimit.putClientProperty(FlatClientProperties.STYLE, &quot;arc :10;&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
@@ -607,6 +721,9 @@
               <Color id="Hand Cursor"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="luuActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="luu.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #0bae1d; foreground: #ffffff;&quot;);"/>
           </AuxValues>
@@ -614,7 +731,7 @@
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="13" style="0"/>
+              <Font name="Segoe UI" size="13" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="ID: "/>
           </Properties>
@@ -641,14 +758,31 @@
             <Property name="text" type="java.lang.String" value="M&#xe3; b&#xe0;i thi"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField7">
+        <Component class="javax.swing.JTextField" name="testCode">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="0"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextField7.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;jTextField7.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Vd(TH01, DE01,...)&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="testCode.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;testCode.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Vd(TH01, DE01,...)&quot;);"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton16">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton16ActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButton16.setIcon(new FlatSVGIcon(&quot;icons/unlock.svg&quot;, 30, 30));"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton16.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
       </SubComponents>

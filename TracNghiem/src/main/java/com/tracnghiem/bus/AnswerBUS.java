@@ -22,7 +22,7 @@ public class AnswerBUS {
     }
 
     public ArrayList<AnswerDTO> getAll() {
-        return listAns;
+        return aDAO.selectAll();
     }
 
     public AnswerDTO findOne(int id) {

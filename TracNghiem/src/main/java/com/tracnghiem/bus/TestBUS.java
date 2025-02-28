@@ -29,6 +29,14 @@ public class TestBUS {
         return testDAO.selectByID(id + "");
     }
     
+    public boolean isExistTestCode(String testCode) {
+        for (int i = 0; i < listTest.size(); i++) {
+            if (listTest.get(i).getTestCode().equalsIgnoreCase(testCode)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public int getIndex(TestDTO test) {
         for (int i = 0; i < listTest.size(); i++) {

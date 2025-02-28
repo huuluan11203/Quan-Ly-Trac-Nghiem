@@ -1093,15 +1093,17 @@ public class addQuestion extends javax.swing.JPanel {
 
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
+         if (!validDataAddNew()) {
+                return;
+         }
+        
         int confirm = JOptionPane.showConfirmDialog(
                 null, "Bạn có muốn lưu dữ liệu không?", "Xác nhận lưu",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            if (!validDataAddNew()) {
-                return;
-            }
+           
 
             buildDataQuestion();
 

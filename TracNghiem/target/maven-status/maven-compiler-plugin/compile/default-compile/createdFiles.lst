@@ -20,11 +20,15 @@ com\tracnghiem\view\panel\CauHoiPanel.class
 com\tracnghiem\view\components\addQuestion$12.class
 com\tracnghiem\view\components\detailQuestion$13.class
 com\tracnghiem\view\components\updateQuestion$3.class
+com\tracnghiem\bus\ExamBUS.class
+com\tracnghiem\view\components\addTest$14.class
 com\tracnghiem\view\components\addQuestion$3.class
 com\tracnghiem\view\components\updateQuestion$11.class
 com\tracnghiem\view\components\previewDetailQuestion$3.class
 com\tracnghiem\view\components\updateQuestion.class
+com\tracnghiem\view\components\addTest$13.class
 com\tracnghiem\view\components\updateQuestion$9.class
+com\tracnghiem\utils\RandomListsUtil.class
 com\tracnghiem\view\components\addQuestion$13.class
 com\tracnghiem\dao\QuestionDAO.class
 com\tracnghiem\view\components\addQuestion$2.class
@@ -84,7 +88,6 @@ com\tracnghiem\bus\AnswerBUS.class
 com\tracnghiem\view\loginView$4.class
 com\tracnghiem\view\components\addQuestion$5.class
 com\tracnghiem\view\panel\MonHocPanel$2.class
-com\tracnghiem\utils\AutoCompleteJComboBox.class
 com\tracnghiem\view\components\previewDetailQuestion$1.class
 com\tracnghiem\dao\ExamDAO.class
 com\tracnghiem\dto\TopicDTO.class
@@ -139,6 +142,7 @@ com\tracnghiem\view\panel\CauHoiPanel$2.class
 com\tracnghiem\view\components\updateQuestion$7.class
 com\tracnghiem\view\components\previewAddQuestion$3.class
 com\tracnghiem\view\components\addQuestion$7.class
+com\tracnghiem\view\components\addTest$15.class
 com\tracnghiem\view\components\previewDetailQuestion$2.class
 com\tracnghiem\view\panel\DeThiPanel.class
 com\tracnghiem\view\components\addQuestion$11.class
@@ -147,14 +151,12 @@ com\tracnghiem\view\panel\CauHoiPanel$12.class
 com\tracnghiem\view\components\addQuestion$4.class
 com\tracnghiem\view\components\addSubject$2.class
 com\tracnghiem\view\components\detailQuestion$3.class
-com\tracnghiem\utils\AutoCompleteJComboBox$1.class
 com\tracnghiem\view\panel\DeThiPanel$2.class
 com\tracnghiem\view\panel\DiemPanel.class
 com\tracnghiem\view\components\previewAddQuestion$2.class
 com\tracnghiem\view\components\updateQuestion$6.class
 com\tracnghiem\view\components\addTest$7.class
 com\tracnghiem\view\components\detailQuestion$10.class
-com\tracnghiem\utils\AutoCompleteJComboBox$AutoCompleteDocument.class
 com\tracnghiem\view\components\detailQuestion$2.class
 com\tracnghiem\view\components\previewAddQuestion$1.class
 com\tracnghiem\view\panel\CauHoiPanel$13.class

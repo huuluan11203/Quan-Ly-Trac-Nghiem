@@ -5,7 +5,6 @@ C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\ja
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\utils\PasswordUtil.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\DiemPanel.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\main.java
-C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\utils\AutoCompleteJComboBox.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\detailQuestion.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dao\ResultDAO.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dto\TopicDTO.java
@@ -14,6 +13,7 @@ C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\ja
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\SinhVienPanel.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\bus\QuestionBUS.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dao\AnswerDAO.java
+C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\utils\RandomListsUtil.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\previewAddQuestion.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\bus\TestBUS.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dao\InterfaceDAO.java
@@ -29,6 +29,7 @@ C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\ja
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dto\ResultDTO.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dao\UserDAO.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\CauHoiPanel.java
+C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\bus\ExamBUS.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\utils\UploadUtil.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\view\loginView.java
 C:\Users\X\Documents\NetBeansProjects\Quan-Ly-Trac-Nghiem\TracNghiem\src\main\java\com\tracnghiem\dto\QuestionDTO.java
