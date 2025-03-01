@@ -10,10 +10,17 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.AnswerBUS;
+import com.tracnghiem.bus.ExamBUS;
+import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.TestBUS;
 import com.tracnghiem.bus.TopicBUS;
+import com.tracnghiem.dto.AnswerDTO;
+import com.tracnghiem.dto.ExamDTO;
+import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.view.components.addTest;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -28,27 +35,45 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.swing.JFileChooser;
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 
 /**
  *
  * @author X
  */
 public class DeThiPanel extends javax.swing.JPanel {
+
     private final TestBUS tBUS = new TestBUS();
     private final TopicBUS tpBUS = new TopicBUS();
     private ArrayList<TestDTO> listT = new ArrayList<>();
     private LocalDate dateSelected;
     private int tIDSelected = -1;
-    
+
     /**
      * Creates new form DeThiPanel
      */
     public DeThiPanel() {
         initComponents();
-        
+
         listT = tBUS.getAll();
-        
-        
+
         jDateChooser1.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -58,9 +83,9 @@ public class DeThiPanel extends javax.swing.JPanel {
                         LocalDate localDate = selectedDate.toInstant()
                                 .atZone(ZoneId.systemDefault()) // Chuyển đổi theo múi giờ hệ thống
                                 .toLocalDate();
-                        dateSelected = localDate;    
+                        dateSelected = localDate;
                     }
-                    
+
                 }
             }
         });
@@ -76,75 +101,192 @@ public class DeThiPanel extends javax.swing.JPanel {
                 }
             }
         });
-        
-        
 
         loadTable(listT);
     }
+
     // MODULE ĐỀ THI
     private void setColumnWidthsForTableTest() {
 
         TableColumnModel columnModel = jTable4.getColumnModel();
         int totalWidth = jTable4.getWidth(); // Lấy chiều rộng tổng của bảng
 
-        double[] columnRatios = {0.05, 0.075, 0.25, 0.25,0.075,0.1,0.05,0.05,0.05,0.05 };
+        double[] columnRatios = {0.05, 0.075, 0.25, 0.25, 0.075, 0.1, 0.05, 0.05, 0.05, 0.05};
 
         for (int i = 0; i < columnRatios.length; i++) {
             int columnWidth = (int) (totalWidth * columnRatios[i]);
             columnModel.getColumn(i).setPreferredWidth(columnWidth);
         }
     }
+
     private void loadTable(ArrayList<TestDTO> list) {
         DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
         if (list.isEmpty()) {
-            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "","", "", ""});
+            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "", "", "", ""});
             return;
         }
         for (TestDTO test : list) {
             model.addRow(new Object[]{
-                test.getTestID(),      // ID
-                test.getTestCode(),    // Mã đề thi
-                test.getTestTitle(),   // Tiêu đề
-                tpBUS.findOne(test.getTpID()).getTpTitle(),        // Chủ đề
-                test.getTestDate(),    // Thời gian
-                test.getTestTime(),    // Giờ làm
+                test.getTestID(), // ID
+                test.getTestCode(), // Mã đề thi
+                test.getTestTitle(), // Tiêu đề
+                tpBUS.findOne(test.getTpID()).getTpTitle(), // Chủ đề
+                test.getTestDate(), // Thời gian
+                test.getTestTime(), // Giờ làm
                 test.getTestLimit(),
-                test.getNumEasy(),     // Số lượng câu dễ
-                test.getNumMedium(),   // Số lượng câu trung bình
+                test.getNumEasy(), // Số lượng câu dễ
+                test.getNumMedium(), // Số lượng câu trung bình
                 test.getNumDifficult() // Số lượng câu khó
             });
         }
     }
-    
+
     private void handleSearch() {
         String key = textFieldSearch.getText();
-        
+
         if (dateSelected == null) {
             if (key.trim().isEmpty()) {
-                 JOptionPane.showMessageDialog(null, "Nhập từ khoá để tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                 return;
+                JOptionPane.showMessageDialog(null, "Nhập từ khoá để tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             loadTable(tBUS.search(key));
         } else {
             loadTable(tBUS.search(key, dateSelected));
         }
-    
+
     }
-    
+
     private void refresh() {
         listT = tBUS.getAll();
         textFieldSearch.setText("");
         dateSelected = null;
         jDateChooser1.setDate(null);
         tIDSelected = -1;
-        
-        
-        
+
         loadTable(listT);
     }
-    
+
+    private void exportToWord() {
+        ExamBUS eBUS = new ExamBUS();
+        AnswerBUS aBUS = new AnswerBUS();
+        QuestionBUS qBUS = new QuestionBUS();
+
+        TestDTO test = tBUS.findOne(tIDSelected);
+        ArrayList<QuestionDTO> listQ = new ArrayList<>();
+        ArrayList<AnswerDTO> listA = new ArrayList<>();
+
+//        
+        ArrayList<ExamDTO> listE = eBUS.getAll(test.getTestCode());
+//      
+        if (listE.get(0) != null) {
+            String[] t = listE.get(0).getExQuesIDs().split(";");
+
+            for (String s : t) {
+                listQ.add(qBUS.findOne(Integer.parseInt(s)));
+            }
+        }
+
+        for (QuestionDTO q : listQ) {
+            listA.addAll(aBUS.getByQuesID(q.getQID()));
+        }
+
+        // Tạo Map để tra cứu câu hỏi nhanh hơn
+        Map<Integer, QuestionDTO> questionMap = listQ.stream()
+                .collect(Collectors.toMap(QuestionDTO::getQID, q -> q));
+
+        // Tạo Map để tra cứu danh sách đáp án theo từng câu hỏi
+        Map<Integer, List<AnswerDTO>> answerMap = listA.stream()
+                .collect(Collectors.groupingBy(AnswerDTO::getQID));
+
+        // Duyệt qua từng ExamDTO và lấy danh sách câu hỏi tương ứng
+        // Duyệt qua từng ExamDTO và lấy danh sách câu hỏi tương ứng
+        for (ExamDTO exam : listE) {
+            List<QuestionDTO> examQuestions = Arrays.stream(exam.getExQuesIDs().split(";"))
+                    .map(Integer::parseInt)
+                    .map(questionMap::get)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            System.out.println("Exam: " + exam.getTestCode());
+            for (QuestionDTO q : examQuestions) {
+                System.out.println(" - Câu hỏi: " + q.getQContent());
+
+                // Lấy danh sách đáp án của câu hỏi hiện tại
+                List<AnswerDTO> questionAnswers = answerMap.getOrDefault(q.getQID(), Collections.emptyList());
+                for (AnswerDTO a : questionAnswers) {
+                    System.out.println("   + " + a.getAwContent() + (a.isIsRight() ? " ✅" : ""));
+                }
+            }
+        }
+
+//
+        String schoolInfo = "Trường Đại học Sài Gòn";
+        String examInfo = test.getTestTitle()
+                + "\nNăm học:" + test.getTestDate().getYear()
+                + "\nChủ đề: " + new TopicBUS().findOne(test.getTpID()).getTpTitle()
+                + "\nThời gian: " + test.getTestTime() + " phút";
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn nơi lưu file");
+        fileChooser.setSelectedFile(new File("DeThi_"+ test.getTestID() + "_" + test.getTestTitle() + ".docx"));
+        int userSelection = fileChooser.showSaveDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File filePath = fileChooser.getSelectedFile();
+
+            try (XWPFDocument document = new XWPFDocument()) {
+                for (ExamDTO exam : listE) {
+                    // Tạo một trang mới
+                    XWPFParagraph examTitle = document.createParagraph();
+                    examTitle.setPageBreak(true); // Ngắt trang mới cho mỗi exam
+                    XWPFRun runExam = examTitle.createRun();
+                    runExam.setBold(true);
+                    runExam.setFontSize(14);
+                    runExam.setText("Exam: " + exam.getTestCode());
+
+                    List<QuestionDTO> examQuestions = Arrays.stream(exam.getExQuesIDs().split(";"))
+                            .map(Integer::parseInt)
+                            .map(questionMap::get)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+
+                    int questionNumber = 1;
+                    for (QuestionDTO q : examQuestions) {
+                        // Thêm câu hỏi
+                        XWPFParagraph questionPara = document.createParagraph();
+                        XWPFRun questionRun = questionPara.createRun();
+                        questionRun.setBold(true);
+                        questionRun.setFontSize(12);
+                        questionRun.setText(questionNumber + ". " + q.getQContent());
+
+                        // Lấy danh sách đáp án và đánh số theo A, B, C, D, E
+                        List<AnswerDTO> answers = answerMap.getOrDefault(q.getQID(), Collections.emptyList());
+                        String[] labels = {"A", "B", "C", "D", "E"};
+                        int index = 0;
+                        for (AnswerDTO a : answers) {
+                            XWPFParagraph answerPara = document.createParagraph();
+                            XWPFRun answerRun = answerPara.createRun();
+                            answerRun.setText(labels[index] + ". " + a.getAwContent() + (a.isIsRight() ? " ✅" : ""));
+                            index++;
+                        }
+                        questionNumber++;
+                    }
+                }
+
+                // Xuất file Word
+                try (FileOutputStream out = new FileOutputStream(filePath)) {
+                    document.write(out);
+                    System.out.println("File Word đã được tạo: " + filePath);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     // DÙNG CHUNG
     public static void showCustomDialog(JFrame parent, JPanel panel, String title) {
         JDialog dialog = new JDialog(parent, title, true);
@@ -159,7 +301,7 @@ public class DeThiPanel extends javax.swing.JPanel {
         dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,6 +318,7 @@ public class DeThiPanel extends javax.swing.JPanel {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton16 = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
+        nhap_excel = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
@@ -223,6 +366,18 @@ public class DeThiPanel extends javax.swing.JPanel {
             }
         });
 
+        nhap_excel.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        nhap_excel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        nhap_excel.setIcon(new FlatSVGIcon("icons/word.svg", 30, 30)
+        );
+        nhap_excel.setText("Xuất ra WORD");
+        nhap_excel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        nhap_excel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nhap_excelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -237,11 +392,12 @@ public class DeThiPanel extends javax.swing.JPanel {
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton16)
+                .addGap(46, 46, 46)
+                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(nhap_excel))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,6 +410,7 @@ public class DeThiPanel extends javax.swing.JPanel {
                             .addComponent(tim_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(nhap_excel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                         .addComponent(refreshBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -403,6 +560,25 @@ public class DeThiPanel extends javax.swing.JPanel {
         refresh();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
+    private void nhap_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nhap_excelActionPerformed
+        // TODO add your handling code here:
+//        JFileChooser fileChooser = new JFileChooser();
+//        int result = fileChooser.showOpenDialog(null);
+//
+//        if (result == JFileChooser.APPROVE_OPTION) {
+//            File file = fileChooser.getSelectedFile();
+//            importFromExcel(file);
+//
+//        }
+
+        if (tIDSelected == -1) {
+            JOptionPane.showMessageDialog(null, "Hãy chọn đề thi để xuất ra file word!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        exportToWord();
+    }//GEN-LAST:event_nhap_excelActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton13;
@@ -415,6 +591,7 @@ public class DeThiPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable4;
+    private javax.swing.JButton nhap_excel;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JTextField textFieldSearch;
     private javax.swing.JButton tim_btn1;

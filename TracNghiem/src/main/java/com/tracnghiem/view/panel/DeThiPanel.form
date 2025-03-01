@@ -59,11 +59,12 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jDateChooser1" min="-2" pref="153" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButton16" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="refreshBtn" min="-2" pref="58" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButton16" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                  <Component id="refreshBtn" min="-2" pref="48" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="nhap_excel" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -80,6 +81,7 @@
                           </Group>
                       </Group>
                       <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="nhap_excel" alignment="1" max="32767" attributes="0"/>
                           <Component id="jButton16" alignment="1" max="32767" attributes="0"/>
                           <Component id="jDateChooser1" alignment="1" pref="36" max="32767" attributes="0"/>
                           <Component id="refreshBtn" alignment="1" max="32767" attributes="0"/>
@@ -159,6 +161,26 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="refreshBtn.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #0bae1d; foreground: #ffffff;&quot;);"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="refreshBtn.setIcon(new FlatSVGIcon(&quot;icons/refresh.svg&quot;, 30 ,30)) ;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="nhap_excel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new FlatSVGIcon(&quot;icons/word.svg&quot;, 30, 30)&#xa;    " type="code"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Xu&#x1ea5;t ra WORD"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nhap_excelActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="nhap_excel.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
       </SubComponents>

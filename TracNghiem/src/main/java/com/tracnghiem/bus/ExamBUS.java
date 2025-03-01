@@ -23,7 +23,11 @@ public class ExamBUS {
     public ArrayList<ExamDTO> getAll() {
         return eDAO.selectAll();
     }
-
+    
+    public ArrayList<ExamDTO> getAll(String testCode) {
+        return eDAO.selectAll(testCode);
+    }
+    
     public ExamDTO findOne(String exCode) {
         return eDAO.selectByID(exCode);
     }
