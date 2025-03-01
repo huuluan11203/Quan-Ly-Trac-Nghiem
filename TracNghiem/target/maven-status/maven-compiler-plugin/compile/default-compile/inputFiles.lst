@@ -6,6 +6,7 @@ D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\DeThiPane
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\SinhVienPanel.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\TopicBUS.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\addUser.java
+D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\addTestAuto.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dao\ExamDAO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\utils\PasswordUtil.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\previewDetailQuestion.java
@@ -37,6 +38,7 @@ D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dao\AnswerDAO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\QuestionBUS.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dto\TestDTO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\CauHoiPanel.java
+D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\choose.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\utils\UploadUtil.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\DiemPanel.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dao\TestDAO.java
