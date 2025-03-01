@@ -59,7 +59,7 @@ public class TopicDAO implements InterfaceDAO<TopicDTO>{
     @Override
     public ArrayList<TopicDTO> selectAll() {
         ArrayList<TopicDTO> list = new ArrayList<TopicDTO>();
-        String sql = "SELECT * FROM topics WHERE tpStatus=1";
+        String sql = "SELECT * FROM topics";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -78,7 +78,7 @@ public class TopicDAO implements InterfaceDAO<TopicDTO>{
 
     @Override
     public TopicDTO selectByID(String id) {
-        String sql = "SELECT * FROM topics WHERE tpID = ? AND tpStatus=1";
+        String sql = "SELECT * FROM topics WHERE tpID = ?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, id);
@@ -109,6 +109,22 @@ public class TopicDAO implements InterfaceDAO<TopicDTO>{
             ex.printStackTrace();
         }
         return rs;
+    }
+    
+    public int getNextID() {
+        int nextID = 1; // Giá trị mặc định nếu bảng rỗng
+        String sql = "SELECT MAX(tpID) FROM topics";
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int maxID = rs.getInt(1); // Lấy giá trị lớn nhất của tpID
+                if (!rs.wasNull()) { // Kiểm tra nếu không phải NULL
+                    nextID = maxID + 1; // Tăng lên 1 để lấy ID tiếp theo
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return nextID;
     }
 }
 

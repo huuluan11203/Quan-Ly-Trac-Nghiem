@@ -18,9 +18,9 @@ import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.ExamDTO;
 import com.tracnghiem.dto.QuestionDTO;
-import com.tracnghiem.view.components.addTest;
+import com.tracnghiem.view.components.choose;
+import com.tracnghiem.view.mainView;
 import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -542,8 +542,13 @@ public class DeThiPanel extends javax.swing.JPanel {
         handleSearch();
     }//GEN-LAST:event_tim_btn1ActionPerformed
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
-        showCustomDialog(null, new addTest(null, false), "Thêm bài thi");
+        choose ch = new choose();
+        JDialog dialog = mainView.showCustomDialog1(null, ch, "Chọn cấu trúc");
+        
+        
+        
+        dialog.setVisible(true);
+        
     }//GEN-LAST:event_jButton13ActionPerformed
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
