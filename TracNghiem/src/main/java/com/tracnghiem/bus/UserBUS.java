@@ -7,6 +7,7 @@ package com.tracnghiem.bus;
 import com.tracnghiem.dao.UserDAO;
 import com.tracnghiem.dto.UserDTO;
 import com.tracnghiem.utils.PasswordUtil;
+import com.tracnghiem.utils.PatternMatcherUtil;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +28,10 @@ public class UserBUS {
     
     public UserDTO findOne(int id) {
         return uDAO.selectByID(id+"");
+    }
+    
+    public UserDTO findOneByUserName(String user) {
+        return uDAO.selectByUserName(user);
     }
     
     public int getIndex(UserDTO u) {
@@ -77,39 +82,29 @@ public class UserBUS {
 
         switch (type) {
             case "Tất cả" -> {
-                for (UserDTO i : this.listUser) {
-                    if (i.getUserEmail().toLowerCase().contains(key) 
-                            || i.getUserFullName().toLowerCase().contains(key)
-                            || i.getUserName().toLowerCase().contains(key)
-                    ) {
+                for (UserDTO i : this.listUser)
+                    if (PatternMatcherUtil. patternMatcherEmail(key,i)
+                            || PatternMatcherUtil.patternMatcherFullName(key,i)
+                            || PatternMatcherUtil.patternMatcherUserName(key,i)
+                    )
                         result.add(i);
-                    }
-                }
             }
             case "Họ tên" -> {
-                for (UserDTO i : this.listUser) {
-                    if (i.getUserFullName().toLowerCase().contains(key)) {
+                for (UserDTO i : this.listUser)
+                    if (PatternMatcherUtil.patternMatcherFullName(key,i))
                         result.add(i);
-                    }
-                }
             }
             case "Email" -> {
-                for (UserDTO i : this.listUser) {
-                    if (i.getUserEmail().toLowerCase().contains(key)) {
+                for (UserDTO i : this.listUser)
+                    if (PatternMatcherUtil. patternMatcherEmail(key,i))
                         result.add(i);
-                    }
-                }
             }
-            case "Username" -> {
-                for (UserDTO i : this.listUser) {
-                    if (i.getUserName().toLowerCase().contains(key)) {
+            case "Tên đăng nhập" -> {
+                for (UserDTO i : this.listUser)
+                    if (PatternMatcherUtil.patternMatcherUserName(key,i))
                         result.add(i);
-                    }
-                }
             }
-            
         }
-
         return result;
     }
     
@@ -123,5 +118,17 @@ public class UserBUS {
     }
     return null; // Sai tài khoản hoặc mật khẩu
 }
+    public boolean isExistUserName(String user){
+        for(UserDTO u :listUser)
+            if(u.getUserName().equals(user))
+                return true;
+        return false;
+    }
     
+    public boolean isExistEmail(String email){
+        for(UserDTO u :listUser)
+            if(u.getUserEmail().equals(email))
+                return true;
+        return false;
+    }
 }

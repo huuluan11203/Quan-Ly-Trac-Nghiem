@@ -8,6 +8,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.TopicDTO;
+import com.tracnghiem.view.panel.MonHocPanel;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 /**
@@ -26,15 +27,7 @@ public class addSubject extends javax.swing.JPanel {
         reloadParentIDComboBox();
     }
      private void addContentSubject(){
-         String tenmonhoc = txt_tenmonhoc.getText();
-//        if (tenmonhoc.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Tên môn học không được để trống!");
-//            return;
-//        }
-//        if (tpBUS.isExist(tenmonhoc)){
-//            JOptionPane.showMessageDialog(this, "Môn học đã tồn tại");
-//            return;
-//        }
+        String tenmonhoc = txt_tenmonhoc.getText();
         int parentID = -1;
         int statusID;
         if (cbb_parentID.getSelectedIndex() != 0){
@@ -236,9 +229,10 @@ public class addSubject extends javax.swing.JPanel {
             return;
         }
         if (!tenmonhoc.isEmpty()){
-            int result = JOptionPane.showConfirmDialog(this,"Xác nhận thêm môn học ?","Xác nhận",JOptionPane.YES_NO_OPTION);
-            if(result == JOptionPane.YES_OPTION){
+            int confirm = JOptionPane.showConfirmDialog(this,"Xác nhận thêm môn học ?","Xác nhận",JOptionPane.YES_NO_OPTION);
+            if(confirm == JOptionPane.YES_OPTION){
                 addContentSubject();
+                MonHocPanel monhocPn = new MonHocPanel();
             }
         }
     }//GEN-LAST:event_luuActionPerformed

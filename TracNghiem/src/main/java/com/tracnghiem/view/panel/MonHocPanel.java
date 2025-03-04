@@ -35,12 +35,12 @@ public class MonHocPanel extends javax.swing.JPanel {
     public MonHocPanel() {
         initComponents();
         reloadSubject();
+        childrenOfSelectedSubject();
         loadDataSubjectTable();
     }
     
     
     private void loadDataSubjectTable(){
-        TopicBUS tpBUS = new TopicBUS();
         List<TopicDTO> topics = tpBUS.getAll();
         DefaultTableModel model = new DefaultTableModel(
             new Object[]{"STT","Môn học","Chủ đề","Bài học","Trạng thái"},0)
@@ -123,23 +123,27 @@ public class MonHocPanel extends javax.swing.JPanel {
         };
         int stt = 1;
         for(TopicDTO topic : topics){
+            String status = "Hoạt động";
             if(topic.getTpParent() == -1){
-                String parent = "";
+                if(topic.getTpStatus() == 0)
+                    status = "Tạm dừng";
                 model.addRow(new Object[]{
                     stt++,
                     topic.getTpTitle(),
-                    parent,
-                    topic.getTpID(),
-                    topic.getTpStatus()
+                    "",
+                    "",
+                    status
                 });
             } else{
                 TopicDTO parent = tpBUS.findOne(topic.getTpParent());
+                if(topic.getTpStatus() == 0)
+                    status = "Tạm dừng";
                 model.addRow(new Object[]{
                     stt++,
                     parent.getTpTitle(),
                     topic.getTpTitle(),
-                    topic.getTpID(),
-                    topic.getTpStatus()
+                    "",
+                    status
                 });
             }
         }
@@ -173,7 +177,6 @@ public class MonHocPanel extends javax.swing.JPanel {
                     e.consume();  // Đánh dấu sự kiện đã được xử lý
                     int selectedRow = table.getSelectedRow();
                     if (selectedRow != -1) {
-                        TopicBUS tpBUS = new TopicBUS();
                         DefaultTableModel model = (DefaultTableModel) table.getModel();
                         String monHoc = model.getValueAt(selectedRow, 1).toString();
                         TopicDTO topic = tpBUS.findOneTitle(monHoc);
@@ -181,6 +184,7 @@ public class MonHocPanel extends javax.swing.JPanel {
                             int confirm = JOptionPane.showConfirmDialog(table, "Bạn muốn khôi phục trạng thái hoạt động ?", "Xác nhận cập nhật",JOptionPane.YES_NO_OPTION);
                             if(confirm == JOptionPane.YES_OPTION){
                                 restore(topic, table);
+                                reloadSubject();
                                 loadDataSubjectTable();
                             }
                         }
@@ -190,8 +194,24 @@ public class MonHocPanel extends javax.swing.JPanel {
         });
     }
 
+    private void childrenOfSelectedSubject(){
+        List<TopicDTO> topics = tpBUS.getAll();
+        cbb_monhoc_chude.removeAllItems();
+        cbb_monhoc_chude.addItem("Chọn chủ đề");
+        if(cbb_monhoc_monhoc.getSelectedIndex() > 0){
+            TopicDTO selectedtopic = tpBUS.findOneTitle((String) cbb_monhoc_monhoc.getSelectedItem());
+            for(TopicDTO topic : topics)
+                if (topic.getTpParent() == selectedtopic.getTpID() && topic.getTpStatus() == 1)
+                    cbb_monhoc_chude.addItem(""+topic.getTpTitle());
+        } 
+//        else {
+//            for(TopicDTO topic : topics)
+//                if(topic.getTpParent() != -1 && topic.getTpStatus() == 1)
+//                    cbb_monhoc_chude.addItem(topic.getTpTitle());
+//        }
+    }
     
-     private void reloadSubject(){
+    private void reloadSubject(){
         cbb_monhoc_monhoc.removeAllItems();
         cbb_monhoc_monhoc.addItem("Chọn môn học");
         cbb_monhoc_chude.removeAllItems();
@@ -262,15 +282,15 @@ public class MonHocPanel extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jLabel18 = new javax.swing.JLabel();
         txt_monhoc_timkiem = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btn_tim = new javax.swing.JButton();
         cbb_monhoc_monhoc = new javax.swing.JComboBox<>();
         cbb_monhoc_chude = new javax.swing.JComboBox<>();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btn_taomoi = new javax.swing.JButton();
+        btn_capnhat = new javax.swing.JButton();
+        btn_xoa = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_monhoc = new javax.swing.JTable();
 
@@ -283,19 +303,24 @@ public class MonHocPanel extends javax.swing.JPanel {
         txt_monhoc_timkiem.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Nhập môn học . . . . . . . . . . . . . . . . . . .");
         txt_monhoc_timkiem.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jButton3.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setIcon(new FlatSVGIcon("icons/search.svg", 25, 25)
+        btn_tim.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
+        btn_tim.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_tim.setIcon(new FlatSVGIcon("icons/search.svg", 25, 25)
         );
-        jButton3.setText("Tìm");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btn_tim.setText("Tìm");
+        btn_tim.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_tim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btn_timActionPerformed(evt);
             }
         });
 
         cbb_monhoc_monhoc.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách môn học");
+        cbb_monhoc_monhoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbb_monhoc_monhocActionPerformed(evt);
+            }
+        });
 
         cbb_monhoc_chude.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách chủ đề");
 
@@ -315,7 +340,7 @@ public class MonHocPanel extends javax.swing.JPanel {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(txt_monhoc_timkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_tim, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cbb_monhoc_monhoc, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -345,7 +370,7 @@ public class MonHocPanel extends javax.swing.JPanel {
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_tim, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_monhoc_timkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbb_monhoc_monhoc, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbb_monhoc_chude, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -354,39 +379,39 @@ public class MonHocPanel extends javax.swing.JPanel {
 
         jPanel4.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
-        jButton6.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
-        jButton6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton6.setIcon(new FlatSVGIcon("icons/add.svg", 30, 30)
+        btn_taomoi.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        btn_taomoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_taomoi.setIcon(new FlatSVGIcon("icons/add.svg", 30, 30)
         );
-        jButton6.setText("Tạo mới");
-        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btn_taomoi.setText("Tạo mới");
+        btn_taomoi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_taomoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btn_taomoiActionPerformed(evt);
             }
         });
 
-        jButton7.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
-        jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton7.setIcon(new FlatSVGIcon("icons/reset.svg", 30, 30)
+        btn_capnhat.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        btn_capnhat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_capnhat.setIcon(new FlatSVGIcon("icons/reset.svg", 30, 30)
         );
-        jButton7.setText("Cập  nhật");
-        jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btn_capnhat.setText("Cập  nhật");
+        btn_capnhat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_capnhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btn_capnhatActionPerformed(evt);
             }
         });
 
-        jButton8.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ee2020; foreground: #ffffff;");
-        jButton8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton8.setIcon(new FlatSVGIcon("icons/delete.svg", 30, 30)
+        btn_xoa.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ee2020; foreground: #ffffff;");
+        btn_xoa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_xoa.setIcon(new FlatSVGIcon("icons/delete.svg", 30, 30)
         );
-        jButton8.setText("Xóa");
-        jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btn_xoa.setText("Xóa");
+        btn_xoa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_xoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btn_xoaActionPerformed(evt);
             }
         });
 
@@ -413,11 +438,11 @@ public class MonHocPanel extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton8)
+                .addComponent(btn_xoa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton7)
+                .addComponent(btn_capnhat)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6)
+                .addComponent(btn_taomoi)
                 .addContainerGap())
             .addComponent(jScrollPane3)
         );
@@ -426,9 +451,9 @@ public class MonHocPanel extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
+                    .addComponent(btn_taomoi)
+                    .addComponent(btn_capnhat)
+                    .addComponent(btn_xoa))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
         );
@@ -455,32 +480,39 @@ public class MonHocPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btn_timActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timActionPerformed
         // TODO add your handling code here:
         loadDataSubjectTable((ArrayList<TopicDTO>) findSubject());
-    }//GEN-LAST:event_jButton3ActionPerformed
+        if(txt_monhoc_timkiem.getText().isEmpty())
+            loadDataSubjectTable();
+    }//GEN-LAST:event_btn_timActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btn_taomoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taomoiActionPerformed
         mainView.showCustomDialog(null, new addSubject(null, false), "Thêm môn học");
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btn_taomoiActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
         // TODO add your handling code here:
           // TODO add your handling code here:
 
         int selectedRow = table_monhoc.getSelectedRow();
         if(selectedRow != -1){
             DefaultTableModel model = (DefaultTableModel) table_monhoc.getModel();
-            String ID = model.getValueAt(selectedRow, 1).toString();
+            String title = model.getValueAt(selectedRow, 1).toString();
             int confirm = JOptionPane.showConfirmDialog(this, "Bán muốn xóa dữ liệu này ?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
             if(confirm == JOptionPane.YES_OPTION){
-                TopicDTO topic = tpBUS.findOneTitle(ID);
+                TopicDTO topic = tpBUS.findOneTitle(title);
+                if (topic == null) {
+                    JOptionPane.showMessageDialog(this, "Không tìm thấy chủ đề với ID: " + title);
+                    return;
+                }
                 boolean result = tpBUS.delete(topic);
                 if(result){
 //                    model.removeRow(selectedRow);
                     JOptionPane.showMessageDialog(this, "Xóa thành công");
 //                    for(int i = 0;i < model.getRowCount();i++)
 //                        model.setValueAt(i + 1, i, 0);
+                    reloadSubject();
                     loadDataSubjectTable();
                 } else{
                     JOptionPane.showMessageDialog(this, "Xóa thất bại");
@@ -489,20 +521,27 @@ public class MonHocPanel extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn dự liệu muốn xóa");
         }
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btn_xoaActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btn_capnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_capnhatActionPerformed
         // TODO add your handling code here:
          reloadSubject();
-    }//GEN-LAST:event_jButton7ActionPerformed
+         childrenOfSelectedSubject();
+         loadDataSubjectTable();
+    }//GEN-LAST:event_btn_capnhatActionPerformed
+
+    private void cbb_monhoc_monhocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_monhoc_monhocActionPerformed
+        // TODO add your handling code here:
+        childrenOfSelectedSubject();
+    }//GEN-LAST:event_cbb_monhoc_monhocActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_capnhat;
+    private javax.swing.JButton btn_taomoi;
+    private javax.swing.JButton btn_tim;
+    private javax.swing.JButton btn_xoa;
     private javax.swing.JComboBox<String> cbb_monhoc_chude;
     private javax.swing.JComboBox<String> cbb_monhoc_monhoc;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;

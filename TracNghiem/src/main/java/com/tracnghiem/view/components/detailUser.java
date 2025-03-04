@@ -9,7 +9,6 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.UserBUS;
 import com.tracnghiem.dto.UserDTO;
 import com.tracnghiem.utils.RegexUtil;
-import com.tracnghiem.view.panel.SinhVienPanel;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -17,19 +16,20 @@ import javax.swing.JOptionPane;
  *
  * @author huulu
  */
-public class addUser extends javax.swing.JPanel {
+public class detailUser extends javax.swing.JPanel {
     private final UserBUS userBUS = new UserBUS();
     /**
      * Creates new form addUser
      */
-    public addUser(){
+    public detailUser(){
         
     }
-    public addUser(UserDTO user, boolean update) {
+    public detailUser(UserDTO user, boolean update) {
         initComponents();
+        
         //update user
         if (user != null && update) {
-            updateAction(user, update);
+            detailContentUser(user, update);
         }
         
         //
@@ -53,6 +53,7 @@ public class addUser extends javax.swing.JPanel {
         txt_hovaten = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         lb_id = new javax.swing.JLabel();
+        btn_matkhau = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         cbb_quyen = new javax.swing.JComboBox<>();
 
@@ -95,7 +96,18 @@ public class addUser extends javax.swing.JPanel {
         jLabel1.setText("ID:");
 
         lb_id.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lb_id.setText(String.valueOf(userBUS.getAll().size() + 1));
+
+        btn_matkhau.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        btn_matkhau.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_matkhau.setIcon(new FlatSVGIcon("icons/reset.svg", 30, 30)
+        );
+        btn_matkhau.setText("Đặt lại mật khẩu");
+        btn_matkhau.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_matkhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_matkhauActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel9.setText("Quyền:");
@@ -119,7 +131,9 @@ public class addUser extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lb_id)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 496, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
+                        .addComponent(btn_matkhau)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_luu))
                     .addComponent(txt_tendangnhap)
                     .addComponent(txt_hovaten)
@@ -140,7 +154,8 @@ public class addUser extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_luu)
                     .addComponent(jLabel1)
-                    .addComponent(lb_id))
+                    .addComponent(lb_id)
+                    .addComponent(btn_matkhau))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -167,48 +182,24 @@ public class addUser extends javax.swing.JPanel {
 
     private void btn_luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_luuActionPerformed
         // TODO add your handling code here:
-        if(txt_tendangnhap.getText().isEmpty() || txt_hovaten.getText().isEmpty() || txt_email.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
-            return;
-        }
-        if(!RegexUtil.isValidUserName(txt_tendangnhap.getText())){
-            JOptionPane.showMessageDialog(this, "Tên đăng nhập không hợp lệ");
-            return;
-        }
-        if(userBUS.isExistUserName(txt_tendangnhap.getText())){
-            JOptionPane.showMessageDialog(this, "Tên đăng nhập đã tồn tại");
-            return;
-        }
-        if(!RegexUtil.isValidEmail(txt_email.getText())){
-            JOptionPane.showMessageDialog(this, "Email không hợp lệ");
-            return;
-        }
-        if(userBUS.isExistEmail(txt_email.getText())){
-            JOptionPane.showMessageDialog(this, "Email đã tồn tại");
-            return;
-        }
-//        if(!txt_tendangnhap.getText().isEmpty() && !txt_hovaten.getText().isEmpty() && !txt_email.getText().isEmpty()){
-            int confirm = JOptionPane.showConfirmDialog(
-                    this, "Xác nhận thêm người dùng ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-            if(confirm == JOptionPane.YES_OPTION){
-                addContentUser();
-                
-                SinhVienPanel sinhvien = new SinhVienPanel();
-                sinhvien.loadUserTable(userBUS.getAll());
-            }
-//        }
     }//GEN-LAST:event_btn_luuActionPerformed
+
+    private void btn_matkhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_matkhauActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_matkhauActionPerformed
 
     private void txt_tendangnhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tendangnhapActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_tendangnhapActionPerformed
     
     private void updateAction(UserDTO user, boolean active){
+        lb_id.setText(String.valueOf(user.getUserID()));
         txt_tendangnhap.setEnabled(!active);
-        txt_tendangnhap.setText(Integer.toString(user.getUserID()));
+        txt_tendangnhap.setText(user.getUserName());
         txt_hovaten.setText(user.getUserFullName());
+        txt_hovaten.setEnabled(!active);
         txt_email.setText(user.getUserEmail());
-        // 0 is ADMIN, 1 is USER
+        // 1 is ADMIN, 0 is USER
         setRoleValue(cbb_quyen, user.getIsAdmin());
     }
    
@@ -218,36 +209,70 @@ public class addUser extends javax.swing.JPanel {
     }
 
     private static void setRoleValue(JComboBox<String> comboBox, int role) {
-        if (role == 0) {
+        if (role == 1) {
             comboBox.setSelectedItem("ADMIN");
         } else {
             comboBox.setSelectedItem("USER");
         }
     }
     
-    private void addContentUser(){
-        String tendangnhap = txt_tendangnhap.getText();
-        String hovaten = txt_hovaten.getText();
-        String email = txt_email.getText();
-        String matkhau = "123";
+    private void detailContentUser(UserDTO user, boolean update){
+        updateAction(user, update);
+        btn_luu.addActionListener(e -> {
+            int count = 0;
+            if(!RegexUtil.isValidEmail(txt_email.getText())){
+            JOptionPane.showMessageDialog(this, "Email không hợp lệ");
+            return;
+            }
+            if(userBUS.isExistEmail(txt_email.getText().trim())){
+                count++;
+                if(count == 2){
+                    JOptionPane.showMessageDialog(this, "Email đã tồn tại");
+                return;
+                }
+            }
+            if(cbb_quyen.getSelectedItem().toString().equals("ADMIN")){
+                user.setIsAdmin(1);
+            } else{
+                user.setIsAdmin(0);
+            }
+            if(!txt_email.getText().isEmpty()){
+                int confirm = JOptionPane.showConfirmDialog(this, "Xác nhận thay đổi thông tin", "Xác nhận", JOptionPane.YES_NO_OPTION);
+                if(confirm == JOptionPane.YES_OPTION){
+                    updateContentUser(user);
+                }
+        }
+        });
+        btn_matkhau.addActionListener(e ->{
+            resetPassword(user);
+        });
+    }
+    
+    private void updateContentUser(UserDTO user){
+        user.setUserEmail(txt_email.getText());
         int status = 0;
         if(cbb_quyen.getSelectedItem().toString().equals("ADMIN"))
             status = 1;
-        UserDTO user = new UserDTO(tendangnhap, email, matkhau, hovaten, status);
-        boolean result = userBUS.add(user);
+        user.setIsAdmin(status);
+        boolean result = userBUS.update(user);
         if(result){
-            JOptionPane.showMessageDialog(this, "Thêm người dùng thành công");
-            txt_tendangnhap.setText("");
-            txt_hovaten.setText("");
-            txt_email.setText("");
-            lb_id.setText(String.valueOf(userBUS.getAll().size() + 1));
-        } else {
-            JOptionPane.showMessageDialog(this,"Thêm người dùng thất bại");
+            JOptionPane.showMessageDialog(this, "Thay đổi thông tin thành công");
+        } else{
+            JOptionPane.showMessageDialog(this, "Thay đổi thông tin thất bại");
         }
+        
     }
     
+    private void resetPassword(UserDTO user){
+        int confirm = JOptionPane.showConfirmDialog(this, "Đặt lại mật khẩu mặc định ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if(confirm == JOptionPane.YES_OPTION){
+            JOptionPane.showMessageDialog(this, "Mật khẩu mặc định là 123");
+            user.setUserPassword("123");
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_luu;
+    private javax.swing.JButton btn_matkhau;
     private javax.swing.JComboBox<String> cbb_quyen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;

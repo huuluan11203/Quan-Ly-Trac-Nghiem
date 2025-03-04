@@ -37,7 +37,7 @@ public class UserDAO implements InterfaceDAO<UserDTO> {
 
     @Override
     public boolean update(UserDTO user) {
-        String sql = "UPDATE users SET userName=?, userEmail=?, userPassword=?, userFullName=?, isAdmin=? WHERE userID=?";
+        String sql = "UPDATE users SET userName=?, userEmail=?, userPassword=?, userFullName=?, isAdmin=?, userStatus=? WHERE userID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUserName());
@@ -45,7 +45,8 @@ public class UserDAO implements InterfaceDAO<UserDTO> {
             stmt.setString(3, user.getUserPassword());
             stmt.setString(4, user.getUserFullName());
             stmt.setInt(5, user.getIsAdmin());
-            stmt.setInt(6, user.getUserID());
+            stmt.setInt(6, user.getUserStatus());
+            stmt.setInt(7, user.getUserID());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +81,31 @@ public class UserDAO implements InterfaceDAO<UserDTO> {
                     rs.getString("userEmail"),
                     rs.getString("userPassword"),
                     rs.getString("userFullName"),
-                    rs.getInt("isAdmin")
+                    rs.getInt("isAdmin"),
+                    rs.getInt("userStatus")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public UserDTO selectByUserName(String user) {
+        String sql = "SELECT * FROM users WHERE userName=?";
+        try (Connection conn = JDBCUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, Integer.parseInt(user));
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new UserDTO(
+                    rs.getInt("userID"),
+                    rs.getString("userName"),
+                    rs.getString("userEmail"),
+                    rs.getString("userPassword"),
+                    rs.getString("userFullName"),
+                    rs.getInt("isAdmin"),
+                    rs.getInt("userStatus")
                 );
             }
         } catch (SQLException e) {
@@ -103,7 +128,8 @@ public class UserDAO implements InterfaceDAO<UserDTO> {
                     rs.getString("userEmail"),
                     rs.getString("userPassword"),
                     rs.getString("userFullName"),
-                    rs.getInt("isAdmin")
+                    rs.getInt("isAdmin"),
+                    rs.getInt("userStatus")
                 ));
             }
         } catch (SQLException e) {

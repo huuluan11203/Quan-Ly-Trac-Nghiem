@@ -15,22 +15,33 @@ public class UserDTO {
     private String userEmail;
     private String userFullName;
     private int isAdmin;
+    private int userStatus;
 
-    public UserDTO(int userID, String userName, String userEmail, String userPassword, String userFullName, int isAdmin) {
+    public UserDTO(int userID, String userName, String userEmail, String userPassword, String userFullName, int isAdmin, int userStatus) {
         this.userID = userID;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userFullName = userFullName;
         this.isAdmin = isAdmin;
+        this.userStatus = userStatus; 
     }
 
-    public UserDTO(String userPassword, String userName, String userEmail, String userFullName, int isAdmin) {
+    public UserDTO(String userName, String userEmail, String userPassword, String userFullName, int isAdmin) {
         this.userPassword = userPassword;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userFullName = userFullName;
         this.isAdmin = isAdmin;
+    }
+    
+    public UserDTO(String userName, String userEmail, String userPassword, String userFullName, int isAdmin, int userStatus) {
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userFullName = userFullName;
+        this.isAdmin = isAdmin;
+        this.userStatus = this.userStatus;
     }
 
     public UserDTO() {
@@ -84,10 +95,21 @@ public class UserDTO {
         this.isAdmin = isAdmin;
     }
 
+    public int getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(int userStatus) {
+        this.userStatus = userStatus;
+    }
+
     @Override
     public String toString() {
-        return "UserDTO{" + "userID=" + userID + ", userPassword=" + userPassword + ", userName=" + userName + ", userEmail=" + userEmail + ", userFullName=" + userFullName + ", isAdmin=" + isAdmin + '}';
+        return "UserDTO{" + "userID=" + userID + ", userPassword=" + userPassword + ", userName=" + userName + ", userEmail=" + userEmail + ", userFullName=" + userFullName + ", isAdmin=" + isAdmin + ", userStatus=" + userStatus + '}';
     }
+    
+
+    
     
     
     

@@ -53,7 +53,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="txt_monhoc_timkiem" min="-2" pref="441" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton3" min="-2" pref="84" max="-2" attributes="0"/>
+                          <Component id="btn_tim" min="-2" pref="84" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="cbb_monhoc_monhoc" min="-2" pref="175" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -92,7 +92,7 @@
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton3" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="btn_tim" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="txt_monhoc_timkiem" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="cbb_monhoc_monhoc" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                       <Component id="cbb_monhoc_chude" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
@@ -123,7 +123,7 @@
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txt_monhoc_timkiem.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);&#xa;txt_monhoc_timkiem.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Nh&#x1ead;p m&#xf4;n h&#x1ecd;c . . . . . . . . . . . . . . . . . . .&quot;);"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="btn_tim">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -137,10 +137,10 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_timActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton3.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #0bae1d; foreground: #ffffff;&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="btn_tim.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #0bae1d; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbb_monhoc_monhoc">
@@ -149,6 +149,9 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbb_monhoc_monhocActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="cbb_monhoc_monhoc.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Danh s&#xe1;ch m&#xf4;n h&#x1ecd;c&quot;);"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -193,11 +196,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jButton8" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_xoa" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton7" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_capnhat" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton6" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_taomoi" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
@@ -208,9 +211,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton8" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_taomoi" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_capnhat" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_xoa" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane3" pref="609" max="32767" attributes="0"/>
@@ -219,7 +222,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton6">
+        <Component class="javax.swing.JButton" name="btn_taomoi">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -233,13 +236,13 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_taomoiActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton6.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="btn_taomoi.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton7">
+        <Component class="javax.swing.JButton" name="btn_capnhat">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -253,13 +256,13 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_capnhatActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton7.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="btn_capnhat.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #3276c3; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton8">
+        <Component class="javax.swing.JButton" name="btn_xoa">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -273,10 +276,10 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_xoaActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jButton8.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #ee2020; foreground: #ffffff;&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="btn_xoa.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; background: #ee2020; foreground: #ffffff;&quot;);"/>
           </AuxValues>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">

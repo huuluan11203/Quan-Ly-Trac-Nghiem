@@ -74,7 +74,6 @@ public class TopicBUS {
             if(tpDTO.getTpTitle().equalsIgnoreCase(tenmonhoc))
                 return true;
         return false;
-        
     }
     
     
