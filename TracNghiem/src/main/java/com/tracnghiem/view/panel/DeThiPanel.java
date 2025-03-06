@@ -18,9 +18,13 @@ import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.ExamDTO;
 import com.tracnghiem.dto.QuestionDTO;
+import com.tracnghiem.dto.TopicDTO;
+import com.tracnghiem.view.components.addTest;
 import com.tracnghiem.view.components.choose;
 import com.tracnghiem.view.mainView;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -41,18 +45,22 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -60,11 +68,13 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
  */
 public class DeThiPanel extends javax.swing.JPanel {
 
-    private final TestBUS tBUS = new TestBUS();
-    private final TopicBUS tpBUS = new TopicBUS();
-    private ArrayList<TestDTO> listT = new ArrayList<>();
-    private LocalDate dateSelected;
-    private int tIDSelected = -1;
+    private static final ExamBUS eBus = new ExamBUS();
+    private static final TestBUS tBUS = new TestBUS();
+    private static final TopicBUS tpBUS = new TopicBUS();
+    private static ArrayList<TestDTO> listT = new ArrayList<>();
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Định dạng ngày
+    private static LocalDate dateSelected;
+    private static int tIDSelected = -1;
 
     /**
      * Creates new form DeThiPanel
@@ -102,6 +112,12 @@ public class DeThiPanel extends javax.swing.JPanel {
             }
         });
 
+        jDateChooser1.getDateEditor().addPropertyChangeListener("date", evt -> {
+            if (evt.getNewValue() != null) {
+                filterTable();
+            }
+        });
+        loadTopicComboBox();
         loadTable(listT);
     }
 
@@ -111,7 +127,7 @@ public class DeThiPanel extends javax.swing.JPanel {
         TableColumnModel columnModel = jTable4.getColumnModel();
         int totalWidth = jTable4.getWidth(); // Lấy chiều rộng tổng của bảng
 
-        double[] columnRatios = {0.05, 0.075, 0.25, 0.25, 0.075, 0.1, 0.05, 0.05, 0.05, 0.05};
+        double[] columnRatios = {0.05, 0.075, 0.25, 0.25, 0.075, 0.1, 0.05, 0.1};
 
         for (int i = 0; i < columnRatios.length; i++) {
             int columnWidth = (int) (totalWidth * columnRatios[i]);
@@ -120,26 +136,36 @@ public class DeThiPanel extends javax.swing.JPanel {
     }
 
     private void loadTable(ArrayList<TestDTO> list) {
+
         DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
         if (list.isEmpty()) {
-            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "", "", "", ""});
+            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "", ""});
             return;
         }
+
         for (TestDTO test : list) {
-            model.addRow(new Object[]{
-                test.getTestID(), // ID
-                test.getTestCode(), // Mã đề thi
-                test.getTestTitle(), // Tiêu đề
-                tpBUS.findOne(test.getTpID()).getTpTitle(), // Chủ đề
-                test.getTestDate(), // Thời gian
-                test.getTestTime(), // Giờ làm
-                test.getTestLimit(),
-                test.getNumEasy(), // Số lượng câu dễ
-                test.getNumMedium(), // Số lượng câu trung bình
-                test.getNumDifficult() // Số lượng câu khó
-            });
+            // Lấy danh sách các mã đề thi từ bảng exams
+            List<String> examCodes = eBus.getExamCodesByTestCode(test.getTestCode());
+
+            // Nếu có nhiều mã đề thì thêm từng mã đề vào bảng
+            for (String examCode : examCodes) {
+                String formattedDate = test.getTestDate().format(formatter);
+                String shortCode = examCode.substring(examCode.length() - 1);
+                model.addRow(new Object[]{
+                    test.getTestCode(), // ID
+                    shortCode, // Mã đề thi từ bảng exams
+                    test.getTestTitle(), // Tiêu đề
+                    tpBUS.findOne(test.getTpID()).getTpTitle(), // Chủ đề
+                    formattedDate, // Thời gian
+                    test.getTestTime(), // Giờ làm
+                    test.getTestLimit(), // Giới hạn thời gian làm bài
+                    test.getNumEasy()
+                    + test.getNumMedium()
+                    + test.getNumDifficult() // trong so cau
+                });
+            }
         }
     }
 
@@ -148,7 +174,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         if (dateSelected == null) {
             if (key.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Nhập từ khoá để tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Nhập từ khoá để tìm kiếm!", "Thông báo", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             loadTable(tBUS.search(key));
@@ -158,13 +184,15 @@ public class DeThiPanel extends javax.swing.JPanel {
 
     }
 
-    private void refresh() {
+    private void refresh() {   
+
+        
         listT = tBUS.getAll();
         textFieldSearch.setText("");
         dateSelected = null;
         jDateChooser1.setDate(null);
         tIDSelected = -1;
-
+        loadTopicComboBox();
         loadTable(listT);
     }
 
@@ -230,7 +258,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn nơi lưu file");
-        fileChooser.setSelectedFile(new File("DeThi_"+ test.getTestID() + "_" + test.getTestTitle() + ".docx"));
+        fileChooser.setSelectedFile(new File("DeThi_" + test.getTestID() + "_" + test.getTestTitle() + ".docx"));
         int userSelection = fileChooser.showSaveDialog(null);
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -317,8 +345,10 @@ public class DeThiPanel extends javax.swing.JPanel {
         tim_btn1 = new javax.swing.JButton();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton16 = new javax.swing.JButton();
-        refreshBtn = new javax.swing.JButton();
         nhap_excel = new javax.swing.JButton();
+        jLabel23 = new javax.swing.JLabel();
+        parentID = new javax.swing.JComboBox<>();
+        jLabel24 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
@@ -349,9 +379,10 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         jDateChooser1.putClientProperty(FlatClientProperties.STYLE, "arc: 10;");
 
-        jButton16.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        jButton16.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
         jButton16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton16.setText("X");
+        jButton16.setIcon(new FlatSVGIcon("icons/refresh.svg", 30, 30)
+        );
         jButton16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,24 +390,30 @@ public class DeThiPanel extends javax.swing.JPanel {
             }
         });
 
-        refreshBtn.setIcon(new FlatSVGIcon("icons/refresh.svg", 30 ,30)) ;
-        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshBtnActionPerformed(evt);
-            }
-        });
-
         nhap_excel.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
         nhap_excel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         nhap_excel.setIcon(new FlatSVGIcon("icons/word.svg", 30, 30)
         );
-        nhap_excel.setText("Xuất ra WORD");
+        nhap_excel.setText("Xuất File");
         nhap_excel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         nhap_excel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nhap_excelActionPerformed(evt);
             }
         });
+
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel23.setText("Thời gian");
+
+        parentID.setEditable(true);
+        parentID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parentIDActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel24.setText("Môn học/Chủ đề");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -391,13 +428,21 @@ public class DeThiPanel extends javax.swing.JPanel {
                         .addComponent(tim_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton16)
-                .addGap(46, 46, 46)
-                .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(nhap_excel))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(parentID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nhap_excel)
+                        .addContainerGap())
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,12 +454,17 @@ public class DeThiPanel extends javax.swing.JPanel {
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tim_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(nhap_excel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nhap_excel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
+                    .addComponent(parentID, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
         );
 
         jDateChooser1.setDateFormatString("dd/MM/yyyy");
@@ -432,7 +482,8 @@ public class DeThiPanel extends javax.swing.JPanel {
         calendarButton.setIcon(new FlatSVGIcon("icons/calendar.svg", 30, 30));  // Đổi icon thành emoji lịch (hoặc setIcon)
         calendarButton.setFocusPainted(false);
         calendarButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        refreshBtn.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
+        AutoCompleteDecorator.decorate(parentID);
+        parentID.setMaximumRowCount(5);
 
         jPanel8.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
@@ -454,6 +505,11 @@ public class DeThiPanel extends javax.swing.JPanel {
         );
         jButton14.setText("Chi tiết");
         jButton14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         jButton15.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ee2020; foreground: #ffffff;");
         jButton15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -470,7 +526,7 @@ public class DeThiPanel extends javax.swing.JPanel {
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "ID", "Mã đề thi", "Tiêu đề", "Chủ đề", "Ngày thi", "Giờ làm( phút)","Lượt", "SL dễ", "SL trung", "SL khó"
+                "ID", "Mã đề thi", "Tiêu đề", "Chủ đề", "Ngày thi", "Giờ làm( phút)","Lượt", "Tổng số câu"
             }
 
         ) {
@@ -544,26 +600,18 @@ public class DeThiPanel extends javax.swing.JPanel {
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         choose ch = new choose();
         JDialog dialog = mainView.showCustomDialog1(null, ch, "Chọn cấu trúc");
-        
-        
-        
+
         dialog.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton13ActionPerformed
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
-        jDateChooser1.setDate(null);
-        dateSelected = null;
-    }//GEN-LAST:event_jButton16ActionPerformed
 
-    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
-        // TODO add your handling code here:
         refresh();
-    }//GEN-LAST:event_refreshBtnActionPerformed
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     private void nhap_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nhap_excelActionPerformed
         // TODO add your handling code here:
@@ -584,6 +632,100 @@ public class DeThiPanel extends javax.swing.JPanel {
         exportToWord();
     }//GEN-LAST:event_nhap_excelActionPerformed
 
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        //update
+        int selectedRow = jTable4.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(jTable4, "Vui lòng chọn bài kiểm tra!");
+            return;
+        }
+        TestDTO t = tBUS.findOne((int) jTable4.getValueAt(selectedRow, 0));
+
+        addTest at = new addTest(t, true);
+        JDialog dialog = mainView.showCustomDialog1(null, at, "Xem đề thi");
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+        });
+
+
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void parentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parentIDActionPerformed
+        
+        if (parentID.getSelectedItem()!=null) {
+            filterTable();
+        }
+
+    }//GEN-LAST:event_parentIDActionPerformed
+
+    private void filterTable() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date selectedDate = jDateChooser1.getDate(); // Lấy ngày từ jDateChooser1
+        String selectedTopic = (String) parentID.getSelectedItem(); // Lấy chủ đề từ ComboBox
+
+        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        jTable4.setRowSorter(sorter);
+
+        List<RowFilter<DefaultTableModel, Object>> filters = new ArrayList<>();
+
+        // Lọc theo ngày
+        if (selectedDate != null) {
+            String selectedDateStr = sdf.format(selectedDate);
+            filters.add(RowFilter.regexFilter(selectedDateStr, 4)); // Cột ngày giả sử là 4
+        }
+
+        // Lọc theo chủ đề
+        if (!selectedTopic.equals("--Trống--")) {
+            filters.add(RowFilter.regexFilter("^" + selectedTopic + "$", 3)); // Cột chủ đề giả sử là 3
+        }
+
+        // Áp dụng bộ lọc
+        if (filters.isEmpty()) {
+            sorter.setRowFilter(null); // Không lọc nếu không chọn gì
+        } else {
+            sorter.setRowFilter(RowFilter.andFilter(filters)); // Kết hợp các bộ lọc
+        }
+    }
+
+    private void loadTopicComboBox() {
+        parentID.removeAllItems(); // Xóa dữ liệu cũ
+        parentID.addItem("--Trống--"); // Thêm lựa chọn mặc định
+        parentID.setSelectedIndex(0);
+
+        Map<String, Integer> topicMap = new LinkedHashMap<>();
+
+        ArrayList<TopicDTO> topics = tpBUS.getAll();
+        if (topics == null || topics.isEmpty()) {
+            return;
+        }
+
+        Set<Integer> parentIds = new HashSet<>(); // Lưu ID của các topic cha để lọc topic con cấp 1
+
+        // Duyệt qua danh sách topics để lấy topic cha (môn học)
+        for (TopicDTO topic : topics) {
+            if (topic.getTpStatus() != 0 && topic.getTpParent() == 0) { // Chỉ lấy môn học
+                topicMap.put(topic.getTpTitle(), topic.getTpID());
+                parentIds.add(topic.getTpID()); // Lưu ID để lọc topic con cấp 1
+            }
+        }
+
+        // Duyệt qua danh sách topics để lấy topic con cấp 1 (có parent là topic cha)
+        for (TopicDTO topic : topics) {
+            if (topic.getTpStatus() != 0 && parentIds.contains(topic.getTpParent())) {
+                topicMap.put(topic.getTpTitle(), topic.getTpID());
+            }
+        }
+
+        // Đưa dữ liệu vào ComboBox
+        for (String title : topicMap.keySet()) {
+            parentID.addItem(title);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton13;
@@ -592,12 +734,14 @@ public class DeThiPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton16;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable4;
     private javax.swing.JButton nhap_excel;
-    private javax.swing.JButton refreshBtn;
+    private javax.swing.JComboBox<String> parentID;
     private javax.swing.JTextField textFieldSearch;
     private javax.swing.JButton tim_btn1;
     // End of variables declaration//GEN-END:variables

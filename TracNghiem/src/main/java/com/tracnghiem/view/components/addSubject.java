@@ -63,6 +63,7 @@ public class addSubject extends javax.swing.JPanel {
         tpBUS.add(newTopic);
 
         JOptionPane.showMessageDialog(this, "Thêm môn học thành công");
+        reload();
         loadParentIDComboBox(); // Cập nhật lại combobox nếu cần
     }
 
@@ -150,6 +151,7 @@ public class addSubject extends javax.swing.JPanel {
     }
 
     private void reload() {
+        txt_tenmonhoc.setText("");
         id.setText(Integer.toString(tpBUS.getNextID()));
         loadParentIDComboBox();
         cbb_parentID.setSelectedIndex(0);

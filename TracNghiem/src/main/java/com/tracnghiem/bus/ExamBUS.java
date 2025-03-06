@@ -80,4 +80,10 @@ public class ExamBUS {
 
         return result;
     }
+    
+    public ArrayList<String> getExamCodesByTestCode(String testCode){
+        return eDAO.getExamCodesByTestCode(testCode);
+    }
+    
+    
 }

@@ -73,7 +73,7 @@ public class addTest extends javax.swing.JPanel {
     private ArrayList<QuestionDTO> listQSelected = new ArrayList<>();
     private LocalDate dateSelected = null;
     private final ArrayList<String> listExOrder = new ArrayList<>(Arrays.asList(
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"
     ));
 
     /**
@@ -86,29 +86,29 @@ public class addTest extends javax.swing.JPanel {
 
         jLabel1.setText(newTestID + "");
 
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        table_question.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 1) { // Kiểm tra click
                     qIDSelected = -1;
                     rowSelected = -1;
-                    int row = jTable2.getSelectedRow();
+                    int row = table_question.getSelectedRow();
                     if (row != -1) {
-                        qIDSelected = (int) jTable2.getValueAt(row, 0);
+                        qIDSelected = (int) table_question.getValueAt(row, 0);
                     }
                 }
             }
         });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        table_selected_quesion.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 1) { // Kiểm tra click 
                     qIDSelected = -1;
                     rowSelected = -1;
-                    int row = jTable1.getSelectedRow();
+                    int row = table_selected_quesion.getSelectedRow();
                     if (row != -1) {
                         rowSelected = row;
-                        qIDSelected = (int) jTable1.getValueAt(row, 0);
+                        qIDSelected = (int) table_selected_quesion.getValueAt(row, 0);
                     }
                 }
             }
@@ -135,11 +135,11 @@ public class addTest extends javax.swing.JPanel {
     }
 
     private void setColumnWidths() {
-        TableColumnModel columnModel = jTable2.getColumnModel();
-        int totalWidth = jTable2.getWidth(); // Lấy chiều rộng tổng của bảng
+        TableColumnModel columnModel = table_question.getColumnModel();
+        int totalWidth = table_question.getWidth(); // Lấy chiều rộng tổng của bảng
 
-        TableColumnModel columnModel1 = jTable1.getColumnModel();
-        int totalWidth1 = jTable1.getWidth(); // Lấy chiều rộng tổng của bảng
+        TableColumnModel columnModel1 = table_selected_quesion.getColumnModel();
+        int totalWidth1 = table_selected_quesion.getWidth(); // Lấy chiều rộng tổng của bảng
 
         double[] columnRatios = {0.1, 0.5, 0.3, 0.1};
 
@@ -208,7 +208,7 @@ public class addTest extends javax.swing.JPanel {
     }
 
     private void loadTableQuestion(ArrayList<QuestionDTO> list) {
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) table_question.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
 
         if (list.isEmpty()) {
@@ -273,14 +273,12 @@ public class addTest extends javax.swing.JPanel {
         }
 
         listQSelected.add(qAdd);
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) table_selected_quesion.getModel();
         model.addRow(new Object[]{
             qAdd.getQID(),
             qAdd.getQContent(),
             tpBUS.findOne(qAdd.getQTopic()).getTpTitle(),
             qAdd.getQLevel()});
-
-        
 
     }
 
@@ -322,70 +320,62 @@ public class addTest extends javax.swing.JPanel {
     }
 
     private void buildData() {
-        
-        TestDTO tNew = new TestDTO(
-                testCode.getText(), 
+
+        TestDTO tNew = new TestDTO(newTestID,
+                testCode.getText(),
                 testTitle.getText(),
                 Integer.parseInt(testTime.getText()),
                 idTopicParent,
                 Integer.parseInt(totalEasy.getText()),
                 Integer.parseInt(totalMedium.getText()),
                 Integer.parseInt(totalDiff.getText()),
-                (int)testLimit.getValue(),
+                (int) testLimit.getValue(),
                 dateSelected,
                 1
-        
         );
-        
+
+        //list cau hoi
         ArrayList<Integer> listIDs = new ArrayList<>();
         for (QuestionDTO q : listQSelected) {
             listIDs.add(q.getQID());
         }
-        
 
-        int k = (int) quantityExams.getValue(); 
+        int k = (int) quantityExams.getValue();
         ArrayList<String> listRandomIDs = RandomListsUtil.generateUniqueRandomLists(listIDs, k);
-
-        
-        
-        
-        
+   
+        //list exams
         ArrayList<ExamDTO> listE = new ArrayList<>();
         ExamDTO e;
         for (int i = 0; i < k; i++) {
             e = new ExamDTO(tNew.getTestCode(),
-                    listExOrder.get(i), 
-                    tNew.getTestCode().concat(listExOrder.get(i)), 
+                    listExOrder.get(i),
+                    tNew.getTestCode().concat(listExOrder.get(i)),
                     listRandomIDs.get(i));
             
+            System.out.println(e.getExCode());
             listE.add(e);
         }
-       
-        
+
+        for (ExamDTO exam : listE) {
+            if (!eBUS.add(exam)) {
+                JOptionPane.showMessageDialog(null, "Thêm đề thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                System.out.println("loi them exam");
+                return;
+            }
+        }
         if (!tBUS.add(tNew)) {
             JOptionPane.showMessageDialog(null, "Thêm bài thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return ;   
+            System.out.println("loi then=m bai thi");
+            return;
         }
-        
-        for (ExamDTO exam : listE) {
-                System.out.println(exam.toString());}
-        for (ExamDTO exam : listE) {
-                System.out.println("");
-                if (!eBUS.add(exam)) {
-                    JOptionPane.showMessageDialog(null, "Thêm đề thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return ; 
-                }
-        }
-        
+
         JOptionPane.showMessageDialog(null, "Thêm bài thi thành công!", "Thông", JOptionPane.INFORMATION_MESSAGE);
         java.awt.Window window = SwingUtilities.getWindowAncestor(this);
-            if (window instanceof JDialog) {
-                ((JDialog) window).dispose();
-            }
+        if (window instanceof JDialog) {
+            ((JDialog) window).dispose();
+        }
     }
-    
-    
-    
+
     private void addNew() {
         buildData();
     }
@@ -424,9 +414,9 @@ public class addTest extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         tim_btn1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_selected_quesion = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        table_question = new javax.swing.JTable();
         tim_btn2 = new javax.swing.JButton();
         tim_btn3 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
@@ -510,7 +500,7 @@ public class addTest extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_selected_quesion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -527,9 +517,9 @@ public class addTest extends javax.swing.JPanel {
             }
 
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table_selected_quesion);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        table_question.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -547,7 +537,7 @@ public class addTest extends javax.swing.JPanel {
 
         }
     );
-    jScrollPane2.setViewportView(jTable2);
+    jScrollPane2.setViewportView(table_question);
     SwingUtilities.invokeLater(() -> setColumnWidths());
 
     tim_btn2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
@@ -680,7 +670,7 @@ public class addTest extends javax.swing.JPanel {
                     .addComponent(totalDiff, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
                     .addComponent(jLabel16)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGap(18, 18, 18)
                     .addComponent(totalQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addContainerGap())
     );
@@ -717,11 +707,10 @@ public class addTest extends javax.swing.JPanel {
                     .addComponent(totalMedium))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(totalDiff))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
+                    .addComponent(totalDiff)
                     .addComponent(jLabel16)
-                    .addComponent(totalQuestion)))
+                    .addComponent(totalQuestion))
+                .addComponent(jLabel11))
             .addGap(5, 5, 5)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1003,10 +992,11 @@ public class addTest extends javax.swing.JPanel {
                 monhocCBB.setEnabled(false);
                 jButton16.setIcon(new FlatSVGIcon("icons/lock.svg", 30, 30));
             }
-            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            DefaultTableModel model = (DefaultTableModel) table_question.getModel();
             model.setRowCount(0); // Xóa dữ liệu cũ
         }
 
+        loadTableByTopic(idTopicParent, idTopicChildren);
 
     }//GEN-LAST:event_monhocCBBActionPerformed
 
@@ -1030,9 +1020,9 @@ public class addTest extends javax.swing.JPanel {
 
     private void tim_btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tim_btn2ActionPerformed
         // TODO add your handling code here:
-        int[] selectedRows = jTable2.getSelectedRows();
+        int[] selectedRows = table_question.getSelectedRows();
         for (int row : selectedRows) {
-            qIDSelected = (int) jTable2.getValueAt(row, 0);
+            qIDSelected = (int) table_question.getValueAt(row, 0);
             addQuestionToTable();
         }
         countQuantityTypeQuestion();
@@ -1042,13 +1032,13 @@ public class addTest extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        int[] selectedRows = jTable1.getSelectedRows();
+        int[] selectedRows = table_selected_quesion.getSelectedRows();
         for (int i = selectedRows.length - 1; i >= 0; i--) {
             int row = selectedRows[i];
 
             // Lấy ID hàng được chọn
-            qIDSelected = (int) jTable1.getValueAt(row, 0);
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            qIDSelected = (int) table_selected_quesion.getValueAt(row, 0);
+            DefaultTableModel model = (DefaultTableModel) table_selected_quesion.getModel();
 
             // Xóa hàng khỏi bảng và danh sách
             model.removeRow(row);
@@ -1066,13 +1056,12 @@ public class addTest extends javax.swing.JPanel {
             return;
         }
 
-      
         int confirm = JOptionPane.showConfirmDialog(
-            null, 
-            "Đổi chủ đề sẽ xoá tất cả câu hỏi đã chọn!\nBạn có muốn đổi chủ đề?", 
-            "Xác nhận", 
-            JOptionPane.YES_NO_OPTION, 
-            JOptionPane.WARNING_MESSAGE
+                null,
+                "Đổi chủ đề sẽ xoá tất cả câu hỏi đã chọn!\nBạn có muốn đổi chủ đề?",
+                "Xác nhận",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -1081,7 +1070,7 @@ public class addTest extends javax.swing.JPanel {
             monhocCBB.setSelectedIndex(0);
             idTopicParent = -1;
             listQSelected.clear();
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            DefaultTableModel model = (DefaultTableModel) table_selected_quesion.getModel();
             model.setRowCount(0); // Xóa dữ liệu cũ
             totalQuestion.setText(listQSelected.size() + "");
         }
@@ -1090,17 +1079,18 @@ public class addTest extends javax.swing.JPanel {
 
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
-            if (validDataAddNew()) {
-                int confirm = JOptionPane.showConfirmDialog(
-                null, 
-                "Xác nhận thêm bài thi mới?", 
-                "Xác nhận", 
-                JOptionPane.YES_NO_OPTION, 
-                JOptionPane.INFORMATION_MESSAGE
+        if (validDataAddNew()) {
+            int confirm = JOptionPane.showConfirmDialog(
+                    null,
+                    "Xác nhận thêm bài thi mới?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE
             );
 
-        if (confirm == JOptionPane.YES_OPTION) 
-            addNew();
+            if (confirm == JOptionPane.YES_OPTION) {
+                addNew();
+            }
         }
 
     }//GEN-LAST:event_luuActionPerformed
@@ -1132,14 +1122,14 @@ public class addTest extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JComboBox<String> levelCBB;
     private javax.swing.JButton luu;
     private javax.swing.JComboBox<String> monhocCBB;
     private javax.swing.JComboBox<String> parentID;
     private javax.swing.JSpinner quantityExams;
+    private javax.swing.JTable table_question;
+    private javax.swing.JTable table_selected_quesion;
     private javax.swing.JTextField testCode;
     private javax.swing.JSpinner testLimit;
     private javax.swing.JTextField testTime;

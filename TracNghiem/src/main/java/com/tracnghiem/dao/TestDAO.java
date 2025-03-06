@@ -18,19 +18,20 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
     }
      @Override
     public boolean insert(TestDTO test) {
-        String sql = "INSERT INTO test(testCode, testTittle, testTime, tpID, num_easy, num_medium, num_diff, testLimit, testDate, testStatus) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO test(testID, testCode, testTitle, testTime, tpID, num_easy, num_medium, num_diff, testLimit, testDate, testStatus) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, test.getTestCode());
-            ps.setString(2, test.getTestTitle());
-            ps.setInt(3, test.getTestTime());
-            ps.setInt(4, test.getTpID());
-            ps.setInt(5, test.getNumEasy());
-            ps.setInt(6, test.getNumMedium());
-            ps.setInt(7, test.getNumDifficult());
-            ps.setInt(8, test.getTestLimit());
-            ps.setDate(9, Date.valueOf(test.getTestDate()));
-            ps.setInt(10, test.getTestStatus());
+            ps.setInt(1, test.getTestID());
+            ps.setString(2, test.getTestCode());
+            ps.setString(3, test.getTestTitle());
+            ps.setInt(4, test.getTestTime());
+            ps.setInt(5, test.getTpID());
+            ps.setInt(6, test.getNumEasy());
+            ps.setInt(7, test.getNumMedium());
+            ps.setInt(8, test.getNumDifficult());
+            ps.setInt(9, test.getTestLimit());
+            ps.setDate(10, Date.valueOf(test.getTestDate()));
+            ps.setInt(11, test.getTestStatus());
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -40,7 +41,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
 
     @Override
     public boolean update(TestDTO test) {
-        String sql = "UPDATE test SET testCode=?, testTittle=?, testTime=?, tpID=?, num_easy=?, num_medium=?, num_diff=?, testLimit=?, testDate=?, testStatus=? WHERE testID=?";
+        String sql = "UPDATE test SET testCode=?, testTitle=?, testTime=?, tpID=?, num_easy=?, num_medium=?, num_diff=?, testLimit=?, testDate=?, testStatus=? WHERE testID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, test.getTestCode());
@@ -72,7 +73,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
                 tests.add(new TestDTO(
                     rs.getInt("testID"),
                     rs.getString("testCode"),
-                    rs.getString("testTittle"),
+                    rs.getString("testTitle"),
                     rs.getInt("testTime"),
                     rs.getInt("tpID"),
                     rs.getInt("num_easy"),
@@ -101,7 +102,7 @@ public class TestDAO implements InterfaceDAO<TestDTO> {
                     test = new TestDTO(
                         rs.getInt("testID"),
                         rs.getString("testCode"),
-                        rs.getString("testTittle"),
+                        rs.getString("testTitle"),
                         rs.getInt("testTime"),
                         rs.getInt("tpID"),
                         rs.getInt("num_easy"),
