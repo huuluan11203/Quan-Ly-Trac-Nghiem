@@ -62,6 +62,9 @@ public class addTestAuto extends javax.swing.JPanel {
      */
     public addTestAuto(TestDTO test, boolean update) {
         initComponents();
+        newTestID = tBUS.getMaxID() + 1;
+
+        jLabel1.setText(newTestID + "");
     }
 
     /**
@@ -94,13 +97,13 @@ public class addTestAuto extends javax.swing.JPanel {
         jButton16 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        SpinnerNumberModel model1 = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
         testLimit1 = new javax.swing.JSpinner(model1);
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        SpinnerNumberModel model2 = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
+        SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
         testLimit2 = new javax.swing.JSpinner(model2);
-        SpinnerNumberModel model3 = new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1);
+        SpinnerNumberModel model3 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
         testLimit3 = new javax.swing.JSpinner(model3);
         cbb_child = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
@@ -110,6 +113,7 @@ public class addTestAuto extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         SpinnerNumberModel model4 = new SpinnerNumberModel(1, 1, 10, 1);
         quantityExams = new javax.swing.JSpinner(model4);
+        luu2 = new javax.swing.JButton();
 
         jPanel3.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
@@ -376,6 +380,18 @@ public class addTestAuto extends javax.swing.JPanel {
 
         quantityExams.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
 
+        luu2.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        luu2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        luu2.setIcon(new FlatSVGIcon("icons/next.svg", 30, 30)
+        );
+        luu2.setText("Chọn tiếp");
+        luu2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        luu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                luu2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -407,7 +423,10 @@ public class addTestAuto extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(totalQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel13)))
-                    .addComponent(luu1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(luu1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(luu2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -434,7 +453,9 @@ public class addTestAuto extends javax.swing.JPanel {
                     .addComponent(jLabel6)
                     .addComponent(totalQuestion))
                 .addGap(18, 18, 18)
-                .addComponent(luu1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(luu1)
+                    .addComponent(luu2))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -481,35 +502,16 @@ public class addTestAuto extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-     private void loadTpChildren(int idParent) {
-        topicMapChildren.clear();
-        topicMapChildren.put("--None--", -1);
-        for (TopicDTO t : tpBUS.getAllChildTopics(idParent)) {
-            topicMapChildren.put(t.getTpTitle(), t.getTpID());
-        }
-
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-
-        for (String s : topicMapChildren.keySet()) {
-            model.addElement(s);
-        }
-        
-    }
-    
-    
-    
     private void monhocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monhocCBBActionPerformed
-   
 
     }//GEN-LAST:event_monhocCBBActionPerformed
 
+
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
-      
+
     }//GEN-LAST:event_luuActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
         if (idTopicParent == -1) {
             return;
         }
@@ -523,8 +525,13 @@ public class addTestAuto extends javax.swing.JPanel {
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            
+            jButton16.setIcon(new FlatSVGIcon("icons/unlock.svg", 30, 30));
+            monhocCBB.setEnabled(true);
+            monhocCBB.setSelectedIndex(0);
+            idTopicParent = -1;
+            totalQuestion.setText(listQSelected.size() + "");
         }
+
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void cbb_childActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_childActionPerformed
@@ -535,6 +542,40 @@ public class addTestAuto extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_luu1ActionPerformed
 
+    private void luu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luu2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_luu2ActionPerformed
+
+    private void loadTpParent() {
+        topicMapParent.clear();
+        topicMapParent.put("--None--", -1);
+
+        for (TopicDTO t : tpBUS.getAll()) {
+            topicMapParent.put(t.getTpTitle(), t.getTpID());
+        }
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+        for (String s : topicMapParent.keySet()) {
+            model.addElement(s);
+        }
+        monhocCBB.setModel(model);
+    }
+
+    private void loadTpChildren(int idParent) {
+        topicMapChildren.clear();
+        topicMapChildren.put("--None--", -1);
+        for (TopicDTO t : tpBUS.getAllChildTopics(idParent)) {
+            topicMapChildren.put(t.getTpTitle(), t.getTpID());
+        }
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+        for (String s : topicMapChildren.keySet()) {
+            model.addElement(s);
+        }
+        cbb_child.setModel(model);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_child;
@@ -558,6 +599,7 @@ public class addTestAuto extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton luu;
     private javax.swing.JButton luu1;
+    private javax.swing.JButton luu2;
     private javax.swing.JComboBox<String> monhocCBB;
     private javax.swing.JSpinner quantityExams;
     private javax.swing.JTextField testCode;

@@ -7,6 +7,9 @@ package com.tracnghiem.view.components;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.view.mainView;
+import com.tracnghiem.view.panel.DeThiPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 
 /**
@@ -95,25 +98,26 @@ public class choose extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
-        
+
         mainView.closeCurrentDialog(this);
-        addTest addtest= new addTest(null, false);
-        
+        addTest addtest = new addTest(null, false);
+
         JDialog dialog = mainView.showCustomDialog1(null, addtest, "Thêm thủ công");
-        
+
         dialog.setVisible(true);
     }//GEN-LAST:event_luuActionPerformed
 
     private void luu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luu1ActionPerformed
         mainView.closeCurrentDialog(this);
-        addTestAuto addtestAuto= new addTestAuto(null, false);
-        
+        addTestAuto addtestAuto = new addTestAuto(null, false);
+
         JDialog dialog = mainView.showCustomDialog1(null, addtestAuto, "Thêm tự động");
-        
+
+
+        // Hiển thị dialog
         dialog.setVisible(true);
     }//GEN-LAST:event_luu1ActionPerformed
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
