@@ -9,7 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
-        <exec.mainClass>com.tracnghiem.TracNghiem</exec.mainClass>
+        <exec.mainClass>com.tracnghiem.TracNghiem</exec.mainClass>  
     </properties>
     
     <dependencies>
@@ -48,5 +48,11 @@
 	<artifactId>swingx-all</artifactId>
 	<version>1.6.4</version>
 </dependency>
+        <dependency>
+            <groupId>org.swinglabs.swingx</groupId>
+            <artifactId>swingx-autocomplete</artifactId>
+            <version>1.6.5-1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 </project>

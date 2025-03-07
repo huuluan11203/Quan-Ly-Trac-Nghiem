@@ -234,10 +234,11 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `userID` int NOT NULL AUTO_INCREMENT,
   `userName` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'login = userName',
-  `userEmail` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userEmail` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `userPassword` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'mã hóa dùng md5',
   `userFullName` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `isAdmin` tinyint NOT NULL COMMENT '1: admin; 0: user',
+  `userStatus` tinyint NOT NULL DEFAULT 1 COMMENT 'mặc định trạng thái là 1',
   PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
