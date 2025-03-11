@@ -13,7 +13,7 @@ public class main {
         FlatLightLaf.setup();
            
         SwingUtilities.invokeLater(() -> {
-            new com.tracnghiem.view.mainView().setVisible(true);   // Khởi động giao diện chính
+            new com.tracnghiem.view.userView().setVisible(true);   // Khởi động giao diện chính
         });
     }
 }

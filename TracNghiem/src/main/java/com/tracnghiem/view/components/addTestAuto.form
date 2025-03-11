@@ -483,7 +483,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbb_childActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// K&#xed;ch ho&#x1ea1;t AutoComplete&#xa;AutoCompleteDecorator.decorate(monhocCBB);&#xa;monhocCBB.setMaximumRowCount(5);"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// K&#xed;ch ho&#x1ea1;t AutoComplete&#xa;AutoCompleteDecorator.decorate(cbb_child);&#xa;monhocCBB.setMaximumRowCount(5);"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="monhocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, &quot;Danh s&#xe1;ch m&#xf4;n h&#x1ecd;c&quot;);&#xa;monhocCBB.putClientProperty(FlatClientProperties.STYLE, &quot;arc: 10; &quot;);"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>

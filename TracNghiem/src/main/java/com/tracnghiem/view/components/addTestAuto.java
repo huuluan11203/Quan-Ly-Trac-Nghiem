@@ -65,6 +65,8 @@ public class addTestAuto extends javax.swing.JPanel {
         newTestID = tBUS.getMaxID() + 1;
 
         jLabel1.setText(newTestID + "");
+        
+        loadTpParent();
     }
 
     /**
@@ -478,7 +480,7 @@ public class addTestAuto extends javax.swing.JPanel {
         formatter5.setAllowsInvalid(false);  // Không cho phép nhập ký tự không hợp lệ
         formatter5.setCommitsOnValidEdit(true); // Tự động cập nhật khi nhập số hợp lệ
         // Kích hoạt AutoComplete
-        AutoCompleteDecorator.decorate(monhocCBB);
+        AutoCompleteDecorator.decorate(cbb_child);
         monhocCBB.setMaximumRowCount(5);
         // Định dạng lại phần nhập số (loại bỏ dấu phân cách)
         JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) quantityExams.getEditor();
@@ -503,7 +505,18 @@ public class addTestAuto extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void monhocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monhocCBBActionPerformed
+         // TODO add your handling code here:
+        String selectedTopic = (String) monhocCBB.getSelectedItem();
+        Integer selectedID = topicMapParent.get(selectedTopic);
 
+        if (selectedID != null) {
+            loadTpChildren(selectedID);
+            idTopicParent = selectedID;
+            if (idTopicParent != -1) {
+                monhocCBB.setEnabled(false);
+                jButton16.setIcon(new FlatSVGIcon("icons/lock.svg", 30, 30));
+            }
+        }
     }//GEN-LAST:event_monhocCBBActionPerformed
 
 
