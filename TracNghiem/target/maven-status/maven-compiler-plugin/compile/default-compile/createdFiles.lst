@@ -21,12 +21,15 @@ com\tracnghiem\view\panel\SinhVienPanel$4.class
 com\tracnghiem\view\components\addTestAuto$6.class
 com\tracnghiem\view\components\updateQuestion$10.class
 com\tracnghiem\view\panel\DeThiPanel$9.class
+com\tracnghiem\view\panel\BaiThiPanel$5.class
 com\tracnghiem\view\panel\CauHoiPanel.class
 com\tracnghiem\view\components\choose$2.class
 com\tracnghiem\view\components\addQuestion$12.class
 com\tracnghiem\view\components\detailQuestion$13.class
 com\tracnghiem\view\components\updateQuestion$3.class
 com\tracnghiem\bus\ExamBUS.class
+com\tracnghiem\view\panel\Info.class
+com\tracnghiem\view\panel\BaiThiPanel$4.class
 com\tracnghiem\view\components\addTest$14.class
 com\tracnghiem\view\components\addQuestion$3.class
 com\tracnghiem\view\components\detailUser$1.class
@@ -62,6 +65,7 @@ com\tracnghiem\view\panel\DiemPanel$1.class
 com\tracnghiem\view\panel\CauHoiPanel$8.class
 com\tracnghiem\view\components\addTest$2.class
 com\tracnghiem\view\panel\CauHoiPanel$5.class
+com\tracnghiem\view\panel\BaiThiPanel$1.class
 com\tracnghiem\view\components\updateQuestion$17.class
 com\tracnghiem\view\components\updateQuestion$22.class
 com\tracnghiem\view\components\previewDetailQuestion$5.class
@@ -72,6 +76,7 @@ com\tracnghiem\view\loginView$2.class
 com\tracnghiem\view\panel\DiemPanel$3.class
 com\tracnghiem\view\components\addQuestion.class
 com\tracnghiem\view\panel\DeThiPanel$10.class
+com\tracnghiem\view\panel\XemDiemPanel.class
 com\tracnghiem\view\panel\MonHocPanel$4.class
 com\tracnghiem\view\components\addQuestion$14.class
 com\tracnghiem\view\components\addQuestion$22.class
@@ -108,6 +113,7 @@ com\tracnghiem\view\panel\MonHocPanel$2.class
 com\tracnghiem\view\components\previewDetailQuestion$1.class
 com\tracnghiem\dao\ExamDAO.class
 com\tracnghiem\dto\TopicDTO.class
+com\tracnghiem\view\panel\BaiThiPanel$2.class
 com\tracnghiem\view\components\updateQuestion$13.class
 com\tracnghiem\bus\TestBUS.class
 com\tracnghiem\dto\LogDTO.class
@@ -138,10 +144,12 @@ com\tracnghiem\view\components\updateQuestion$18.class
 com\tracnghiem\view\components\addTestAuto$2.class
 com\tracnghiem\view\components\addSubject.class
 com\tracnghiem\view\components\addUser.class
+com\tracnghiem\view\userView$1.class
 com\tracnghiem\view\panel\DeThiPanel$5.class
 com\tracnghiem\dto\UserDTO.class
 com\tracnghiem\view\components\previewDetailQuestion.class
 com\tracnghiem\view\panel\CauHoiPanel$3.class
+com\tracnghiem\view\userView$2.class
 com\tracnghiem\view\components\addUser$3.class
 com\tracnghiem\view\panel\MonHocPanel$3.class
 com\tracnghiem\view\panel\MonHocPanel$8.class
@@ -150,8 +158,10 @@ com\tracnghiem\view\components\updateQuestion$19.class
 com\tracnghiem\view\panel\CauHoiPanel$10.class
 com\tracnghiem\dto\TestDTO.class
 com\tracnghiem\view\components\addTest$9.class
+com\tracnghiem\view\panel\BaiThiPanel$3.class
 com\tracnghiem\view\panel\SinhVienPanel.class
 com\tracnghiem\view\loginView$1.class
+com\tracnghiem\view\panel\BaiThiPanel.class
 com\tracnghiem\view\panel\SinhVienPanel$10.class
 com\tracnghiem\dao\TopicDAO.class
 com\tracnghiem\view\components\addTest$3.class
@@ -182,6 +192,7 @@ com\tracnghiem\view\panel\CauHoiPanel$12.class
 com\tracnghiem\view\components\addQuestion$4.class
 com\tracnghiem\view\components\addSubject$2.class
 com\tracnghiem\view\components\detailQuestion$3.class
+com\tracnghiem\view\panel\BaiThiPanel$7.class
 com\tracnghiem\view\components\choose.class
 com\tracnghiem\view\panel\DeThiPanel$2.class
 com\tracnghiem\view\panel\DiemPanel.class
@@ -191,6 +202,7 @@ com\tracnghiem\view\components\updateQuestion$6.class
 com\tracnghiem\view\components\addTest$7.class
 com\tracnghiem\view\components\detailQuestion$10.class
 com\tracnghiem\view\components\detailQuestion$2.class
+com\tracnghiem\view\panel\BaiThiPanel$6.class
 com\tracnghiem\view\components\previewAddQuestion$1.class
 com\tracnghiem\view\panel\CauHoiPanel$13.class
 com\tracnghiem\view\panel\SinhVienPanel$2.class
@@ -204,3 +216,4 @@ com\tracnghiem\view\panel\DeThiPanel$1.class
 com\tracnghiem\view\components\addSubject$1.class
 com\tracnghiem\view\components\updateQuestion$5.class
 com\tracnghiem\view\panel\MonHocPanel$11.class
+com\tracnghiem\view\userView.class

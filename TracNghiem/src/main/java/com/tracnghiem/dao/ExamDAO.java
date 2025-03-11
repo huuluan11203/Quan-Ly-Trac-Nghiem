@@ -147,4 +147,28 @@ public class ExamDAO implements InterfaceDAO<ExamDTO> {
         return examCodes;
     }
 
+    public ExamDTO getExamByExCode(String exCode) {
+        ExamDTO exam = null;
+        String sql = "SELECT * FROM exams WHERE exCode = ?"; // Truy vấn SQL
+
+        try (Connection conn = JDBCUtil.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, exCode); // Set giá trị tham số
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Tạo đối tượng ExamDTO từ dữ liệu trong ResultSet
+                    exam = new ExamDTO();
+                    exam.setTestCode(rs.getString("testCode"));
+                    exam.setExCode(rs.getString("exCode"));
+                    exam.setExOrder(rs.getString("exOrder"));
+                    exam.setExQuesIDs(rs.getString("ex_quesIDs"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exam;
+    }
+
 }

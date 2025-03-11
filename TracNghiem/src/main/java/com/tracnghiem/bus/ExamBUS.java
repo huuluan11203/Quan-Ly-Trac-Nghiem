@@ -85,5 +85,7 @@ public class ExamBUS {
         return eDAO.getExamCodesByTestCode(testCode);
     }
     
-    
+    public ExamDTO geExamByExCode(String exCode){
+        return eDAO.getExamByExCode(exCode);
+    }
 }
