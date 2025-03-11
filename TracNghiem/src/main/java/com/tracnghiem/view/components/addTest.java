@@ -985,7 +985,6 @@ public class addTest extends javax.swing.JPanel {
         Integer selectedID = topicMapParent.get(selectedTopic);
 
         if (selectedID != null) {
-            System.out.println("Monhoccbb");
             loadTpChildren(selectedID);
             idTopicParent = selectedID;
             if (idTopicParent != -1) {
