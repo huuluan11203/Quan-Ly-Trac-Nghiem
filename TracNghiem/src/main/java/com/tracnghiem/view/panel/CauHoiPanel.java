@@ -139,9 +139,10 @@ public class CauHoiPanel extends javax.swing.JPanel {
         }
 
         for (QuestionDTO question : list) {
+            TopicDTO t = tBUS.findOne(question.getQTopic());
             model.addRow(new Object[]{
                 question.getQID(),
-                tBUS.findOne(question.getQTopic()).getTpTitle(),
+                t == null ? "" : t.getTpTitle(),
                 question.getQContent(),
                 question.getQLevel(),
                 question.getQPictures(),

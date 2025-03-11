@@ -32,11 +32,11 @@ public class JDBCUtil {
 //            String url = "jdbc:mysql://127.0.0.1:3303/tracnghiem";
 //            String password = "1234"; 
             // Phat
-//            String url = "jdbc:mysql://127.0.0.1:2434/tracnghiem";
-  //          String password = ""; 
+            String url = "jdbc:mysql://127.0.0.1:2434/tracnghiem";
+            String password = ""; 
             // Kiet
-            String url = "jdbc:mysql://localhost/tracnghiem";
-            String password = "your_password";
+//            String url = "jdbc:mysql://localhost/tracnghiem";
+//            String password = "your_password";
             
             String userName = "root";         
             //Tao ket noi 
