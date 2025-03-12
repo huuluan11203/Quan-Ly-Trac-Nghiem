@@ -5,6 +5,8 @@
 package com.tracnghiem.dto;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -85,7 +87,7 @@ public class ResultDTO {
     public void setRsDate(LocalDateTime rsDate) {
         this.rsDate = rsDate;
     }
-
+    
     @Override
     public String toString() {
         return "ResultDTO{" + "rsID=" + rsID + ", userID=" + userID + ", exCode=" + exCode + ", rsAnswer=" + rsAnswer + ", rsMark=" + rsMark + ", rsDate=" + rsDate + '}';

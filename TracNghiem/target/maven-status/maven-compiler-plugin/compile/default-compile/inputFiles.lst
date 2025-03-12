@@ -2,6 +2,7 @@ D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dto\TopicDTO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\UserBUS.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\addTest.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\utils\PatternMatcherUtil.java
+D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\result.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\utils\PasswordUtil.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\TestBUS.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dao\TopicDAO.java
@@ -17,6 +18,7 @@ D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\deta
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\detailUser.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\config\JDBCUtil.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\updateQuestion.java
+D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\ResultBUS.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dao\QuestionDAO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dao\ResultDAO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\QuestionBUS.java

@@ -5,8 +5,11 @@
 package com.tracnghiem.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.tracnghiem.bus.UserBUS;
+import com.tracnghiem.dto.UserDTO;
 import java.awt.Color;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +20,7 @@ public class loginView extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
+    private UserBUS userBUS = new UserBUS();
     public loginView() {
 
         initComponents();
@@ -111,7 +115,6 @@ public class loginView extends javax.swing.JFrame {
 
     private void submit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submit_btnActionPerformed
 
-
         String username = username_field.getText();
         String password = new String(password_field.getPassword());
 
@@ -121,9 +124,19 @@ public class loginView extends javax.swing.JFrame {
         } else if (password.trim().isEmpty()) {
             setErrorBorder(password_field);
         } else {
-            //Check Login
-            new mainView().setVisible(true);
-            dispose();
+
+            UserDTO user = userBUS.login(username, password);
+            System.out.println(user);
+            if (user != null) {
+                if (user.getIsAdmin() == 1) {
+                    new mainView(user).setVisible(true); // Mở giao diện Admin
+                } else {
+                    new userView(user).setVisible(true); // Mở giao diện User
+                }
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
 
@@ -152,7 +165,7 @@ public class loginView extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new loginView().setVisible(true);

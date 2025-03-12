@@ -6,6 +6,7 @@ package com.tracnghiem.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.dto.UserDTO;
 import com.tracnghiem.view.panel.BaiThiPanel;
 import com.tracnghiem.view.panel.Info;
 import com.tracnghiem.view.panel.XemDiemPanel;
@@ -32,16 +33,22 @@ public class userView extends javax.swing.JFrame {
     /**
      * Creates new form userView
      */
-        private static CardLayout cardLayout;
-    private static Info info = new Info();
-    private static BaiThiPanel baiThiPanel = new BaiThiPanel();
-    private static XemDiemPanel xemDiemPanel = new XemDiemPanel();
-    
-    
-    public userView() {
+    private static CardLayout cardLayout;
+    private Info info;
+    private BaiThiPanel baiThiPanel;
+    private XemDiemPanel xemDiemPanel;
+    private final UserDTO user;
+
+    public userView(UserDTO user) {
         initComponents();
-                cardLayout = (CardLayout) main_panel.getLayout();
-         //Menu
+        this.user = user;
+        xemDiemPanel = new XemDiemPanel(user);
+        baiThiPanel = new BaiThiPanel(user);
+        info = new Info(user);
+        
+        name.setText(user.getUserFullName());
+        cardLayout = (CardLayout) main_panel.getLayout();
+        //Menu
         List<JPanel> menuList = List.of(menu1, menu2, menu3, menu4);
         menu_panel.putClientProperty(FlatClientProperties.STYLE, "arc: 40; background: #eaeaea");
 
@@ -58,10 +65,7 @@ public class userView extends javax.swing.JFrame {
         menu2.putClientProperty(FlatClientProperties.STYLE, "arc: 20; background: #033d67");
         menu2.putClientProperty("selected", true);
         cardLayout.show(main_panel, menu2.getName());
-        
-        
-        
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -78,7 +82,7 @@ public class userView extends javax.swing.JFrame {
         left_panel1 = new javax.swing.JPanel();
         head1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         menu_panel = new javax.swing.JPanel();
         menu1 = new javax.swing.JPanel();
@@ -109,8 +113,8 @@ public class userView extends javax.swing.JFrame {
         )
     );
 
-    jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-    jLabel4.setText("User");
+    name.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+    name.setText("User");
 
     javax.swing.GroupLayout head1Layout = new javax.swing.GroupLayout(head1);
     head1.setLayout(head1Layout);
@@ -119,7 +123,7 @@ public class userView extends javax.swing.JFrame {
         .addGroup(head1Layout.createSequentialGroup()
             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addContainerGap())
     );
     head1Layout.setVerticalGroup(
@@ -128,7 +132,7 @@ public class userView extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(head1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -400,6 +404,25 @@ public class userView extends javax.swing.JFrame {
                     menu.putClientProperty(FlatClientProperties.STYLE, selectedStyle);
                     menu.putClientProperty("selected", true);
                     if (!menu.getName().equals("dangxuat")) {
+                        JPanel newPanel;
+                        switch (menu.getName()) {
+                            case "thongtin":
+                                newPanel = new Info(user);
+                                break;
+                            case "kiemtra":
+                                newPanel = new BaiThiPanel(user);
+                                break;
+                            case "xemdiem":
+                                newPanel = new XemDiemPanel(user);
+                                break;
+                            default:
+                                return;
+                        }
+
+                        main_panel.removeAll(); // Xóa tất cả panel cũ
+                        main_panel.add(newPanel, menu.getName()); // Thêm panel mới
+                        main_panel.revalidate();
+                        main_panel.repaint();
                         cardLayout.show(main_panel, menu.getName());
                     } else {
                         if ((int) showLogoutDialog() == JOptionPane.YES_OPTION) {
@@ -412,10 +435,11 @@ public class userView extends javax.swing.JFrame {
 
                 }
             }
-        });
+        }
+        );
     }
-    
-        private static int showLogoutDialog() {
+
+    private static int showLogoutDialog() {
         JPanel panel = new JPanel();
         panel.setSize(300, 200);
         panel.add(new JLabel("Bạn có chắc chắn muốn đăng xuất không?"));
@@ -434,58 +458,20 @@ public class userView extends javax.swing.JFrame {
         );
         return result;
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(userView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(userView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(userView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(userView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new userView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel head;
     private javax.swing.JPanel head1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JPanel left_panel;
     private javax.swing.JPanel left_panel1;
     private javax.swing.JPanel main;
     private javax.swing.JPanel main_panel;
@@ -494,5 +480,6 @@ public class userView extends javax.swing.JFrame {
     private javax.swing.JPanel menu3;
     private javax.swing.JPanel menu4;
     private javax.swing.JPanel menu_panel;
+    private javax.swing.JLabel name;
     // End of variables declaration//GEN-END:variables
 }

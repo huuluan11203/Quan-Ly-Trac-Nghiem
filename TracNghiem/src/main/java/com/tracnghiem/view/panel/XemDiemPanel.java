@@ -4,6 +4,26 @@
  */
 package com.tracnghiem.view.panel;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.ExamBUS;
+import com.tracnghiem.bus.ResultBUS;
+import com.tracnghiem.bus.TestBUS;
+import com.tracnghiem.bus.TopicBUS;
+import com.tracnghiem.dto.ExamDTO;
+import com.tracnghiem.dto.ResultDTO;
+import com.tracnghiem.dto.TestDTO;
+import com.tracnghiem.dto.UserDTO;
+import com.tracnghiem.view.components.addQuestion;
+import com.tracnghiem.view.components.result;
+import com.tracnghiem.view.mainView;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author huulu
@@ -13,8 +33,22 @@ public class XemDiemPanel extends javax.swing.JPanel {
     /**
      * Creates new form XemDiemPanel
      */
-    public XemDiemPanel() {
+    private TestBUS tBUS = new TestBUS();
+    private ExamBUS examBUS = new ExamBUS();
+    private ResultBUS resultBUS = new ResultBUS();
+    private ArrayList<ExamDTO> examList = new ArrayList<>();
+    private ArrayList<TestDTO> testList = new ArrayList<>();
+    private ArrayList<ResultDTO> resultList = new ArrayList<>();
+    private TopicBUS tpBUS = new TopicBUS();
+
+    public XemDiemPanel(UserDTO user) {
         initComponents();
+        examList = examBUS.getAll();
+        testList = tBUS.getAll();
+        resultList = resultBUS.getAll();
+        
+
+        loadExamToTable(examList, testList, resultList, user.getUserID());
     }
 
     /**
@@ -26,19 +60,134 @@ public class XemDiemPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Bài kiểm tra đã làm:");
+
+        jButton7.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton7.setIcon(new FlatSVGIcon("icons/detail.svg", 30, 30)
+        );
+        jButton7.setText("Chi tiết");
+        jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1026, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1014, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jButton7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 657, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        //Chi tiet
+         int row = jTable1.getSelectedRow(); // Lấy hàng được chọn
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một bài kiểm tra!");
+            return;
+        }
+
+        String testCode = (String) jTable1.getValueAt(row, 0);
+        String exOrder = (String) jTable1.getValueAt(row, 2);
+        String t = (String) jTable1.getValueAt(row, 5);
+
+        // Gộp testCode + exOrder để lấy exCode
+        String selectedExCode = testCode + exOrder;
+        ExamDTO exam = examBUS.geExamByExCode(selectedExCode);
+        mainView.showCustomDialog(null, new result(exam), "Chi tiết");
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+   private void loadExamToTable(ArrayList<ExamDTO> examList, ArrayList<TestDTO> testList, ArrayList<ResultDTO> resultList, int userID) {
+    DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"}, 0
+    );
+
+    // Lọc danh sách bài thi mà user đã làm
+    Set<String> userExamCodes = resultList.stream()
+            .filter(result -> result.getUserID() == userID)
+            .map(ResultDTO::getExCode)
+            .collect(Collectors.toSet());
+
+    for (ExamDTO exam : examList) {
+        // Chỉ hiển thị bài thi mà user đã làm
+        if (userExamCodes.contains(exam.getExCode())) {
+            TestDTO matchingTest = testList.stream()
+                    .filter(test -> test.getTestCode().equals(exam.getTestCode()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (matchingTest != null) {
+                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle();
+                String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                int numQuestions = exam.getExQuesIDs().split(";").length;
+                String shortCode = exam.getExCode().substring(exam.getExCode().length() - 1);
+                model.addRow(new Object[]{
+                        matchingTest.getTestCode(),
+                        matchingTest.getTestTitle(),
+                        shortCode,
+                        topicName,
+                        formattedDate,
+                        matchingTest.getTestTime() + " phút",
+                        numQuestions,
+                       
+                });
+            }
+        }
+    }
+
+    jTable1.setModel(model);
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton7;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
