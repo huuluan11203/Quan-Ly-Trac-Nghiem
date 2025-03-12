@@ -6,6 +6,7 @@ package com.tracnghiem.dao;
 
 import com.tracnghiem.config.JDBCUtil;
 import com.tracnghiem.dto.UserDTO;
+import com.tracnghiem.utils.PasswordUtil;
 import java.sql.*;
 import java.util.ArrayList;
 /**
@@ -20,6 +21,8 @@ public class UserDAO implements InterfaceDAO<UserDTO> {
     }
     @Override
     public boolean insert(UserDTO user) {
+        
+        user.setUserPassword(PasswordUtil.hashPassword(user.getUserPassword()));
         String sql = "INSERT INTO users (userName, userEmail, userPassword, userFullName, isAdmin) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -37,6 +40,7 @@ public class UserDAO implements InterfaceDAO<UserDTO> {
 
     @Override
     public boolean update(UserDTO user) {
+        user.setUserPassword(PasswordUtil.hashPassword(user.getUserPassword()));
         String sql = "UPDATE users SET userName=?, userEmail=?, userPassword=?, userFullName=?, isAdmin=?, userStatus=? WHERE userID=?";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

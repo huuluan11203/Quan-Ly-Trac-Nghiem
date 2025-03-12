@@ -171,4 +171,33 @@ public class ExamDAO implements InterfaceDAO<ExamDTO> {
         return exam;
     }
 
+    public ArrayList<ExamDTO> getUserExam(int userId) {
+        ArrayList<ExamDTO> examList = new ArrayList<>();
+        String sql = "SELECT e.* FROM exams e "
+                + "WHERE e.testCode NOT IN ( "
+                + "    SELECT DISTINCT e2.testCode "
+                + "    FROM exams e2 "
+                + "    JOIN result r ON e2.exCode = r.exCode "
+                + "    WHERE r.userID = ? "
+                + ")";
+
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ExamDTO exam = new ExamDTO();
+                exam.setExCode(rs.getString("exCode"));
+                exam.setTestCode(rs.getString("testCode"));
+                exam.setExQuesIDs(rs.getString("ex_quesIDs"));
+                exam.setExOrder(rs.getString("exOrder"));
+                examList.add(exam);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return examList;
+    }
+
 }
