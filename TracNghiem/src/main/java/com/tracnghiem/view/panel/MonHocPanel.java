@@ -508,9 +508,9 @@ public class MonHocPanel extends javax.swing.JPanel {
 
         jButton7.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton7.setIcon(new FlatSVGIcon("icons/detail.svg", 30, 30)
+        jButton7.setIcon(new FlatSVGIcon("icons/edit.svg", 30, 30)
         );
-        jButton7.setText("Chi tiết");
+        jButton7.setText("Sửa");
         jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

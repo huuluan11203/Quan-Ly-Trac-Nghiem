@@ -246,9 +246,9 @@
               <Font name="Segoe UI" size="14" style="0"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new FlatSVGIcon(&quot;icons/detail.svg&quot;, 30, 30)&#xa;    " type="code"/>
+              <Connection code="new FlatSVGIcon(&quot;icons/edit.svg&quot;, 30, 30)&#xa;    " type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Chi ti&#x1ebf;t"/>
+            <Property name="text" type="java.lang.String" value="S&#x1eed;a"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Hand Cursor"/>
             </Property>

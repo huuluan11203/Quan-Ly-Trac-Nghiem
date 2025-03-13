@@ -162,15 +162,16 @@ public class XemDiemPanel extends javax.swing.JPanel {
                     .orElse(null);
 
             if (matchingTest != null) {
-                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle();
+//                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle();
                 String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 int numQuestions = exam.getExQuesIDs().split(";").length;
                 String shortCode = exam.getExCode().substring(exam.getExCode().length() - 1);
                 model.addRow(new Object[]{
                         matchingTest.getTestCode(),
-                        matchingTest.getTestTitle(),
+                        matchingTest.getTestTittle(),
                         shortCode,
-                        topicName,
+//                        topicName,
+                        "",
                         formattedDate,
                         matchingTest.getTestTime() + " phút",
                         numQuestions,

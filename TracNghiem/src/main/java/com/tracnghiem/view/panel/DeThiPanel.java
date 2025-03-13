@@ -14,6 +14,7 @@ import com.tracnghiem.bus.AnswerBUS;
 import com.tracnghiem.bus.ExamBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.TestBUS;
+import com.tracnghiem.bus.TestStructureBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.ExamDTO;
@@ -21,8 +22,10 @@ import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TopicDTO;
 import com.tracnghiem.view.components.addTest;
 import com.tracnghiem.view.components.choose;
+import com.tracnghiem.view.components.detailTest;
 import com.tracnghiem.view.mainView;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -46,6 +49,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,6 +64,7 @@ import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
@@ -70,6 +75,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
     private static final ExamBUS eBus = new ExamBUS();
     private static final TestBUS tBUS = new TestBUS();
+    private static final TestStructureBUS tsBUS = new TestStructureBUS();
     private static final TopicBUS tpBUS = new TopicBUS();
     private static ArrayList<TestDTO> listT = new ArrayList<>();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Định dạng ngày
@@ -146,26 +152,22 @@ public class DeThiPanel extends javax.swing.JPanel {
         }
 
         for (TestDTO test : list) {
-            // Lấy danh sách các mã đề thi từ bảng exams
-            List<String> examCodes = eBus.getExamCodesByTestCode(test.getTestCode());
 
-            // Nếu có nhiều mã đề thì thêm từng mã đề vào bảng
-            for (String examCode : examCodes) {
-                String formattedDate = test.getTestDate().format(formatter);
-                String shortCode = examCode.substring(examCode.length() - 1);
-                model.addRow(new Object[]{
-                    test.getTestCode(), // ID
-                    shortCode, // Mã đề thi từ bảng exams
-                    test.getTestTitle(), // Tiêu đề
-                    tpBUS.findOne(test.getTpID()).getTpTitle(), // Chủ đề
-                    formattedDate, // Thời gian
-                    test.getTestTime(), // Giờ làm
-                    test.getTestLimit(), // Giới hạn thời gian làm bài
-                    test.getNumEasy()
-                    + test.getNumMedium()
-                    + test.getNumDifficult() // trong so cau
-                });
-            }
+            // Định dạng ngày thành dd/MM/yyyy
+            String formattedDate = test.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+            System.out.println("Ngày đã format: " + formattedDate);
+
+            model.addRow(new Object[]{
+                test.getTestID(), // ID
+                test.getTestCode(), // Mã đề thi từ bảng exams
+                test.getTestTittle(), // Tiêu đề
+                "", // Chủ đề
+                formattedDate, // Thời gian
+                test.getTestTime(), // Giờ làm
+                test.getTestLimit(), // Giới hạn thời gian làm bài
+                tsBUS.getTotalQuesByTestCode(test.getTestCode())
+            });
         }
     }
 
@@ -184,9 +186,8 @@ public class DeThiPanel extends javax.swing.JPanel {
 
     }
 
-    private void refresh() {   
+    private void refresh() {
 
-        
         listT = tBUS.getAll();
         textFieldSearch.setText("");
         dateSelected = null;
@@ -230,50 +231,83 @@ public class DeThiPanel extends javax.swing.JPanel {
 
         // Duyệt qua từng ExamDTO và lấy danh sách câu hỏi tương ứng
         // Duyệt qua từng ExamDTO và lấy danh sách câu hỏi tương ứng
-        for (ExamDTO exam : listE) {
-            List<QuestionDTO> examQuestions = Arrays.stream(exam.getExQuesIDs().split(";"))
-                    .map(Integer::parseInt)
-                    .map(questionMap::get)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-
-            System.out.println("Exam: " + exam.getTestCode());
-            for (QuestionDTO q : examQuestions) {
-                System.out.println(" - Câu hỏi: " + q.getQContent());
-
-                // Lấy danh sách đáp án của câu hỏi hiện tại
-                List<AnswerDTO> questionAnswers = answerMap.getOrDefault(q.getQID(), Collections.emptyList());
-                for (AnswerDTO a : questionAnswers) {
-                    System.out.println("   + " + a.getAwContent() + (a.isIsRight() ? " ✅" : ""));
-                }
-            }
-        }
-
+//        for (ExamDTO exam : listE) {
+//            List<QuestionDTO> examQuestions = Arrays.stream(exam.getExQuesIDs().split(";"))
+//                    .map(Integer::parseInt)
+//                    .map(questionMap::get)
+//                    .filter(Objects::nonNull)
+//                    .collect(Collectors.toList());
+//
+////            System.out.println("Exam: " + exam.getTestCode());
+//            for (QuestionDTO q : examQuestions) {
+////                System.out.println(" - Câu hỏi: " + q.getQContent());
+//
+//                // Lấy danh sách đáp án của câu hỏi hiện tại
+//                List<AnswerDTO> questionAnswers = answerMap.getOrDefault(q.getQID(), Collections.emptyList());
+//                for (AnswerDTO a : questionAnswers) {
+//                    System.out.println("   + " + a.getAwContent() + (a.isIsRight() ? " ✅" : ""));
+//                }
+//            }
+//        }
 //
         String schoolInfo = "Trường Đại học Sài Gòn";
-        String examInfo = test.getTestTitle()
-                + "\nNăm học:" + test.getTestDate().getYear()
-                + "\nChủ đề: " + new TopicBUS().findOne(test.getTpID()).getTpTitle()
-                + "\nThời gian: " + test.getTestTime() + " phút";
+        String examTitle = test.getTestTittle();
+        String examDate = "\nNăm học:" + test.getTestDate().getYear();
+        String examTime = "\nThời gian: " + test.getTestTime() + " phút";
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn nơi lưu file");
-        fileChooser.setSelectedFile(new File("DeThi_" + test.getTestID() + "_" + test.getTestTitle() + ".docx"));
+
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+
+        fileChooser.setSelectedFile(new File("DeThi_" + test.getTestID() + "_" + test.getTestTittle() + "_" + timestamp + ".docx"));
         int userSelection = fileChooser.showSaveDialog(null);
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File filePath = fileChooser.getSelectedFile();
 
             try (XWPFDocument document = new XWPFDocument()) {
-                for (ExamDTO exam : listE) {
-                    // Tạo một trang mới
-                    XWPFParagraph examTitle = document.createParagraph();
-                    examTitle.setPageBreak(true); // Ngắt trang mới cho mỗi exam
-                    XWPFRun runExam = examTitle.createRun();
-                    runExam.setBold(true);
-                    runExam.setFontSize(14);
-                    runExam.setText("Exam: " + exam.getTestCode());
 
+                for (ExamDTO exam : listE) {
+                    // 🏫 Thêm thông tin trường vào file Word
+                    XWPFParagraph schoolPara = document.createParagraph();
+                    schoolPara.setAlignment(ParagraphAlignment.LEFT);
+                    XWPFRun schoolRun = schoolPara.createRun();
+                    schoolRun.setBold(true);
+                    schoolRun.setFontSize(14);
+                    schoolRun.setText(schoolInfo);
+
+                    // 📄 Thêm thông tin đề thi
+                    XWPFParagraph examTitlePara = document.createParagraph();
+                    examTitlePara.setAlignment(ParagraphAlignment.CENTER);
+                    XWPFRun examTitleRun = examTitlePara.createRun();
+                    examTitleRun.setFontSize(12);
+                    examTitleRun.setText(examTitle);
+
+                    XWPFParagraph examDatePara = document.createParagraph();
+                    examDatePara.setAlignment(ParagraphAlignment.CENTER);
+                    XWPFRun examRun = examDatePara.createRun();
+                    examRun.setFontSize(12);
+                    examRun.setText(examDate);
+
+                    XWPFParagraph examTimePara = document.createParagraph();
+                    examTimePara.setAlignment(ParagraphAlignment.CENTER);
+                    XWPFRun examTimeRun = examTimePara.createRun();
+                    examTimeRun.setFontSize(12);
+                    examTimeRun.setText(examTime);
+
+                    // Tạo khoảng trống
+                    document.createParagraph();
+
+                    // 📝 Thêm tiêu đề Exam
+                    XWPFParagraph examCode = document.createParagraph();
+                    examCode.setPageBreak(true);
+                    XWPFRun runExamCode = examCode.createRun();
+                    runExamCode.setBold(true);
+                    runExamCode.setFontSize(14);
+                    runExamCode.setText("\nExam: " + exam.getExCode());
+
+                    // Lấy danh sách câu hỏi của đề
                     List<QuestionDTO> examQuestions = Arrays.stream(exam.getExQuesIDs().split(";"))
                             .map(Integer::parseInt)
                             .map(questionMap::get)
@@ -282,35 +316,52 @@ public class DeThiPanel extends javax.swing.JPanel {
 
                     int questionNumber = 1;
                     for (QuestionDTO q : examQuestions) {
-                        // Thêm câu hỏi
+                        // ➤ Thêm câu hỏi
                         XWPFParagraph questionPara = document.createParagraph();
                         XWPFRun questionRun = questionPara.createRun();
                         questionRun.setBold(true);
                         questionRun.setFontSize(12);
                         questionRun.setText(questionNumber + ". " + q.getQContent());
 
-                        // Lấy danh sách đáp án và đánh số theo A, B, C, D, E
+                        // ➤ Lấy danh sách đáp án và đánh số theo A, B, C, D, E
                         List<AnswerDTO> answers = answerMap.getOrDefault(q.getQID(), Collections.emptyList());
                         String[] labels = {"A", "B", "C", "D", "E"};
                         int index = 0;
                         for (AnswerDTO a : answers) {
                             XWPFParagraph answerPara = document.createParagraph();
                             XWPFRun answerRun = answerPara.createRun();
-                            answerRun.setText(labels[index] + ". " + a.getAwContent() + (a.isIsRight() ? " ✅" : ""));
+                            answerRun.setText(labels[index] + ". " + a.getAwContent());
                             index++;
                         }
                         questionNumber++;
                     }
+
+                    // 🔹 Ngăn cách giữa các đề thi
+                    document.createParagraph();
                 }
 
-                // Xuất file Word
+                // 🖨 Xuất file Word
                 try (FileOutputStream out = new FileOutputStream(filePath)) {
                     document.write(out);
                     System.out.println("File Word đã được tạo: " + filePath);
+                    // ✅ Hiện hộp thoại xác nhận mở file
+                    int option = JOptionPane.showConfirmDialog(
+                            null,
+                            "File Word đã được tạo thành công!\nBạn có muốn mở file không?",
+                            "Xác nhận mở file",
+                            JOptionPane.YES_NO_OPTION
+                    );
+
+                    // 🔹 Nếu người dùng chọn "Yes", mở file
+                    if (option == JOptionPane.YES_OPTION) {
+                        Desktop.getDesktop().open(filePath);
+                    }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
 
     }
@@ -615,15 +666,6 @@ public class DeThiPanel extends javax.swing.JPanel {
 
     private void nhap_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nhap_excelActionPerformed
         // TODO add your handling code here:
-//        JFileChooser fileChooser = new JFileChooser();
-//        int result = fileChooser.showOpenDialog(null);
-//
-//        if (result == JFileChooser.APPROVE_OPTION) {
-//            File file = fileChooser.getSelectedFile();
-//            importFromExcel(file);
-//
-//        }
-
         if (tIDSelected == -1) {
             JOptionPane.showMessageDialog(null, "Hãy chọn đề thi để xuất ra file word!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
@@ -639,56 +681,48 @@ public class DeThiPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(jTable4, "Vui lòng chọn bài kiểm tra!");
             return;
         }
-        TestDTO t = tBUS.findOne((int) jTable4.getValueAt(selectedRow, 0));
 
-        addTest at = new addTest(t, true);
-        JDialog dialog = mainView.showCustomDialog1(null, at, "Xem đề thi");
-        dialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-        });
-
-
+        detailTest at = new detailTest((String) jTable4.getValueAt(selectedRow, 1), true);
+        showCustomDialog(null, at, "Xem chi tiết đề thi");
     }//GEN-LAST:event_jButton14ActionPerformed
 
+
     private void parentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parentIDActionPerformed
-        
-        if (parentID.getSelectedItem()!=null) {
+
+        if (parentID.getSelectedItem() != null) {
             filterTable();
         }
 
     }//GEN-LAST:event_parentIDActionPerformed
 
     private void filterTable() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date selectedDate = jDateChooser1.getDate(); // Lấy ngày từ jDateChooser1
-        String selectedTopic = (String) parentID.getSelectedItem(); // Lấy chủ đề từ ComboBox
-
-        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        jTable4.setRowSorter(sorter);
-
-        List<RowFilter<DefaultTableModel, Object>> filters = new ArrayList<>();
-
-        // Lọc theo ngày
-        if (selectedDate != null) {
-            String selectedDateStr = sdf.format(selectedDate);
-            filters.add(RowFilter.regexFilter(selectedDateStr, 4)); // Cột ngày giả sử là 4
-        }
-
-        // Lọc theo chủ đề
-        if (!selectedTopic.equals("--Trống--")) {
-            filters.add(RowFilter.regexFilter("^" + selectedTopic + "$", 3)); // Cột chủ đề giả sử là 3
-        }
-
-        // Áp dụng bộ lọc
-        if (filters.isEmpty()) {
-            sorter.setRowFilter(null); // Không lọc nếu không chọn gì
-        } else {
-            sorter.setRowFilter(RowFilter.andFilter(filters)); // Kết hợp các bộ lọc
-        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//        Date selectedDate = jDateChooser1.getDate(); // Lấy ngày từ jDateChooser1
+//        String selectedTopic = (String) parentID.getSelectedItem(); // Lấy chủ đề từ ComboBox
+//
+//        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+//        jTable4.setRowSorter(sorter);
+//
+//        List<RowFilter<DefaultTableModel, Object>> filters = new ArrayList<>();
+//
+//        // Lọc theo ngày
+//        if (selectedDate != null) {
+//            String selectedDateStr = sdf.format(selectedDate);
+//            filters.add(RowFilter.regexFilter(selectedDateStr, 4)); // Cột ngày giả sử là 4
+//        }
+//
+//        // Lọc theo chủ đề
+//        if (!selectedTopic.equals("--Trống--")) {
+//            filters.add(RowFilter.regexFilter("^" + selectedTopic + "$", 3)); // Cột chủ đề giả sử là 3
+//        }
+//
+//        // Áp dụng bộ lọc
+//        if (filters.isEmpty()) {
+//            sorter.setRowFilter(null); // Không lọc nếu không chọn gì
+//        } else {
+//            sorter.setRowFilter(RowFilter.andFilter(filters)); // Kết hợp các bộ lọc
+//        }
     }
 
     private void loadTopicComboBox() {

@@ -653,7 +653,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
                     .orElse(null);
 
             if (matchingTest != null) {
-                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle();
+//                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle();
                 String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 int numQuestions = exam.getExQuesIDs().split(";").length;
                 String shortCode = exam.getExCode().substring(exam.getExCode().length() - 1);
@@ -666,9 +666,10 @@ public class BaiThiPanel extends javax.swing.JPanel {
                     // Thêm dòng mới vào map
                     examMap.put(matchingTest.getTestCode(), new Object[]{
                         matchingTest.getTestCode(), // Mã bài kiểm tra
-                        matchingTest.getTestTitle(), // Tên bài kiểm tra
+                        matchingTest.getTestTittle(), // Tên bài kiểm tra
                         shortCode, // Mã đề (sẽ được cập nhật nếu có nhiều đề)
-                        topicName, // Chủ đề
+//                        topicName, // Chủ đề
+                        "", // Chủ đề
                         formattedDate, // Ngày kiểm tra
                         matchingTest.getTestTime() + " phút", // Thời gian làm bài
                         numQuestions // Số câu hỏi trong đề

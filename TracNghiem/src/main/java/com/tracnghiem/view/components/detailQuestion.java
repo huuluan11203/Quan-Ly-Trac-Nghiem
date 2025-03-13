@@ -705,7 +705,7 @@ public class detailQuestion extends javax.swing.JPanel {
     }
     
     private void loadPrevImage(String url) {
-        if (url == null || url.isEmpty()) {
+        if (url == null || url.isEmpty() || url.equalsIgnoreCase("NULL")) {
             JOptionPane.showMessageDialog(null, "Hình không tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
