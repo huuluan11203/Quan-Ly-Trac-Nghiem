@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * @author X
  */
 public class ExamBUS {
+
     private final ExamDAO eDAO = ExamDAO.getInstance();
     private ArrayList<ExamDTO> listExams;
 
@@ -23,11 +24,11 @@ public class ExamBUS {
     public ArrayList<ExamDTO> getAll() {
         return eDAO.selectAll();
     }
-    
+
     public ArrayList<ExamDTO> getAll(String testCode) {
         return eDAO.selectAll(testCode);
     }
-    
+
     public ExamDTO findOne(String exCode) {
         return eDAO.selectByID(exCode);
     }
@@ -72,20 +73,25 @@ public class ExamBUS {
         key = key.toLowerCase();
 
         for (ExamDTO exam : listExams) {
-            if (exam.getExCode().toLowerCase().contains(key) ||
-                exam.getTestCode().toLowerCase().contains(key)) {
+            if (exam.getExCode().toLowerCase().contains(key)
+                    || exam.getTestCode().toLowerCase().contains(key)) {
                 result.add(exam);
             }
         }
 
         return result;
     }
-    
-    public ArrayList<String> getExamCodesByTestCode(String testCode){
+
+    public ArrayList<String> getExamCodesByTestCode(String testCode) {
         return eDAO.getExamCodesByTestCode(testCode);
     }
-    
-    public ExamDTO geExamByExCode(String exCode){
+
+    public ExamDTO geExamByExCode(String exCode) {
         return eDAO.getExamByExCode(exCode);
     }
+
+    public ArrayList<ExamDTO> getUserExam(int userId) {
+        return eDAO.getUserExam(userId);
+    }
+
 }

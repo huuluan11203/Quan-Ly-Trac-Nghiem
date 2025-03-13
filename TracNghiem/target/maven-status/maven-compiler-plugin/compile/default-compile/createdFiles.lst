@@ -1,3 +1,4 @@
+com\tracnghiem\view\components\result.class
 com\tracnghiem\view\components\addTest$1.class
 com\tracnghiem\view\panel\CauHoiPanel$1.class
 com\tracnghiem\view\components\updateQuestion$8.class
@@ -15,6 +16,7 @@ com\tracnghiem\dao\AnswerDAO.class
 com\tracnghiem\view\components\addQuestion$18.class
 com\tracnghiem\utils\PatternMatcherUtil.class
 com\tracnghiem\view\components\detailQuestion$12.class
+com\tracnghiem\view\panel\XemDiemPanel$1.class
 com\tracnghiem\view\components\detailQuestion$6.class
 com\tracnghiem\view\panel\SinhVienPanel$4.class
 com\tracnghiem\view\components\addTestAuto$6.class
@@ -82,6 +84,7 @@ com\tracnghiem\view\panel\MonHocPanel$4.class
 com\tracnghiem\view\components\addQuestion$14.class
 com\tracnghiem\view\components\detailTest$1.class
 com\tracnghiem\view\components\addQuestion$22.class
+com\tracnghiem\view\panel\XemDiemPanel$2.class
 com\tracnghiem\view\loginView$3.class
 com\tracnghiem\view\components\detailUser$4.class
 com\tracnghiem\view\mainView$1.class
@@ -94,7 +97,6 @@ com\tracnghiem\view\components\addQuestion$15.class
 com\tracnghiem\view\components\updateQuestion$21.class
 com\tracnghiem\dao\UserDAO.class
 com\tracnghiem\view\components\detailUser$3.class
-com\tracnghiem\view\mainView$2.class
 com\tracnghiem\view\panel\DeThiPanel$8.class
 com\tracnghiem\dao\TestDAO.class
 com\tracnghiem\view\components\updateQuestion$20.class
@@ -136,6 +138,7 @@ com\tracnghiem\view\components\addQuestion$23.class
 com\tracnghiem\view\panel\SinhVienPanel$7.class
 com\tracnghiem\view\components\addTestAuto.class
 com\tracnghiem\view\panel\DeThiPanel$6.class
+com\tracnghiem\view\panel\Info$1.class
 com\tracnghiem\view\components\addUser$2.class
 com\tracnghiem\view\panel\CauHoiPanel$9.class
 com\tracnghiem\config\JDBCUtil.class
@@ -152,7 +155,6 @@ com\tracnghiem\view\panel\DeThiPanel$5.class
 com\tracnghiem\dto\UserDTO.class
 com\tracnghiem\view\components\previewDetailQuestion.class
 com\tracnghiem\view\panel\CauHoiPanel$3.class
-com\tracnghiem\view\userView$2.class
 com\tracnghiem\view\components\addUser$3.class
 com\tracnghiem\view\panel\MonHocPanel$3.class
 com\tracnghiem\view\components\addTestAuto$8.class
@@ -181,9 +183,11 @@ com\tracnghiem\view\components\addTestAuto$4.class
 com\tracnghiem\view\components\addTestAuto$7.class
 com\tracnghiem\view\components\addSubject$3.class
 com\tracnghiem\view\components\updateQuestion$4.class
+com\tracnghiem\view\components\result$1.class
 com\tracnghiem\view\panel\MonHocPanel$1.class
 com\tracnghiem\dao\LogDAO.class
 com\tracnghiem\view\panel\CauHoiPanel$2.class
+com\tracnghiem\bus\ResultBUS.class
 com\tracnghiem\view\components\updateQuestion$7.class
 com\tracnghiem\view\components\previewAddQuestion$3.class
 com\tracnghiem\view\components\addQuestion$7.class

@@ -60,7 +60,6 @@ public class MonHocPanel extends javax.swing.JPanel {
     }
 
     private void loadDataSubjectTable() {
-
         model.setRowCount(0); // Xóa dữ liệu cũ trong model
         ArrayList<TopicDTO> lTp = tpBUS.getAll(); // Lấy tất cả topic
 
@@ -83,38 +82,45 @@ public class MonHocPanel extends javax.swing.JPanel {
             }
         }
 
-        // Hiển thị topic gốc trước
+        // Duyệt qua các topic gốc
         for (TopicDTO rootTopic : rootTopics) {
-            Object[] rootRow = new Object[5];
-            rootRow[0] = rootTopic.getTpID();      // "Mã môn học"
-            rootRow[1] = rootTopic.getTpTitle();   // "Tên môn học"
-            rootRow[2] = "-";                      // "Chủ đề" - không có
-            rootRow[3] = "-";                      // "Bài học" - không có
-            rootRow[4] = rootTopic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
-            model.addRow(rootRow);
-
-            // Hiển thị topic cấp 1 và cấp 2
             List<TopicDTO> level1Topics = childTopics.getOrDefault(rootTopic.getTpID(), new ArrayList<>());
-            for (TopicDTO level1Topic : level1Topics) {
-                // Thêm dòng cho topic cấp 1
-                Object[] level1Row = new Object[5];
-                level1Row[0] = level1Topic.getTpID();      // "Mã môn học" - từ topic gốc
-                level1Row[1] = rootTopic.getTpTitle();   // "Tên môn học" - từ topic gốc
-                level1Row[2] = level1Topic.getTpTitle(); // "Chủ đề" - từ topic cấp 1
-                level1Row[3] = "-";                      // "Bài học" - không có
-                level1Row[4] = level1Topic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
-                model.addRow(level1Row);
 
-                // Thêm các topic cấp 2 (bài học) của topic cấp 1
-                List<TopicDTO> level2Topics = childTopics.getOrDefault(level1Topic.getTpID(), new ArrayList<>());
-                for (TopicDTO level2Topic : level2Topics) {
-                    Object[] level2Row = new Object[5];
-                    level2Row[0] = level2Topic.getTpID();      // "Mã môn học" - từ topic gốc
-                    level2Row[1] = rootTopic.getTpTitle();   // "Tên môn học" - từ topic gốc
-                    level2Row[2] = level1Topic.getTpTitle(); // "Chủ đề" - từ topic cấp 1
-                    level2Row[3] = level2Topic.getTpTitle(); // "Bài học" - từ topic cấp 2
-                    level2Row[4] = level2Topic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
-                    model.addRow(level2Row);
+            // Nếu không có topic con (trường hợp như "dfdf")
+            if (level1Topics.isEmpty()) {
+                Object[] row = new Object[5];
+                row[0] = rootTopic.getTpID();      // "Mã môn học"
+                row[1] = rootTopic.getTpTitle();   // "Tên môn học"
+                row[2] = "";                       // "Chuyên đề" - rỗng
+                row[3] = "";                       // "Bài học" - rỗng
+                row[4] = rootTopic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
+                model.addRow(row);
+            } else {
+                // Duyệt qua topic cấp 1 (chuyên đề)
+                for (TopicDTO level1Topic : level1Topics) {
+                    List<TopicDTO> level2Topics = childTopics.getOrDefault(level1Topic.getTpID(), new ArrayList<>());
+
+                    if (level2Topics.isEmpty()) {
+                        // Nếu cấp 1 không có cấp 2 (trường hợp như "Bài 10" trực tiếp dưới "Toán")
+                        Object[] row = new Object[5];
+                        row[0] = rootTopic.getTpID();      // "Mã môn học"
+                        row[1] = rootTopic.getTpTitle();   // "Tên môn học"
+                        row[2] = "";                       // "Chuyên đề" - rỗng
+                        row[3] = level1Topic.getTpTitle(); // "Bài học" - từ topic cấp 1
+                        row[4] = level1Topic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
+                        model.addRow(row);
+                    } else {
+                        // Duyệt qua topic cấp 2 (bài học)
+                        for (TopicDTO level2Topic : level2Topics) {
+                            Object[] row = new Object[5];
+                            row[0] = rootTopic.getTpID();      // "Mã môn học"
+                            row[1] = rootTopic.getTpTitle();   // "Tên môn học"
+                            row[2] = level1Topic.getTpTitle(); // "Chuyên đề"
+                            row[3] = level2Topic.getTpTitle(); // "Bài học"
+                            row[4] = level2Topic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
+                            model.addRow(row);
+                        }
+                    }
                 }
             }
         }

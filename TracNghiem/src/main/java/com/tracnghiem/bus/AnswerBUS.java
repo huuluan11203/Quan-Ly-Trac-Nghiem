@@ -94,4 +94,8 @@ public class AnswerBUS {
         return aDAO.getMaxID();
     }
 
+    
+    public ArrayList<AnswerDTO> getAnswerByQuestionID(int questionID){
+        return aDAO.getAnswersByQuestionID(questionID);
+    }
 }

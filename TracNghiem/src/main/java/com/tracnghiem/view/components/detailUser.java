@@ -267,8 +267,8 @@ public class detailUser extends javax.swing.JPanel {
     private void resetPassword(UserDTO user){
         int confirm = JOptionPane.showConfirmDialog(this, "Đặt lại mật khẩu mặc định ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if(confirm == JOptionPane.YES_OPTION){
-            JOptionPane.showMessageDialog(this, "Mật khẩu mặc định là 123");
-            user.setUserPassword("123");
+            JOptionPane.showMessageDialog(this, "Mật khẩu mặc định là 12345678");
+            user.setUserPassword("12345678");
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

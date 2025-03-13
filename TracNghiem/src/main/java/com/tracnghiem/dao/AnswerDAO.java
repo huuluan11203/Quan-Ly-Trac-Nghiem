@@ -17,17 +17,17 @@ import java.util.ArrayList;
  *
  * @author X
  */
-public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
+public class AnswerDAO implements InterfaceDAO<AnswerDTO> {
 
     public static AnswerDAO getInstance() {
         return new AnswerDAO();
     }
+
     @Override
     public boolean insert(AnswerDTO t) {
         boolean rs = false;
         String sql = "INSERT INTO answers(qID, awContent, awPictures, isRight, awStatus) VALUES(?,?,?,?,?)";
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, t.getQID());
             ps.setString(2, t.getAwContent());
             ps.setString(3, t.getAwPicture());
@@ -39,12 +39,12 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
         }
         return rs;
     }
+
     @Override
     public boolean update(AnswerDTO t) {
         boolean rs = false;
         String sql = "UPDATE answers SET qID=?, awContent=?, awPictures=?, isRight=?, awStatus=? WHERE awID=?";
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, t.getQID());
             ps.setString(2, t.getAwContent());
             ps.setString(3, t.getAwPicture());
@@ -62,16 +62,14 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
     public ArrayList<AnswerDTO> selectAll() {
         ArrayList<AnswerDTO> rs = new ArrayList<>();
         String sql = "SELECT * FROM answers WHERE awStatus=1";
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rsSet = ps.executeQuery()) {
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rsSet = ps.executeQuery()) {
             while (rsSet.next()) {
                 rs.add(new AnswerDTO(rsSet.getInt("awID"),
-                                     rsSet.getInt("qID"),
-                                     rsSet.getString("awContent"),
-                                     rsSet.getString("awPictures"),
-                                     rsSet.getBoolean("isRight"),
-                                     rsSet.getInt("awStatus")));
+                        rsSet.getInt("qID"),
+                        rsSet.getString("awContent"),
+                        rsSet.getString("awPictures"),
+                        rsSet.getBoolean("isRight"),
+                        rsSet.getInt("awStatus")));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -83,17 +81,16 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
     public AnswerDTO selectByID(String id) {
         AnswerDTO rs = null;
         String sql = "SELECT * FROM answers WHERE awID=? AND awStatus=1";
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, id);
             try (ResultSet rsSet = ps.executeQuery()) {
                 if (rsSet.next()) {
                     rs = new AnswerDTO(rsSet.getInt("awID"),
-                                       rsSet.getInt("qID"),
-                                       rsSet.getString("awContent"),
-                                       rsSet.getString("awPictures"),
-                                       rsSet.getBoolean("isRight"),
-                                       rsSet.getInt("awStatus"));
+                            rsSet.getInt("qID"),
+                            rsSet.getString("awContent"),
+                            rsSet.getString("awPictures"),
+                            rsSet.getBoolean("isRight"),
+                            rsSet.getInt("awStatus"));
                 }
             }
         } catch (SQLException ex) {
@@ -106,8 +103,7 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
     public boolean delete(String id) {
         boolean rs = false;
         String sql = "UPDATE answers SET awStatus=0 WHERE awID = ?";
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, id);
             rs = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
@@ -115,12 +111,10 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
         }
         return rs;
     }
-    
+
     public int getMaxID() {
         String sql = "SELECT MAX(awID) FROM answers";
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {  // Dùng executeQuery() thay vì executeUpdate()
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {  // Dùng executeQuery() thay vì executeUpdate()
 
             if (rs.next()) {
                 return rs.getInt(1); // Lấy giá trị MAX(qID)
@@ -130,4 +124,29 @@ public class AnswerDAO implements InterfaceDAO<AnswerDTO>{
         }
         return -1; // Trả về -1 nếu có lỗi hoặc không có dữ liệu
     }
+
+    public ArrayList<AnswerDTO> getAnswersByQuestionID(int qID) {
+        ArrayList<AnswerDTO> answers = new ArrayList<>();
+        String sql = "SELECT * FROM answers WHERE qID = ?";
+
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, qID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                AnswerDTO answer = new AnswerDTO();
+                answer.setAwID(rs.getInt("awID"));
+                answer.setQID(rs.getInt("qID"));
+                answer.setAwContent(rs.getString("awContent"));
+                answer.setAwPicture(rs.getString("awPictures"));
+                answer.setIsRight(rs.getInt("isRight") == 1);
+                answer.setAwStatus(rs.getInt("awStatus"));
+                answers.add(answer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return answers;
+    }
+
 }

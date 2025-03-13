@@ -11,6 +11,7 @@ import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TestDTO;
 import com.tracnghiem.dto.TopicDTO;
+import com.tracnghiem.dto.UserDTO;
 import com.tracnghiem.view.components.addQuestion;
 import com.tracnghiem.view.components.addSubject;
 import com.tracnghiem.view.components.addUser;
@@ -67,28 +68,19 @@ public class mainView extends javax.swing.JFrame {
             -> true if add news
             -> false if update
      */
-    private static String panelName;
     private static CardLayout cardLayout;
-    private final QuestionBUS qBUS = new QuestionBUS();
-    private final TopicBUS tBUS = new TopicBUS();
-    private int idTopicParent = -1, idTopicChild = -1, idTopicChild1 = -1, qIDSelected = -1;
-    private String qLevel = "--none--";
-    private final Map<String, Integer> topicMapParent = new LinkedHashMap<>();
-    private final Map<String, Integer> topicMapChildren = new LinkedHashMap<>();
-    private final Map<String, Integer> topicMapChildren1 = new LinkedHashMap<>();
     private ArrayList<QuestionDTO> listQ = new ArrayList<>();
-
-    private boolean isUpdatingComboBox = false;
-
     private final CauHoiPanel cauhoi = new CauHoiPanel();
     private final MonHocPanel monhoc = new MonHocPanel();
     private final SinhVienPanel sinhvien = new SinhVienPanel();
     private final DeThiPanel dethi = new DeThiPanel();
     private final DiemPanel diem = new DiemPanel();
+    private final UserDTO user;
 
-    public mainView() {
-
+    public mainView(UserDTO user) {
+        this.user = user;
         initComponents();
+        name. setText(user.getUserFullName());
         cardLayout = (CardLayout) main_panel.getLayout();
 
         //Menu
@@ -234,7 +226,7 @@ public class mainView extends javax.swing.JFrame {
         left_panel = new javax.swing.JPanel();
         head = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         menu_panel = new javax.swing.JPanel();
         menu1 = new javax.swing.JPanel();
@@ -274,8 +266,8 @@ public class mainView extends javax.swing.JFrame {
         )
     );
 
-    jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-    jLabel2.setText("ADMIN");
+    name.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+    name.setText("ADMIN");
 
     javax.swing.GroupLayout headLayout = new javax.swing.GroupLayout(head);
     head.setLayout(headLayout);
@@ -284,7 +276,7 @@ public class mainView extends javax.swing.JFrame {
         .addGroup(headLayout.createSequentialGroup()
             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addContainerGap())
     );
     headLayout.setVerticalGroup(
@@ -293,7 +285,7 @@ public class mainView extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(headLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -623,41 +615,7 @@ public class mainView extends javax.swing.JFrame {
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new mainView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel head;
@@ -667,7 +625,6 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -686,5 +643,6 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JPanel menu5;
     private javax.swing.JPanel menu6;
     private javax.swing.JPanel menu_panel;
+    private javax.swing.JLabel name;
     // End of variables declaration//GEN-END:variables
 }

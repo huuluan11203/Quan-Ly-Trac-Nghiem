@@ -3,6 +3,7 @@ package com.tracnghiem;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.tracnghiem.dto.UserDTO;
 import javax.swing.SwingUtilities;
 import com.tracnghiem.view.loginView;
 
@@ -13,7 +14,8 @@ public class main {
         FlatLightLaf.setup();
            
         SwingUtilities.invokeLater(() -> {
-            new com.tracnghiem.view.mainView().setVisible(true);   // Khởi động giao diện chính
+//            new com.tracnghiem.view.mainView(new UserDTO()).setVisible(true);   // Khởi động giao diện chính
+            new com.tracnghiem.view.loginView().setVisible(true);   // Khởi động giao diện chính
         });
     }
 }

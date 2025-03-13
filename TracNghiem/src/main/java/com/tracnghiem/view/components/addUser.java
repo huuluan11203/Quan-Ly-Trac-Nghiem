@@ -55,6 +55,7 @@ public class addUser extends javax.swing.JPanel {
         lb_id = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         cbb_quyen = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         btn_luu.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #0bae1d; foreground: #ffffff;");
         btn_luu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -107,6 +108,9 @@ public class addUser extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel2.setText("Mật khẩu mặt định: 12345678");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,7 +123,9 @@ public class addUser extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lb_id)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 496, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 322, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_luu))
                     .addComponent(txt_tendangnhap)
                     .addComponent(txt_hovaten)
@@ -140,7 +146,8 @@ public class addUser extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_luu)
                     .addComponent(jLabel1)
-                    .addComponent(lb_id))
+                    .addComponent(lb_id)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -229,7 +236,7 @@ public class addUser extends javax.swing.JPanel {
         String tendangnhap = txt_tendangnhap.getText();
         String hovaten = txt_hovaten.getText();
         String email = txt_email.getText();
-        String matkhau = "123";
+        String matkhau = "12345678";
         int status = 0;
         if(cbb_quyen.getSelectedItem().toString().equals("ADMIN"))
             status = 1;
@@ -250,6 +257,7 @@ public class addUser extends javax.swing.JPanel {
     private javax.swing.JButton btn_luu;
     private javax.swing.JComboBox<String> cbb_quyen;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
