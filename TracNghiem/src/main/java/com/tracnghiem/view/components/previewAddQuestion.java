@@ -80,8 +80,6 @@ public class previewAddQuestion extends javax.swing.JPanel {
                 return;
             }
             
-           
-            
             if (qBUS.add(question)) {
                 for (AnswerDTO a : answers) {
                     if (!aBUS.add(a)) {

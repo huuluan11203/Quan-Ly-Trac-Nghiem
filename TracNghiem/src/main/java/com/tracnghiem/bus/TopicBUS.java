@@ -178,6 +178,16 @@ public class TopicBUS {
         return false; // Chưa tồn tại
     }
 
+//    public boolean isTopicParent(int tpID) {
+//        listTp = tpDAO.selectAll();
+//        for (TopicDTO topic : listTp) {
+//            if (topic.getTpParent() == tpID) {
+//                return true;
+//            }
+//        }
+//        return false; // Chưa tồn tại
+//    }
+    
     public int getNextID() {
         return tpDAO.getNextID();
     }

@@ -9,24 +9,41 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.ExamBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.TestBUS;
+import com.tracnghiem.bus.TestStructureBUS;
 import com.tracnghiem.bus.TopicBUS;
+import com.tracnghiem.dto.ExamDTO;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TestDTO;
+import com.tracnghiem.dto.TestStructureDTO;
 import com.tracnghiem.dto.TopicDTO;
+import com.tracnghiem.utils.RandomListsUtil;
 import com.tracnghiem.view.mainView;
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -56,6 +73,7 @@ public class addTestAuto extends javax.swing.JPanel {
     private final ArrayList<String> listExOrder = new ArrayList<>(Arrays.asList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"
     ));
+   private ArrayList<TestStructureDTO> listTs = new ArrayList<>();
 
     /**
      * Creates new form addTestAuto
@@ -66,7 +84,38 @@ public class addTestAuto extends javax.swing.JPanel {
 
         jLabel1.setText(newTestID + "");
         
+        jDateChooser1.getDateEditor().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("date".equals(evt.getPropertyName())) {
+                    Date selectedDate = jDateChooser1.getDate();
+                    if (selectedDate != null) {
+                        LocalDate localDate = selectedDate.toInstant()
+                                .atZone(ZoneId.systemDefault()) // Chuyển đổi theo múi giờ hệ thống
+                                .toLocalDate();
+                        dateSelected = localDate;
+                    }
+
+                }
+            }
+        });
+        
         loadTpParent();
+    }
+    
+     // DÙNG CHUNG
+    public static void showCustomDialog(JFrame parent, JPanel panel, String title) {
+        JDialog dialog = new JDialog(parent, title, true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // Thêm panel vào dialog
+        dialog.setLayout(new BorderLayout());
+        dialog.add(panel, BorderLayout.CENTER);
+
+        // Định kích thước dialog
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
+        dialog.setVisible(true);
     }
 
     /**
@@ -100,13 +149,13 @@ public class addTestAuto extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         SpinnerNumberModel model1 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
-        testLimit1 = new javax.swing.JSpinner(model1);
+        numE = new javax.swing.JSpinner(model1);
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
-        testLimit2 = new javax.swing.JSpinner(model2);
+        numM = new javax.swing.JSpinner(model2);
         SpinnerNumberModel model3 = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
-        testLimit3 = new javax.swing.JSpinner(model3);
+        numD = new javax.swing.JSpinner(model3);
         cbb_child = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         luu1 = new javax.swing.JButton();
@@ -290,6 +339,8 @@ public class addTestAuto extends javax.swing.JPanel {
         // Kích hoạt AutoComplete
         AutoCompleteDecorator.decorate(monhocCBB);
         monhocCBB.setMaximumRowCount(5);
+        monhocCBB.setVisible(true);
+        jLabel3.setVisible(true);
         ((AbstractDocument) testTime.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
@@ -328,13 +379,14 @@ public class addTestAuto extends javax.swing.JPanel {
         calendarButton.setIcon(new FlatSVGIcon("icons/calendar.svg", 30, 30));  // Đổi icon thành emoji lịch (hoặc setIcon)
         calendarButton.setFocusPainted(false);
         calendarButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton16.setVisible(true);
 
         jPanel1.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel9.setText("Số câu dễ:");
 
-        testLimit1.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
+        numE.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel10.setText("Số câu khó:");
@@ -342,9 +394,9 @@ public class addTestAuto extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel11.setText("Số câu trung bình:");
 
-        testLimit2.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
+        numM.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
 
-        testLimit3.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
+        numD.putClientProperty(FlatClientProperties.STYLE, "arc :10;");
 
         monhocCBB.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Danh sách môn học");
         monhocCBB.putClientProperty(FlatClientProperties.STYLE, "arc: 10; ");
@@ -406,11 +458,11 @@ public class addTestAuto extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(testLimit1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(numE, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel9))
                                     .addGap(18, 18, 18)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(testLimit2, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(numM, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel11)))
                                 .addComponent(cbb_child, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel7))
@@ -419,7 +471,7 @@ public class addTestAuto extends javax.swing.JPanel {
                             .addComponent(quantityExams, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(testLimit3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(numD, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -449,9 +501,9 @@ public class addTestAuto extends javax.swing.JPanel {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(testLimit1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(testLimit2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(testLimit3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numE, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numM, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numD, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(totalQuestion))
                 .addGap(18, 18, 18)
@@ -504,8 +556,185 @@ public class addTestAuto extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+
+    private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
+
+        
+        TestDTO t = new TestDTO(Integer.parseInt(jLabel1.getText()), testCode.getText(), 
+                testTitle.getText(),Integer.parseInt(testTime.getText()), 
+                (int)testLimit.getValue(), dateSelected, 1);
+        
+       
+        
+        ArrayList<Integer> listTpIDs = new ArrayList<>();
+        
+        for (TestStructureDTO listT : listTs) {
+            listTpIDs.add(listT.getTpID());
+        }
+        
+        //list cau hoi
+        ArrayList<QuestionDTO> listQs = new ArrayList<>();
+
+        
+        for (QuestionDTO q : qBUS.getAll()) {
+            if (listTpIDs.contains(q.getQTopic())) {
+                listQs.add(q);
+            }
+        }
+        
+        // Nhóm danh sách theo topicID
+        Map<Integer, List<QuestionDTO>> groupedByTopic = listQs.stream()
+            .collect(Collectors.groupingBy(q -> q.getQTopic()));
+
+        
+        // Danh sách ID câu hỏi đã chọn
+        ArrayList<Integer> selectedQuestions = new ArrayList<>();
+
+        Random random = new Random();
+
+        for (TestStructureDTO ts : listTs) {
+            List<QuestionDTO> questionsByTopic = groupedByTopic.get(ts.getTpID());
+
+            if (questionsByTopic != null) {
+                selectedQuestions.addAll(selectRandomQuestions(questionsByTopic, "Easy", ts.getNumEasy(), random));
+                selectedQuestions.addAll(selectRandomQuestions(questionsByTopic, "Medium", ts.getNumMedium(), random));
+                selectedQuestions.addAll(selectRandomQuestions(questionsByTopic, "Diff", ts.getNumDifficult(), random));
+            }
+        }
+//        
+        int k = (int) quantityExams.getValue();
+        ArrayList<String> listRandomIDs = RandomListsUtil.generateUniqueRandomLists(selectedQuestions, k);
+        
+        
+        
+        //list exams
+        ArrayList<ExamDTO> listE = new ArrayList<>();
+        ExamDTO e;
+        for (int i = 0; i < k; i++) {
+            e = new ExamDTO(t.getTestCode(),
+                    listExOrder.get(i),
+                    t.getTestCode().concat(listExOrder.get(i)),
+                    listRandomIDs.get(i));
+            
+            System.out.println(e.getExCode());
+            listE.add(e);
+        }
+
+        
+         if (!tBUS.add(t)) {
+            JOptionPane.showMessageDialog(null, "Thêm bài thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        for (ExamDTO exam : listE) {
+            if (!eBUS.add(exam)) {
+                JOptionPane.showMessageDialog(null, "Thêm đề thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        for (TestStructureDTO ts : listTs) {
+            if (!new TestStructureBUS().add(ts)) {
+                JOptionPane.showMessageDialog(null, "Thêm cấu trúc đề thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        JOptionPane.showMessageDialog(null, "Thêm bài thi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        java.awt.Window window = SwingUtilities.getWindowAncestor(this);
+        if (window instanceof JDialog) {
+            ((JDialog) window).dispose();
+        }
+        
+        
+    }//GEN-LAST:event_luuActionPerformed
+    private static List<Integer> selectRandomQuestions(List<QuestionDTO> questions, String difficulty, int num, Random random) {
+        List<QuestionDTO> filtered = questions.stream()
+            .filter(q -> q.getQLevel().equals(difficulty))
+            .collect(Collectors.toList());
+
+        // Trộn danh sách để chọn ngẫu nhiên
+        Collections.shuffle(filtered, random);
+
+        return filtered.stream()
+            .limit(num)
+            .map(QuestionDTO::getQID)
+            .collect(Collectors.toList());
+    }
+   
+    
+    
+    private void cbb_childActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_childActionPerformed
+        // TODO add your handling code here:
+        String selectedTopic = (String) cbb_child.getSelectedItem();
+        Integer selectedID = topicMapChildren.get(selectedTopic);
+        if (selectedID != null) {
+            idTopicChildren = selectedID;
+        }
+    }//GEN-LAST:event_cbb_childActionPerformed
+
+    private void luu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luu1ActionPerformed
+        // TODO add your handling code here:
+        showCustomDialog(null, new detailTest(listTs, true), "Xem trước cấu trúc bài thi");
+    }//GEN-LAST:event_luu1ActionPerformed
+
+    private void luu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luu2ActionPerformed
+        // TODO add your handling code here:
+        
+        TestStructureDTO ts;
+        if (validData()) {
+            
+            
+            ts = new TestStructureDTO(testCode.getText(), 
+                    idTopicChildren, 
+                    (int)numE.getValue(), 
+                    (int)numM.getValue(), 
+                    (int)numD.getValue()
+            );
+            
+            listTs.add(ts);
+            JOptionPane.showMessageDialog(null, "Thêm cấu trúc thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            
+            int totalQ = 0;
+            for (TestStructureDTO t : listTs) {
+                totalQ+= t.getNumMedium() + t.getNumEasy() + t.getNumDifficult();
+            }
+            
+            totalQuestion.setText(totalQ+"");
+            cbb_child.setSelectedIndex(0);
+            numE.setValue(0);
+            numM.setValue(0);
+            numD.setValue(0);
+            
+            
+        }
+    }//GEN-LAST:event_luu2ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        if (idTopicParent == -1) {
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(
+            null,
+            "Đổi chủ đề sẽ xoá tất cả câu hỏi đã chọn!\nBạn có muốn đổi chủ đề?",
+            "Xác nhận",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            jButton16.setIcon(new FlatSVGIcon("icons/unlock.svg", 30, 30));
+            monhocCBB.setEnabled(true);
+            monhocCBB.setSelectedIndex(0);
+            idTopicParent = -1;
+            totalQuestion.setText(listQSelected.size() + "");
+        }
+    }//GEN-LAST:event_jButton16ActionPerformed
+
     private void monhocCBBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monhocCBBActionPerformed
-         // TODO add your handling code here:
+        // TODO add your handling code here:
         String selectedTopic = (String) monhocCBB.getSelectedItem();
         Integer selectedID = topicMapParent.get(selectedTopic);
 
@@ -518,47 +747,90 @@ public class addTestAuto extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_monhocCBBActionPerformed
-
-
-    private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
-
-    }//GEN-LAST:event_luuActionPerformed
-
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+    
+    private boolean validData() {
+        if (testTitle.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Tên bài kiểm tra trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         if (idTopicParent == -1) {
-            return;
+            JOptionPane.showMessageDialog(null, "Hãy chọn chủ đề!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (dateSelected == null) {
+            JOptionPane.showMessageDialog(null, "Hãy chọn ngày!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (dateSelected.isBefore(LocalDate.now())) {
+            JOptionPane.showMessageDialog(null, "Ngày thi không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "Đổi chủ đề sẽ xoá tất cả câu hỏi đã chọn!\nBạn có muốn đổi chủ đề?",
-                "Xác nhận",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-        );
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            jButton16.setIcon(new FlatSVGIcon("icons/unlock.svg", 30, 30));
-            monhocCBB.setEnabled(true);
-            monhocCBB.setSelectedIndex(0);
-            idTopicParent = -1;
-            totalQuestion.setText(listQSelected.size() + "");
+        if (testCode.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Mã bài thi trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-
-    }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void cbb_childActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_childActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbb_childActionPerformed
-
-    private void luu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luu1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_luu1ActionPerformed
-
-    private void luu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luu2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_luu2ActionPerformed
-
+        if (tBUS.isExistTestCode(testCode.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Mã bài thi bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (testTime.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Thời gian làm bài trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        if (idTopicChildren == -1) {
+            JOptionPane.showMessageDialog(null, "Hãy chọn từng chủ đề!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if ((int)numE.getValue() == 0 &&(int)numM.getValue() == 0 &&(int)numD.getValue() == 0) {
+            JOptionPane.showMessageDialog(null, "Điền số lượng câu hỏi!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        for (TestStructureDTO listT : listTs) {
+            if (listT.getTpID() == idTopicChildren) {
+                JOptionPane.showMessageDialog(null, "Chủ đề bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        
+        
+        int tE=0,tM=0,tD=0;
+        
+        for (QuestionDTO q : qBUS.getAll()) {
+            
+            if (q.getQTopic() == idTopicChildren) {
+                if (q.getQLevel().equals("Easy")) tE++;
+                if (q.getQLevel().equals("Medium")) tM++;
+                if (q.getQLevel().equals("Diff")) tD++;
+            }
+        }
+        
+        if ((int)numE.getValue() > tE) {
+            JOptionPane.showMessageDialog(null, "Số lượng câu dễ của chủ đề không đủ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            
+        }
+        if ((int)numM.getValue() > tM) {
+            JOptionPane.showMessageDialog(null, "Số lượng câu trung của chủ đề không đủ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            
+        }
+        if ((int)numD.getValue() > tD) {
+            JOptionPane.showMessageDialog(null, "Số lượng câu khó của chủ đề không đủ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            
+        }
+        
+        return true;
+        
+        
+        
+    }
+    
+    
+    
     private void loadTpParent() {
         topicMapParent.clear();
         topicMapParent.put("--None--", -1);
@@ -578,6 +850,12 @@ public class addTestAuto extends javax.swing.JPanel {
     private void loadTpChildren(int idParent) {
         topicMapChildren.clear();
         topicMapChildren.put("--None--", -1);
+        
+        String selectedTopic = (String) monhocCBB.getSelectedItem();
+        Integer selectedID = topicMapParent.get(selectedTopic);
+        
+        topicMapChildren.put(selectedTopic, selectedID);
+        
         for (TopicDTO t : tpBUS.getAllChildTopics(idParent)) {
             topicMapChildren.put(t.getTpTitle(), t.getTpID());
         }
@@ -614,12 +892,12 @@ public class addTestAuto extends javax.swing.JPanel {
     private javax.swing.JButton luu1;
     private javax.swing.JButton luu2;
     private javax.swing.JComboBox<String> monhocCBB;
+    private javax.swing.JSpinner numD;
+    private javax.swing.JSpinner numE;
+    private javax.swing.JSpinner numM;
     private javax.swing.JSpinner quantityExams;
     private javax.swing.JTextField testCode;
     private javax.swing.JSpinner testLimit;
-    private javax.swing.JSpinner testLimit1;
-    private javax.swing.JSpinner testLimit2;
-    private javax.swing.JSpinner testLimit3;
     private javax.swing.JTextField testTime;
     private javax.swing.JTextField testTitle;
     private javax.swing.JButton time;

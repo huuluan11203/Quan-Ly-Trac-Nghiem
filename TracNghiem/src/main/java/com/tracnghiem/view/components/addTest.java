@@ -9,10 +9,12 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.ExamBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.TestBUS;
+import com.tracnghiem.bus.TestStructureBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.ExamDTO;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TestDTO;
+import com.tracnghiem.dto.TestStructureDTO;
 import com.tracnghiem.dto.TopicDTO;
 import com.tracnghiem.utils.RandomListsUtil;
 import java.awt.BorderLayout;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFormattedTextField;
 import javax.swing.SpinnerNumberModel;
@@ -66,6 +69,8 @@ public class addTest extends javax.swing.JPanel {
     private final QuestionBUS qBUS = new QuestionBUS();
     private final ExamBUS eBUS = new ExamBUS();
     private final TestBUS tBUS = new TestBUS();
+    private final TestStructureBUS tsBUS = new TestStructureBUS();
+
     private ArrayList<QuestionDTO> listQ = new ArrayList<>();
     private int idTopicParent = -1, idTopicChildren = -1, qIDSelected = -1, rowSelected = -1;
     private String qLevel = "--None--";
@@ -325,10 +330,6 @@ public class addTest extends javax.swing.JPanel {
                 testCode.getText(),
                 testTitle.getText(),
                 Integer.parseInt(testTime.getText()),
-                idTopicParent,
-                Integer.parseInt(totalEasy.getText()),
-                Integer.parseInt(totalMedium.getText()),
-                Integer.parseInt(totalDiff.getText()),
                 (int) testLimit.getValue(),
                 dateSelected,
                 1
@@ -356,6 +357,12 @@ public class addTest extends javax.swing.JPanel {
             listE.add(e);
         }
 
+        if (!tBUS.add(tNew)) {
+            JOptionPane.showMessageDialog(null, "Thêm bài thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            System.out.println("loi then=m bai thi");
+            return;
+        }
+        
         for (ExamDTO exam : listE) {
             if (!eBUS.add(exam)) {
                 JOptionPane.showMessageDialog(null, "Thêm đề thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -363,13 +370,34 @@ public class addTest extends javax.swing.JPanel {
                 return;
             }
         }
-        if (!tBUS.add(tNew)) {
-            JOptionPane.showMessageDialog(null, "Thêm bài thi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            System.out.println("loi then=m bai thi");
-            return;
-        }
+        
+        // Phân nhóm theo qTopicID
+        Map<Integer, List<QuestionDTO>> groupedByTopic = listQSelected.stream()
+                .collect(Collectors.groupingBy(QuestionDTO::getQTopic));
+         // In kết quả
+       
+        groupedByTopic.forEach((topicID, questionList) -> {
+            int nE = 0, nM = 0, nD = 0;
+            for (QuestionDTO questionDTO : questionList) {
+                if (questionDTO.getQLevel().equals("Easy")) {
+                    nE++;
+                }
+                if (questionDTO.getQLevel().equals("Medium")) {
+                    nM++;
+                }
+                if (questionDTO.getQLevel().equals("Diff")) {
+                    nD++;
+                }
+            }
+            
+            tsBUS.add(new TestStructureDTO(testCode.getText(), topicID, nE, nM, nD));
+            
+            
+        });
+        
+        
 
-        JOptionPane.showMessageDialog(null, "Thêm bài thi thành công!", "Thông", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Thêm bài thi thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         java.awt.Window window = SwingUtilities.getWindowAncestor(this);
         if (window instanceof JDialog) {
             ((JDialog) window).dispose();

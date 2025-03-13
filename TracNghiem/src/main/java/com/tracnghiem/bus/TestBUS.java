@@ -78,10 +78,8 @@ public class TestBUS {
 
         for (TestDTO test : listTest) {
             if (test.getTestCode().toLowerCase().contains(key) ||
-                test.getTestTitle().toLowerCase().contains(key) ||
-                String.valueOf(test.getTestID()).equals(key) ||
-                tpBUS.findOne(test.getTpID()).getTpTitle().toLowerCase().contains(key)
-                    ) {
+                test.getTestTittle().toLowerCase().contains(key) ||
+                String.valueOf(test.getTestID()).equals(key)) {
                 result.add(test);
             }
         }
@@ -95,10 +93,8 @@ public class TestBUS {
 
         for (TestDTO test : listTest) {
             if (test.getTestCode().toLowerCase().contains(key) ||
-                test.getTestTitle().toLowerCase().contains(key) ||
-                String.valueOf(test.getTestID()).equals(key) ||
-                tpBUS.findOne(test.getTpID()).getTpTitle().toLowerCase().contains(key)
-                    ) {
+                test.getTestTittle().toLowerCase().contains(key) ||
+                String.valueOf(test.getTestID()).equals(key)) {
                 result.add(test);
             }
         }

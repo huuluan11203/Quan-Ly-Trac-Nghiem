@@ -98,7 +98,7 @@ public class MonHocPanel extends javax.swing.JPanel {
             for (TopicDTO level1Topic : level1Topics) {
                 // Thêm dòng cho topic cấp 1
                 Object[] level1Row = new Object[5];
-                level1Row[0] = rootTopic.getTpID();      // "Mã môn học" - từ topic gốc
+                level1Row[0] = level1Topic.getTpID();      // "Mã môn học" - từ topic gốc
                 level1Row[1] = rootTopic.getTpTitle();   // "Tên môn học" - từ topic gốc
                 level1Row[2] = level1Topic.getTpTitle(); // "Chủ đề" - từ topic cấp 1
                 level1Row[3] = "-";                      // "Bài học" - không có
@@ -109,7 +109,7 @@ public class MonHocPanel extends javax.swing.JPanel {
                 List<TopicDTO> level2Topics = childTopics.getOrDefault(level1Topic.getTpID(), new ArrayList<>());
                 for (TopicDTO level2Topic : level2Topics) {
                     Object[] level2Row = new Object[5];
-                    level2Row[0] = rootTopic.getTpID();      // "Mã môn học" - từ topic gốc
+                    level2Row[0] = level2Topic.getTpID();      // "Mã môn học" - từ topic gốc
                     level2Row[1] = rootTopic.getTpTitle();   // "Tên môn học" - từ topic gốc
                     level2Row[2] = level1Topic.getTpTitle(); // "Chủ đề" - từ topic cấp 1
                     level2Row[3] = level2Topic.getTpTitle(); // "Bài học" - từ topic cấp 2
@@ -502,9 +502,9 @@ public class MonHocPanel extends javax.swing.JPanel {
 
         jButton7.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton7.setIcon(new FlatSVGIcon("icons/detail.svg", 30, 30)
+        jButton7.setIcon(new FlatSVGIcon("icons/edit.svg", 30, 30)
         );
-        jButton7.setText("Chi tiết");
+        jButton7.setText("Sửa");
         jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

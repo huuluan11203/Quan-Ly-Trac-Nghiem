@@ -576,13 +576,14 @@ public class BaiThiPanel extends javax.swing.JPanel {
                     .orElse(null);
 
             if (matchingTest != null) {
-                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle(); // Lấy tên chủ đề
+//                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle(); // Lấy tên chủ đề
+                String topicName = "";
                 String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Định dạng ngày
                 int numQuestions = exam.getExQuesIDs().split(";").length; // Đếm số câu hỏi trong đề
                 String shortCode = exam.getExCode().substring(exam.getExCode().length() - 1);
                 model.addRow(new Object[]{
                     matchingTest.getTestCode(), // Mã bài kiểm tra
-                    matchingTest.getTestTitle(),// Tiêu đề bài kiểm tra
+                    matchingTest.getTestTittle(),// Tiêu đề bài kiểm tra
                     shortCode, // Mã đề
                     topicName, // Chủ đề
                     formattedDate, // Ngày kiểm tra

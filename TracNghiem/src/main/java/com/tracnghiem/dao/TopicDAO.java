@@ -59,7 +59,7 @@ public class TopicDAO implements InterfaceDAO<TopicDTO>{
     @Override
     public ArrayList<TopicDTO> selectAll() {
         ArrayList<TopicDTO> list = new ArrayList<TopicDTO>();
-        String sql = "SELECT * FROM topics";
+        String sql = "SELECT * FROM topics WHERE tpID <> 0";
         try (Connection conn = JDBCUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
