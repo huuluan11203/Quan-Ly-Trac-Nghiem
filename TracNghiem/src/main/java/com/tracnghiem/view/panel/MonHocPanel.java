@@ -103,7 +103,7 @@ public class MonHocPanel extends javax.swing.JPanel {
                     if (level2Topics.isEmpty()) {
                         // Nếu cấp 1 không có cấp 2 (trường hợp như "Bài 10" trực tiếp dưới "Toán")
                         Object[] row = new Object[5];
-                        row[0] = rootTopic.getTpID();      // "Mã môn học"
+                        row[0] = level1Topic.getTpID();      // "Mã môn học"
                         row[1] = rootTopic.getTpTitle();   // "Tên môn học"
                         row[2] = "";                       // "Chuyên đề" - rỗng
                         row[3] = level1Topic.getTpTitle(); // "Bài học" - từ topic cấp 1
@@ -113,7 +113,7 @@ public class MonHocPanel extends javax.swing.JPanel {
                         // Duyệt qua topic cấp 2 (bài học)
                         for (TopicDTO level2Topic : level2Topics) {
                             Object[] row = new Object[5];
-                            row[0] = rootTopic.getTpID();      // "Mã môn học"
+                            row[0] = level2Topic.getTpID();      // "Mã môn học"
                             row[1] = rootTopic.getTpTitle();   // "Tên môn học"
                             row[2] = level1Topic.getTpTitle(); // "Chuyên đề"
                             row[3] = level2Topic.getTpTitle(); // "Bài học"
