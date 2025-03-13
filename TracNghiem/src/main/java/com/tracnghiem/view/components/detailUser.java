@@ -186,7 +186,7 @@ public class detailUser extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_luuActionPerformed
 
     private void btn_matkhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_matkhauActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btn_matkhauActionPerformed
 
     private void txt_tendangnhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tendangnhapActionPerformed
