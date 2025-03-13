@@ -129,11 +129,13 @@ public class loginView extends javax.swing.JFrame {
             System.out.println(user);
             if (user != null) {
                 if (user.getIsAdmin() == 1) {
-                    new mainView(user).setVisible(true); // Mở giao diện Admin
+                    new mainView(user).setVisible(true); 
+                    dispose();// Mở giao diện Admin
                 } else {
                     new userView(user).setVisible(true); // Mở giao diện User
+                    dispose();
                 }
-                dispose();
+                
             }else{
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
