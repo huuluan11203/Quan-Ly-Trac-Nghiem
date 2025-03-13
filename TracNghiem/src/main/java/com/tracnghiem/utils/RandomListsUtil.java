@@ -18,25 +18,19 @@ import java.util.Set;
 public class RandomListsUtil {
     
     public static ArrayList<String> generateUniqueRandomLists(ArrayList<Integer> originalList, int k) {
-        Set<String> uniqueSets = new HashSet<>();
-        
-        // Tạo tất cả các hoán vị của danh sách câu hỏi
-        List<List<Integer>> allPermutations = new ArrayList<>();
-        permute(originalList, 0, allPermutations);
+       Set<String> uniqueSets = new HashSet<>();
+        Random random = new Random();
 
-        // Chuyển danh sách các hoán vị thành chuỗi
-        for (List<Integer> perm : allPermutations) {
-            String listAsString = perm.stream()
+        while (uniqueSets.size() < k) {
+            List<Integer> shuffledList = new ArrayList<>(originalList);
+            Collections.shuffle(shuffledList, random); // Xáo trộn ngẫu nhiên
+            String listAsString = String.join(";", shuffledList.stream()
                                       .map(String::valueOf)
-                                      .reduce((a, b) -> a + ";" + b)
-                                      .orElse("");
+                                      .toArray(String[]::new)); // Chuyển thành chuỗi "1;3;4;5"
             uniqueSets.add(listAsString);
         }
 
-        // Nếu k > số hoán vị có thể có, chỉ lấy tối đa số hoán vị có thể
-        int limit = Math.min(k, uniqueSets.size());
-        
-        return new ArrayList<>(new ArrayList<>(uniqueSets).subList(0, limit));
+        return new ArrayList<>(uniqueSets);
     }
 
     // Hàm đệ quy để tạo hoán vị

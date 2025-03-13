@@ -80,7 +80,8 @@ public class mainView extends javax.swing.JFrame {
     public mainView(UserDTO user) {
         this.user = user;
         initComponents();
-        name. setText(user.getUserFullName());
+        String[] tName =  user.getUserFullName().split(" "); 
+        name. setText(tName[tName.length - 1]);
         cardLayout = (CardLayout) main_panel.getLayout();
 
         //Menu

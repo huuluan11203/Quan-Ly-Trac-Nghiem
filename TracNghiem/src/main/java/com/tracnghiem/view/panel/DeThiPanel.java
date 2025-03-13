@@ -269,8 +269,12 @@ public class DeThiPanel extends javax.swing.JPanel {
             try (XWPFDocument document = new XWPFDocument()) {
 
                 for (ExamDTO exam : listE) {
-                    // 🏫 Thêm thông tin trường vào file Word
+                  
+
+                    // 📝 Thêm tiêu đề Exam
+                      // 🏫 Thêm thông tin trường vào file Word
                     XWPFParagraph schoolPara = document.createParagraph();
+                    schoolPara.setPageBreak(true);
                     schoolPara.setAlignment(ParagraphAlignment.LEFT);
                     XWPFRun schoolRun = schoolPara.createRun();
                     schoolRun.setBold(true);
@@ -298,10 +302,8 @@ public class DeThiPanel extends javax.swing.JPanel {
 
                     // Tạo khoảng trống
                     document.createParagraph();
-
-                    // 📝 Thêm tiêu đề Exam
+                    
                     XWPFParagraph examCode = document.createParagraph();
-                    examCode.setPageBreak(true);
                     XWPFRun runExamCode = examCode.createRun();
                     runExamCode.setBold(true);
                     runExamCode.setFontSize(14);
