@@ -24,7 +24,7 @@ public class UserBUS {
     }
 
     public ArrayList<UserDTO> getAll() {
-        return this.listUser;
+        return uDAO.selectAll();
     }
 
     public UserDTO findOne(int id) {

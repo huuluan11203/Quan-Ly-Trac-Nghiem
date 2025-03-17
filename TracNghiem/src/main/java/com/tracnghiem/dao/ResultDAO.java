@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -26,13 +27,14 @@ public class ResultDAO implements InterfaceDAO<ResultDTO> {
 
     @Override
     public boolean insert(ResultDTO result) {
-        String sql = "INSERT INTO result(userID, exCode, rsAnswer, rsMark, rsDate) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO result(rs_num,userID, exCode, rsAnswer, rsMark, rsDate) VALUES(?,?,?,?,?,?)";
         try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, result.getUserID());
-            ps.setString(2, result.getExCode());
-            ps.setString(3, result.getRsAnswer());
-            ps.setDouble(4, result.getRsMark());
-            ps.setTimestamp(5, Timestamp.valueOf(result.getRsDate()));
+            ps.setInt(1, result.getRsNum());
+            ps.setInt(2, result.getUserID());
+            ps.setString(3, result.getExCode());
+            ps.setString(4, result.getRsAnswer());
+            ps.setDouble(5, result.getRsMark());
+            ps.setTimestamp(6, Timestamp.valueOf(result.getRsDate()));
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -42,14 +44,16 @@ public class ResultDAO implements InterfaceDAO<ResultDTO> {
 
     @Override
     public boolean update(ResultDTO result) {
-        String sql = "UPDATE result SET userID=?, exCode=?, rsAnswer=?, rsMark=?, rsDate=? WHERE rsID=?";
+        String sql = "UPDATE result SET rsAnswer=?, rsMark=?, rsDate=? WHERE rs_num=? AND userID=? AND exCode=?";
         try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, result.getUserID());
-            ps.setString(2, result.getExCode());
-            ps.setString(3, result.getRsAnswer());
-            ps.setDouble(4, result.getRsMark());
-            ps.setTimestamp(5, Timestamp.valueOf(result.getRsDate()));
-            ps.setInt(6, result.getRsID());
+            ps.setString(1, result.getRsAnswer());
+            ps.setDouble(2, result.getRsMark());
+            ps.setTimestamp(3, Timestamp.valueOf(result.getRsDate()));
+            ps.setInt(4, result.getRsNum());
+            ps.setInt(5, result.getUserID());
+            ps.setString(6, result.getExCode());
+
+            
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -77,13 +81,40 @@ public class ResultDAO implements InterfaceDAO<ResultDTO> {
         }
         return results;
     }
-
+    
     @Override
     public ResultDTO selectByID(String id) {
         ResultDTO result = null;
-        String sql = "SELECT * FROM result WHERE rsID=?";
+        String sql = "SELECT * FROM result WHERE rs_num=? AND userID=? AND exCode=?";
         try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, Integer.parseInt(id));
+            ps.setString(3, id);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = new ResultDTO(
+                            rs.getInt("rsID"),
+                            rs.getInt("userID"),
+                            rs.getString("exCode"),
+                            rs.getString("rsAnswer"),
+                            rs.getDouble("rsMark"),
+                            rs.getTimestamp("rsDate").toLocalDateTime()
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public ResultDTO findOneByPK(int rsNum, int userID, String exCode) {
+        ResultDTO result = null;
+        String sql = "SELECT * FROM result WHERE rs_num=? AND userID=? AND exCode=?";
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, rsNum);
+            ps.setInt(2, userID);
+            ps.setString(3, exCode);
+            
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     result = new ResultDTO(
@@ -118,24 +149,56 @@ public class ResultDAO implements InterfaceDAO<ResultDTO> {
         String getCountSQL = "SELECT COUNT(*) FROM result WHERE userID = ?";
         String insertSQL = "INSERT INTO result (rs_num, userID, exCode, rs_anwsers, rs_mark, rs_date) VALUES (?, ?, ?, ?, ?, NOW())";
 
+        String rsNumSQL = "SELECT * FROM result WHERE userID=? AND exCode=?";
+        
+        int rsNum = 0;
+        
+        try (Connection conn = JDBCUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(rsNumSQL)) {
+
+            pstmt.setInt(1, userID);  // userID là kiểu số nguyên
+            pstmt.setString(2, exCode); // exCode là kiểu chuỗi
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    rsNum++;
+                }
+                rsNum++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+        
+        
+        
         try (Connection conn = JDBCUtil.getConnection(); PreparedStatement countStmt = conn.prepareStatement(getCountSQL)) {
 
             countStmt.setInt(1, userID);
             ResultSet rs = countStmt.executeQuery();
-            int rsNum = 1;
-            if (rs.next()) {
-                rsNum = rs.getInt(1) + 1;
-            }
+//            int rsNum = 1;
+//            if (rs.next()) {
+//                rsNum = rs.getInt(1) + 1;
+//            }
 
-            // Chuyển danh sách câu trả lời thành JSON
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonAnswers = objectMapper.writeValueAsString(answers);
+//            // Chuyển danh sách câu trả lời thành JSON
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String jsonAnswers = objectMapper.writeValueAsString(answers);
 
+           
+            
+            String rsAns = answers.stream()
+                         .map(String::valueOf) // Chuyển Integer thành String
+                         .collect(Collectors.joining(";"));
+            
+            
             try (PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
                 insertStmt.setInt(1, rsNum);
                 insertStmt.setInt(2, userID);
                 insertStmt.setString(3, exCode);
-                insertStmt.setString(4, jsonAnswers);
+                insertStmt.setString(4, rsAns);
                 insertStmt.setFloat(5, rsMark);
                 return insertStmt.executeUpdate() > 0;
             }

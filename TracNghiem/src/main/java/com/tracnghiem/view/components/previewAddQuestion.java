@@ -64,6 +64,8 @@ public class previewAddQuestion extends javax.swing.JPanel {
         loadTableQuestion(listQ);
     }
 
+    
+
     private void addNew() {
         // Xử lý dữ liệu
         boolean check = true;
@@ -75,13 +77,16 @@ public class previewAddQuestion extends javax.swing.JPanel {
                 continue;
             }
 
-            if ( qBUS.isExist(question.getQContent(), question.getQTopic())) {
+            if (qBUS.isExist(question.getQContent(), question.getQTopic())) {
                 JOptionPane.showMessageDialog(null, "Câu hỏi: '" + question.getQContent() + "' đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             if (qBUS.add(question)) {
+                int newID = qBUS.getMaxID();
+
                 for (AnswerDTO a : answers) {
+                    a.setQID(newID);
                     if (!aBUS.add(a)) {
                         check = false;
                         break;

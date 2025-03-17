@@ -22,6 +22,7 @@ import com.tracnghiem.view.panel.DeThiPanel;
 import com.tracnghiem.view.panel.DiemPanel;
 import com.tracnghiem.view.panel.MonHocPanel;
 import com.tracnghiem.view.panel.SinhVienPanel;
+import com.tracnghiem.view.panel.ThongKePanel;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -75,6 +76,7 @@ public class mainView extends javax.swing.JFrame {
     private final SinhVienPanel sinhvien = new SinhVienPanel();
     private final DeThiPanel dethi = new DeThiPanel();
     private final DiemPanel diem = new DiemPanel();
+    private final ThongKePanel thongke = new ThongKePanel();
     private final UserDTO user;
 
     public mainView(UserDTO user) {
@@ -85,7 +87,7 @@ public class mainView extends javax.swing.JFrame {
         cardLayout = (CardLayout) main_panel.getLayout();
 
         //Menu
-        List<JPanel> menuList = List.of(menu1, menu2, menu3, menu4, menu5, menu6);
+        List<JPanel> menuList = List.of(menu1, menu2, menu3, menu4, menu5,  menu8, menu6);
         menu_panel.putClientProperty(FlatClientProperties.STYLE, "arc: 40; background: #eaeaea");
 
         for (JPanel menu : menuList) {
@@ -98,6 +100,7 @@ public class mainView extends javax.swing.JFrame {
         main_panel.add(monhoc, "monhoc");
         main_panel.add(diem, "diem");
         main_panel.add(sinhvien, "sinhvien");
+        main_panel.add(thongke, "thongke");
 
         //Hien thi mac dinh
         menu1.putClientProperty(FlatClientProperties.STYLE, "arc: 20; background: #033d67");
@@ -245,6 +248,9 @@ public class mainView extends javax.swing.JFrame {
         menu5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        menu8 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         menu6 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -513,6 +519,50 @@ public class mainView extends javax.swing.JFrame {
 
     menu_panel.add(menu5);
 
+    menu8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    menu8.setMaximumSize(new java.awt.Dimension(168, 47));
+    menu8.setPreferredSize(new java.awt.Dimension(168, 47));
+    menu_panel.add(Box.createVerticalStrut(10));
+    menu8.setName("thongke");
+
+    jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+    jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+    jLabel13.setText("Thống kê");
+    jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+    jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+    jLabel18.setIcon(new FlatSVGIcon("icons/table-of-contents.svg", 30, 30
+    )
+    );
+    jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    jLabel18.setPreferredSize(new java.awt.Dimension(35, 35));
+
+    javax.swing.GroupLayout menu8Layout = new javax.swing.GroupLayout(menu8);
+    menu8.setLayout(menu8Layout);
+    menu8Layout.setHorizontalGroup(
+        menu8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(menu8Layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+    menu8Layout.setVerticalGroup(
+        menu8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(menu8Layout.createSequentialGroup()
+            .addGroup(menu8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(menu8Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(menu8Layout.createSequentialGroup()
+                    .addGap(15, 15, 15)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    );
+
+    menu_panel.add(menu8);
+
     menu6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     menu6.setMaximumSize(new java.awt.Dimension(168, 47));
     menu6.setPreferredSize(new java.awt.Dimension(168, 47));
@@ -624,8 +674,10 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -643,6 +695,7 @@ public class mainView extends javax.swing.JFrame {
     private javax.swing.JPanel menu4;
     private javax.swing.JPanel menu5;
     private javax.swing.JPanel menu6;
+    private javax.swing.JPanel menu8;
     private javax.swing.JPanel menu_panel;
     private javax.swing.JLabel name;
     // End of variables declaration//GEN-END:variables

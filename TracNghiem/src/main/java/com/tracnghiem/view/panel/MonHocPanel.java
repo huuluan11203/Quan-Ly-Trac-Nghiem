@@ -59,16 +59,17 @@ public class MonHocPanel extends javax.swing.JPanel {
         loadDataSubjectTable();
     }
 
+    
+
     private void loadDataSubjectTable() {
         model.setRowCount(0); // Xóa dữ liệu cũ trong model
         ArrayList<TopicDTO> lTp = tpBUS.getAll(); // Lấy tất cả topic
 
         // Tạo map để tra cứu topic theo tpID
-        Map<Integer, TopicDTO> topicMap = new HashMap<>();
-        for (TopicDTO topic : lTp) {
-            topicMap.put(topic.getTpID(), topic);
-        }
-
+//        Map<Integer, TopicDTO> topicMap = new HashMap<>();
+//        for (TopicDTO topic : lTp) {
+//            topicMap.put(topic.getTpID(), topic);
+//        }
         // Tạo danh sách để lưu các topic theo cấp độ
         List<TopicDTO> rootTopics = new ArrayList<>();    // Topic gốc
         Map<Integer, List<TopicDTO>> childTopics = new HashMap<>(); // Topic con theo tpParent
@@ -105,8 +106,8 @@ public class MonHocPanel extends javax.swing.JPanel {
                         Object[] row = new Object[5];
                         row[0] = level1Topic.getTpID();      // "Mã môn học"
                         row[1] = rootTopic.getTpTitle();   // "Tên môn học"
-                        row[2] = "";                       // "Chuyên đề" - rỗng
-                        row[3] = level1Topic.getTpTitle(); // "Bài học" - từ topic cấp 1
+                        row[2] = level1Topic.getTpTitle();  //"Bài học" - từ topic cấp 
+                        row[3] = ""; // "Chuyên đề" - rỗng
                         row[4] = level1Topic.getTpStatus() == 1 ? "Hoạt động" : "Tạm dừng"; // "Trạng thái"
                         model.addRow(row);
                     } else {
@@ -661,7 +662,7 @@ public class MonHocPanel extends javax.swing.JPanel {
 
         return null; // Nếu không tìm thấy
     }
-
+    
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         int selectedRow = table_monhoc.getSelectedRow();

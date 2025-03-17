@@ -51,4 +51,13 @@ public class TestStructureBUS {
         }
         return false;
     }
+    
+    public TestStructureDTO findOneByTestCode(String testCode) {
+        for (TestStructureDTO testStructureDTO : listTestStructure) {
+            if (testStructureDTO.getTestCode().equals(testCode)) {
+                return testStructureDTO;
+            }
+        }
+        return null;
+    }
 }

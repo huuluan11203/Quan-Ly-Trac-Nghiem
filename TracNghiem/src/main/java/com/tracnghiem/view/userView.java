@@ -46,7 +46,9 @@ public class userView extends javax.swing.JFrame {
         baiThiPanel = new BaiThiPanel(user);
         info = new Info(user);
         
-        name.setText(user.getUserFullName());
+        String[] tName =  user.getUserFullName().split(" "); 
+        name. setText(tName[tName.length - 1]);
+        
         cardLayout = (CardLayout) main_panel.getLayout();
         //Menu
         List<JPanel> menuList = List.of(menu1, menu2, menu3, menu4);

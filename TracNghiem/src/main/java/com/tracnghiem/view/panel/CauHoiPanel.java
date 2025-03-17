@@ -207,6 +207,8 @@ public class CauHoiPanel extends javax.swing.JPanel {
         }
     }
 
+    
+    
     private void refresh() {
         listQ = qBUS.getAll();
         loadTableQuestion(listQ);
@@ -654,8 +656,7 @@ public class CauHoiPanel extends javax.swing.JPanel {
         qIDSelected = -1;
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+    private void handleDeleteQues() {
         if (qIDSelected == -1) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhấp đôi để chọn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
@@ -691,6 +692,11 @@ public class CauHoiPanel extends javax.swing.JPanel {
                 );
             }
         }
+    }
+    
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        handleDeleteQues();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
