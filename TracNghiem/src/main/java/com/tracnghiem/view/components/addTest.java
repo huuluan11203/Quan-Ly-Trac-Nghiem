@@ -333,6 +333,7 @@ public class addTest extends javax.swing.JPanel {
     }
 
     private void buildData() {
+        System.out.println("com.tracnghiem.view.components.addTest.buildData()");
 
         TestDTO tNew = new TestDTO(newTestID,
                 testCode.getText(),

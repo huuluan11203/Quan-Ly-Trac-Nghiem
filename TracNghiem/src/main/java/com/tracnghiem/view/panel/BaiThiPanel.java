@@ -67,6 +67,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
     private AnswerBUS answerBUS = new AnswerBUS();
     private QuestionBUS questionBUS = new QuestionBUS();
     private TestStructureBUS tsBUS = new TestStructureBUS();
+    private LogBUS logBUS = new LogBUS();
     private TopicBUS tpBUS = new TopicBUS();
     private ArrayList<ExamDTO> examList = new ArrayList<>();
     private ArrayList<TestDTO> testList = new ArrayList<>();
@@ -244,16 +245,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
 
         jPanel4.add(jPanel1, "card1");
 
-        javax.swing.GroupLayout slcauhoiLayout = new javax.swing.GroupLayout(slcauhoi);
-        slcauhoi.setLayout(slcauhoiLayout);
-        slcauhoiLayout.setHorizontalGroup(
-            slcauhoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 576, Short.MAX_VALUE)
-        );
-        slcauhoiLayout.setVerticalGroup(
-            slcauhoiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
+        slcauhoi.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton7.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
         jButton7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -305,7 +297,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
                     .addComponent(made))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(time)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -561,7 +553,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4))
@@ -598,12 +590,14 @@ public class BaiThiPanel extends javax.swing.JPanel {
         Object value = jTable1.getValueAt(row, 5);
         String t = value.toString();  // Chuyển thành chuỗi an toàn
         testTime = Integer.parseInt(t.replaceAll("[^0-9]", ""));
-
-//        String t = (String) jTable1.getValueAt(row, 5);
-//        testTime = Integer.parseInt(t.replaceAll("[^0-9]", "")); // Chỉ giữ lại số
-        // Gộp testCode + exOrder để lấy exCode
         String selectedExCode = testCode + exOrder;
+        System.out.println(selectedExCode);
+        
         exam = examBUS.geExamByExCode(selectedExCode);
+        
+        //Save log
+        logBUS.saveLog("Làm bài kiểm tra " + exam.getTestCode(), user.getUserID(), exam.getExCode());
+        
         loadExam(exam);
         loadQuestion(questionList.getFirst());
         startCountdown(testTime);
@@ -632,6 +626,55 @@ public class BaiThiPanel extends javax.swing.JPanel {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE
             );
+<<<<<<< HEAD
+=======
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                // Tách danh sách câu hỏi từ ex_quesIDs
+                String[] questionIds = exam.getExQuesIDs().split(";");
+                int[] intQuestionIds = Arrays.stream(questionIds)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                totalQ = questionIds.length;
+
+                for (int i = selectedQ; i < intQuestionIds.length; i++) {
+                    if (!selectedAnswers.containsKey(intQuestionIds[i])) {
+                        selectedAnswers.put(intQuestionIds[i], -1); // Sử dụng intQuestionIds[i] thay vì questionIds[i]
+                    }
+                }
+
+                mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
+                JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                
+                //Save log
+                logBUS.saveLog("Nộp bài", user.getUserID(), exam.getExCode());
+                
+                card.show(jPanel4, "card1");
+            }
+        }else{
+             // Tách danh sách câu hỏi từ ex_quesIDs
+                String[] questionIds = exam.getExQuesIDs().split(";");
+                int[] intQuestionIds = Arrays.stream(questionIds)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                totalQ = questionIds.length;
+
+                for (int i = selectedQ; i < intQuestionIds.length; i++) {
+                    if (!selectedAnswers.containsKey(intQuestionIds[i])) {
+                        selectedAnswers.put(intQuestionIds[i], -1); // Sử dụng intQuestionIds[i] thay vì questionIds[i]
+                    }
+                }
+
+                mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
+                JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                
+                //Save log
+                logBUS.saveLog("Nộp bài " + exam.getTestCode() + " - Điểm: " + mark, user.getUserID(), exam.getExCode());
+                
+                card.show(jPanel4, "card1");
+>>>>>>> 34c0a1a0e2781f80b4f4d75f4f7e3c349b1d6f44
         }
         if (confirm == JOptionPane.YES_OPTION) {
 
@@ -868,7 +911,8 @@ public class BaiThiPanel extends javax.swing.JPanel {
                 questionButtons[currentQuestionIndex].putClientProperty(FlatClientProperties.STYLE, "background: #94dcff;");
                 if (!isSelected) {
                     selectedQ++;
-                }
+                } 
+                logBUS.saveLog("Lưu đáp án: Câu " + question.getQID() + " - " + selectedAnswers.get(question.getQID()), user.getUserID(),exam.getExCode());
                 isSelected = true;
             });
         }
@@ -900,18 +944,21 @@ public class BaiThiPanel extends javax.swing.JPanel {
         for (JRadioButton radioButton : radioButtons) {
             if (radioButton.isSelected()) {
                 selectedAnswers.put(questionID, (Integer) radioButton.getClientProperty("awID"));
+<<<<<<< HEAD
                 hasSelection = true;
                 System.out.println("Lưu đáp án: Câu " + questionID + " -> " + selectedAnswers.get(questionID));
                 
                 LogDTO newLog = new LogDTO((Integer) radioButton.getClientProperty("awID")+"", user.getUserID(), exam.getExCode(), LocalDateTime.now());
                 new LogBUS().add(newLog);
                 
+=======
+                hasSelection = true;                                
+>>>>>>> 34c0a1a0e2781f80b4f4d75f4f7e3c349b1d6f44
                 break;
             }
         }
         if (!hasSelection) {
             selectedAnswers.remove(questionID); // Xóa đáp án nếu không có lựa chọn
-            System.out.println(" Xóa đáp án: Câu " + questionID);
         }
     }
 

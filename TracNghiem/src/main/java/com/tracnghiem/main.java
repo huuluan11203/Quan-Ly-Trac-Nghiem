@@ -14,8 +14,8 @@ public class main {
         FlatLightLaf.setup();
            
         SwingUtilities.invokeLater(() -> {
-//            new com.tracnghiem.view.mainView(new UserDTO()).setVisible(true);   // Khởi động giao diện chính
-            new com.tracnghiem.view.loginView().setVisible(true);   // Khởi động giao diện chính
+     //       new com.tracnghiem.view.mainView(new UserDTO()).setVisible(true);  
+          new com.tracnghiem.view.loginView().setVisible(true);   // Khởi động giao diện chính
         });
     }
 }
