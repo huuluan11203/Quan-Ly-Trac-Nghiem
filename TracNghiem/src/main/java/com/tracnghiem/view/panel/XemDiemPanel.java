@@ -40,13 +40,15 @@ public class XemDiemPanel extends javax.swing.JPanel {
     private ArrayList<TestDTO> testList = new ArrayList<>();
     private ArrayList<ResultDTO> resultList = new ArrayList<>();
     private TopicBUS tpBUS = new TopicBUS();
-
+    private UserDTO user;
+    
+    
     public XemDiemPanel(UserDTO user) {
         initComponents();
         examList = examBUS.getAll();
         testList = tBUS.getAll();
         resultList = resultBUS.getAll();
-        
+        this.user = user;
 
         loadExamToTable(examList, testList, resultList, user.getUserID());
     }
@@ -124,6 +126,8 @@ public class XemDiemPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         //Chi tiet
          int row = jTable1.getSelectedRow(); // Lấy hàng được chọn
@@ -134,12 +138,13 @@ public class XemDiemPanel extends javax.swing.JPanel {
 
         String testCode = (String) jTable1.getValueAt(row, 0);
         String exOrder = (String) jTable1.getValueAt(row, 2);
-        String t = (String) jTable1.getValueAt(row, 5);
 
         // Gộp testCode + exOrder để lấy exCode
         String selectedExCode = testCode + exOrder;
         ExamDTO exam = examBUS.geExamByExCode(selectedExCode);
-        mainView.showCustomDialog(null, new result(exam), "Chi tiết");
+        ResultDTO r = resultBUS.findOneByUserIDAndExCode(user.getUserID(), selectedExCode);
+//        mainView.showCustomDialog(null, new result(exam), "Chi tiết");
+        mainView.showCustomDialog(null, new result(r), "Chi tiết");
     }//GEN-LAST:event_jButton7ActionPerformed
 
     
