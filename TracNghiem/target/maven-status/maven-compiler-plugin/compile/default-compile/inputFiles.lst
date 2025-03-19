@@ -55,6 +55,7 @@ D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dto\TestStructureDTO
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\panel\Info.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\detailExam.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\AnswerBUS.java
+D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\LogBUS.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\view\components\addSubject.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\dto\AnswerDTO.java
 D:\QuanLyTracNghiem\TracNghiem\src\main\java\com\tracnghiem\bus\ExamBUS.java

@@ -25,7 +25,7 @@ public class LogDAO implements InterfaceDAO<LogDTO>{
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, log.getLogContent());
             ps.setInt(2, log.getLogUserID());
-            ps.setInt(3, log.getLogExCode());
+            ps.setString(3, log.getLogExCode());
             ps.setTimestamp(4, Timestamp.valueOf(log.getLogDate()));
             rs = ps.executeUpdate() > 0;
         } catch (SQLException ex) {
@@ -42,7 +42,7 @@ public class LogDAO implements InterfaceDAO<LogDTO>{
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, log.getLogContent());
             ps.setInt(2, log.getLogUserID());
-            ps.setInt(3, log.getLogExCode());
+            ps.setString(3, log.getLogExCode());
             ps.setTimestamp(4, Timestamp.valueOf(log.getLogDate()));
             ps.setInt(5, log.getLogID());
             rs = ps.executeUpdate() > 0;
@@ -64,7 +64,7 @@ public class LogDAO implements InterfaceDAO<LogDTO>{
                     rsSet.getInt("logID"),
                     rsSet.getString("logContent"),
                     rsSet.getInt("logUserID"),
-                    rsSet.getInt("logExCode"),
+                    rsSet.getString("logExCode"),
                     rsSet.getTimestamp("logDate").toLocalDateTime()
                 ));
             }
@@ -87,7 +87,7 @@ public class LogDAO implements InterfaceDAO<LogDTO>{
                         rsSet.getInt("logID"),
                         rsSet.getString("logContent"),
                         rsSet.getInt("logUserID"),
-                        rsSet.getInt("logExCode"),
+                        rsSet.getString("logExCode"),
                         rsSet.getTimestamp("logDate").toLocalDateTime()
                     );
                 }

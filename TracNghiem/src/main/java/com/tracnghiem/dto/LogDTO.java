@@ -14,20 +14,20 @@ public class LogDTO {
         private int logID;
         private String logContent;
         private int logUserID;
-        private int logExCode;
+        private String logExCode;
         private LocalDateTime logDate;
 
     public LogDTO() {
     }
 
-    public LogDTO(String logContent, int logUserID, int logExCode, LocalDateTime logDate) {
+    public LogDTO(String logContent, int logUserID, String logExCode, LocalDateTime logDate) {
         this.logContent = logContent;
         this.logUserID = logUserID;
         this.logExCode = logExCode;
         this.logDate = logDate;
     }
 
-    public LogDTO(int logID, String logContent, int logUserID, int logExcode, LocalDateTime logDate) {
+    public LogDTO(int logID, String logContent, int logUserID, String logExcode, LocalDateTime logDate) {
         this.logID = logID;
         this.logContent = logContent;
         this.logUserID = logUserID;
@@ -69,11 +69,11 @@ public class LogDTO {
     } 
     
 
-    public int getLogExCode() {
+    public String getLogExCode() {
         return logExCode;
     }
 
-    public void setLogExCode(int logExCode) {
+    public void setLogExCode(String logExCode) {
         this.logExCode = logExCode;
     }
 
