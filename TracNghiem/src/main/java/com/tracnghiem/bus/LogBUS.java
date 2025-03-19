@@ -1,4 +1,3 @@
-
 package com.tracnghiem.bus;
 
 import com.tracnghiem.dao.LogDAO;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
  * @author huulu
  */
 public class LogBUS {
+
     private LogDAO logDAO;
 
     public LogBUS() {
@@ -48,6 +48,10 @@ public class LogBUS {
     // Lấy danh sách tất cả log
     public ArrayList<LogDTO> getAllLogs() {
         return logDAO.selectAll();
+    }
+
+    public ArrayList<LogDTO> getLogByUserID(int userID) {
+        return logDAO.selectByUserID(userID);
     }
 
     // Lấy log theo ID

@@ -5,6 +5,7 @@
 package com.tracnghiem.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.tracnghiem.bus.LogBUS;
 import com.tracnghiem.bus.UserBUS;
 import com.tracnghiem.dto.UserDTO;
 import java.awt.Color;
@@ -22,6 +23,8 @@ public class loginView extends javax.swing.JFrame {
      * Creates new form login
      */
     private UserBUS userBUS = new UserBUS();
+    private LogBUS logBUS = new LogBUS();
+
     public loginView() {
 
         initComponents();
@@ -32,10 +35,9 @@ public class loginView extends javax.swing.JFrame {
 
         setLocationRelativeTo(null);
     }
-    
-    
+
     private void login() {
-        
+
         String username = username_field.getText();
         String password = new String(password_field.getPassword());
 
@@ -47,15 +49,16 @@ public class loginView extends javax.swing.JFrame {
         } else {
 
             UserDTO user = userBUS.login(username, password);
-            System.out.println(user);
             if (user != null) {
                 if (user.getIsAdmin() == 1) {
                     new mainView(user).setVisible(true); // Mở giao diện Admin
+
                 } else {
-                    new userView(user).setVisible(true); // Mở giao diện User
+                    new userView(user).setVisible(true); //   Mở giao diện User
+                    logBUS.saveLog(user.getUserFullName() + " Đăng nhập.", user.getUserID(), "");
                 }
                 dispose();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
 
@@ -161,7 +164,7 @@ public class loginView extends javax.swing.JFrame {
 
     private void username_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_fieldKeyTyped
         resetBorder(username_field);
-        
+
     }//GEN-LAST:event_username_fieldKeyTyped
 
     private void password_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_fieldKeyTyped
@@ -170,7 +173,7 @@ public class loginView extends javax.swing.JFrame {
 
     private void username_fieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_fieldKeyPressed
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_username_fieldKeyPressed
 
     private void username_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_fieldKeyReleased
