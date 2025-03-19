@@ -81,7 +81,7 @@ public class UserBUS {
                     }
                 }
             }
-            case "Họ tên" -> {
+            case "Họ và tên" -> {
                 for (UserDTO i : this.listUser) {
                     if (PatternMatcherUtil.patternMatcherFullName(key, i)) {
                         result.add(i);

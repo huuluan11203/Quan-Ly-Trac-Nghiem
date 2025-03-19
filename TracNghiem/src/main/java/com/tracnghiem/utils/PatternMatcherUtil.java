@@ -17,10 +17,12 @@ import java.util.regex.Pattern;
 public class PatternMatcherUtil {
     private static UserBUS userBUS = new UserBUS();
     public static boolean patternMatcherFullName(String key, UserDTO user){
-        String normalized = Normalizer.normalize(key, Normalizer.Form.NFD);
-        String keyword = normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-        Pattern pattern = Pattern.compile(Pattern.quote(keyword), Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(user.getUserFullName());
+        String normalized = Normalizer.normalize(key, Normalizer.Form.NFD)
+                        .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        String normalizedName = Normalizer.normalize(key, Normalizer.Form.NFD)
+                        .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        Pattern pattern = Pattern.compile(Pattern.quote(normalized), Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(normalizedName);
         if(matcher.find())
             return true;
         return false;

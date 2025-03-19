@@ -360,7 +360,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                 e.printStackTrace();
             }
 
         }

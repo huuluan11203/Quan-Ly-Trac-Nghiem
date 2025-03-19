@@ -154,6 +154,7 @@ public class loginView extends javax.swing.JFrame {
     }//GEN-LAST:event_password_fieldActionPerformed
 
     private void submit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submit_btnActionPerformed
+
         login();
 
     }//GEN-LAST:event_submit_btnActionPerformed
