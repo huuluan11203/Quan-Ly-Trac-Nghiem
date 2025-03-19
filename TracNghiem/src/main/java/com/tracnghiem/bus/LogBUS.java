@@ -1,49 +1,74 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.tracnghiem.bus;
 
 import com.tracnghiem.dao.LogDAO;
 import com.tracnghiem.dto.LogDTO;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
  *
- * @author X
+ * @author huulu
  */
 public class LogBUS {
-    private final LogDAO lDAO = LogDAO.getInstance();
-    private ArrayList<LogDTO> listLogs;
+
+    private LogDAO logDAO;
 
     public LogBUS() {
-        listLogs = lDAO.selectAll();
+        this.logDAO = LogDAO.getInstance();
     }
 
-    public ArrayList<LogDTO> getAll() {
-        return lDAO.selectAll();
+    // Thêm log mới
+    public boolean saveLog(String content, int userID, String exCode) {
+        LogDTO log = new LogDTO();
+        log.setLogContent(content);
+        log.setLogUserID(userID);
+        log.setLogExCode(exCode);
+        log.setLogDate(LocalDateTime.now()); // Thời gian hiện tại
+        return logDAO.insert(log);
     }
 
-    public LogDTO findOne(String id) {
-        return lDAO.selectByID(id);
-    }
-
-    public int getIndex(int id) {
-        for (int i = 0; i < listLogs.size(); i++) {
-            if (listLogs.get(i).getLogID() == id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public boolean add(LogDTO log) {
-        if (lDAO.insert(log)) {
-            listLogs.add(log);
-            return true;
+    // Cập nhật log
+    public boolean updateLog(int logID, String content, int userID, String exCode) {
+        LogDTO log = logDAO.selectByID(String.valueOf(logID));
+        if (log != null) {
+            log.setLogContent(content);
+            log.setLogUserID(userID);
+            log.setLogExCode(exCode);
+            log.setLogDate(LocalDateTime.now()); // Cập nhật thời gian mới
+            return logDAO.update(log);
         }
         return false;
     }
-    
-    
+
+    // Xóa log theo ID
+    public boolean deleteLog(int logID) {
+        return logDAO.delete(String.valueOf(logID));
+    }
+
+    // Lấy danh sách tất cả log
+    public ArrayList<LogDTO> getAllLogs() {
+        return logDAO.selectAll();
+    }
+
+    public ArrayList<LogDTO> getLogByUserID(int userID) {
+        return logDAO.selectByUserID(userID);
+    }
+
+    // Lấy log theo ID
+    public LogDTO getLogByID(int logID) {
+        return logDAO.selectByID(String.valueOf(logID));
+    }
+
+    // Tìm kiếm log theo nội dung
+    public ArrayList<LogDTO> searchLogsByContent(String keyword) {
+        ArrayList<LogDTO> allLogs = logDAO.selectAll();
+        ArrayList<LogDTO> result = new ArrayList<>();
+        for (LogDTO log : allLogs) {
+            if (log.getLogContent().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(log);
+            }
+        }
+        return result;
+    }
 }

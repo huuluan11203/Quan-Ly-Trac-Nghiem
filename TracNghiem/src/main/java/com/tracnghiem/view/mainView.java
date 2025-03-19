@@ -6,6 +6,7 @@ package com.tracnghiem.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.LogBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.QuestionDTO;
@@ -184,7 +185,7 @@ public class mainView extends javax.swing.JFrame {
                         cardLayout.show(main_panel, menu.getName());
                     } else {
                         if ((int) showLogoutDialog() == JOptionPane.YES_OPTION) {
-                            //tro ve dang nhap
+                            //tro ve dang nhap                          
                             new loginView().setVisible(true);
                             dispose();
                             //

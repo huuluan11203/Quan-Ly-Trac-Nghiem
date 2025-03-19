@@ -31,6 +31,7 @@ com\tracnghiem\view\components\addQuestion$12.class
 com\tracnghiem\view\components\detailQuestion$13.class
 com\tracnghiem\view\components\updateQuestion$3.class
 com\tracnghiem\bus\ExamBUS.class
+com\tracnghiem\view\components\Logs$1.class
 com\tracnghiem\bus\TestStructureBUS.class
 com\tracnghiem\view\panel\Info.class
 com\tracnghiem\view\panel\BaiThiPanel$4.class
@@ -63,6 +64,7 @@ com\tracnghiem\view\components\detailTest.class
 com\tracnghiem\view\panel\SinhVienPanel$6.class
 com\tracnghiem\view\components\addQuestion$17.class
 com\tracnghiem\view\panel\DeThiPanel$7.class
+com\tracnghiem\view\panel\SinhVienPanel$12.class
 com\tracnghiem\view\components\detailQuestion$5.class
 com\tracnghiem\main.class
 com\tracnghiem\view\panel\MonHocPanel$6.class
@@ -121,6 +123,7 @@ com\tracnghiem\bus\AnswerBUS.class
 com\tracnghiem\view\loginView$4.class
 com\tracnghiem\view\components\addQuestion$5.class
 com\tracnghiem\view\panel\MonHocPanel$2.class
+com\tracnghiem\view\components\Logs.class
 com\tracnghiem\view\components\previewDetailQuestion$1.class
 com\tracnghiem\dao\ExamDAO.class
 com\tracnghiem\dto\TopicDTO.class

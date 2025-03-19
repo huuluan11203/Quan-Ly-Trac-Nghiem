@@ -3,10 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.tracnghiem.view.panel;
+
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.LogBUS;
 import com.tracnghiem.bus.UserBUS;
 import com.tracnghiem.dto.UserDTO;
+import com.tracnghiem.view.components.Logs;
 import com.tracnghiem.view.components.addUser;
 import com.tracnghiem.view.components.detailUser;
 import com.tracnghiem.view.mainView;
@@ -16,12 +19,16 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author X
  */
 public class SinhVienPanel extends javax.swing.JPanel {
-    private final UserBUS userBUS = new UserBUS();
+
+    private UserBUS userBUS = new UserBUS();
+    private LogBUS logBUS = new LogBUS();
+
     /**
      * Creates new form SinhVienPanel
      */
@@ -29,40 +36,39 @@ public class SinhVienPanel extends javax.swing.JPanel {
         initComponents();
         loadUserTable();
     }
-    
-    
-    
-    public void loadUserTable(){
+
+    public void loadUserTable() {
         List<UserDTO> users = userBUS.getAll();
         DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"STT","Tên đăng nhập","Họ và tên","Email","ID","Quyền","Trạng thái"},0)
-        {
-        Class[] types = new Class[]{
-            Integer.class, Object.class, Object.class, Object.class,Integer.class, Object.class, Object.class
-        };
+                new Object[]{"STT", "Tên đăng nhập", "Họ và tên", "Email", "ID", "Quyền", "Trạng thái"}, 0) {
+            Class[] types = new Class[]{
+                Integer.class, Object.class, Object.class, Object.class, Integer.class, Object.class, Object.class
+            };
 
-        boolean[] canEdit = new boolean[]{
-            false, false, false, false, false, false, false  // Không cho phép chỉnh sửa ô nào
-        };
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false, false, false // Không cho phép chỉnh sửa ô nào
+            };
 
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return types[columnIndex];
-        }
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
 
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return false;
-        }
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
         };
         int stt = 1;
-        for(UserDTO user : users){
+        for (UserDTO user : users) {
             String quyen = "USER";
-            if(user.getIsAdmin() == 1)
+            if (user.getIsAdmin() == 1) {
                 quyen = "ADMIN";
+            }
             String status = "Hoạt động";
-            if(user.getUserStatus() == 0)
+            if (user.getUserStatus() == 0) {
                 status = "Khóa";
+            }
             model.addRow(new Object[]{
                 stt++,
                 user.getUserName(),
@@ -76,42 +82,44 @@ public class SinhVienPanel extends javax.swing.JPanel {
         table_sinhvien.setModel(model);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        for (int i = 0; i < table_sinhvien.getColumnCount(); i++) 
+        for (int i = 0; i < table_sinhvien.getColumnCount(); i++) {
             table_sinhvien.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
         table_sinhvien.revalidate();
         table_sinhvien.repaint();
     }
-    
-    public void loadUserTable(ArrayList<UserDTO> users){
+
+    public void loadUserTable(ArrayList<UserDTO> users) {
         DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"STT","Tên đăng nhập","Họ và tên","Email","ID","Quyền","Trạng thái"},0)
-        {
-        Class[] types = new Class[]{
-            Integer.class, Object.class, Object.class, Object.class,Integer.class, Object.class, Object.class
-        };
+                new Object[]{"STT", "Tên đăng nhập", "Họ và tên", "Email", "ID", "Quyền", "Trạng thái"}, 0) {
+            Class[] types = new Class[]{
+                Integer.class, Object.class, Object.class, Object.class, Integer.class, Object.class, Object.class
+            };
 
-        boolean[] canEdit = new boolean[]{
-            false, false, false, false, false, false, false  // Không cho phép chỉnh sửa ô nào
-        };
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false, false, false // Không cho phép chỉnh sửa ô nào
+            };
 
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return types[columnIndex];
-        }
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
 
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return false;
-        }
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
         };
         int stt = 1;
-        for(UserDTO user : users){
+        for (UserDTO user : users) {
             String quyen = "USER";
-            if(user.getIsAdmin() == 1)
+            if (user.getIsAdmin() == 1) {
                 quyen = "ADMIN";
+            }
             String status = "Hoạt động";
-            if(user.getUserStatus() == 0)
+            if (user.getUserStatus() == 0) {
                 status = "Khóa";
+            }
             model.addRow(new Object[]{
                 stt++,
                 user.getUserName(),
@@ -125,57 +133,58 @@ public class SinhVienPanel extends javax.swing.JPanel {
         table_sinhvien.setModel(model);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        for (int i = 0; i < table_sinhvien.getColumnCount(); i++) 
+        for (int i = 0; i < table_sinhvien.getColumnCount(); i++) {
             table_sinhvien.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
         table_sinhvien.revalidate();
         table_sinhvien.repaint();
     }
 
     private UserDTO getOneSelectedInTable() {
-    int selectedRow = table_sinhvien.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(null, "Vui lòng chọn một dòng!");
-        return null;
+        int selectedRow = table_sinhvien.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một dòng!");
+            return null;
+        }
+        DefaultTableModel table = (DefaultTableModel) table_sinhvien.getModel();
+        int id = Integer.parseInt(table.getValueAt(selectedRow, 4).toString()); // Cột chứa ID
+        UserDTO user = userBUS.findOne(id);
+        if (user != null && user.getUserStatus() == 0) {
+            btn_xoa.setText("Kích hoạt");
+            btn_xoa.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #20c020; foreground: #ffffff;");
+            btn_xoa.setIcon(new FlatSVGIcon("icons/reset.svg", 30, 30));
+        } else {
+            btn_xoa.setText("Xóa");
+            btn_xoa.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ee2020; foreground: #ffffff;");
+        }
+        return user;
     }
-    DefaultTableModel table = (DefaultTableModel) table_sinhvien.getModel();
-    int id = Integer.parseInt(table.getValueAt(selectedRow, 4).toString()); // Cột chứa ID
-    UserDTO user = userBUS.findOne(id);
-    if (user != null && user.getUserStatus() == 0) {
-        btn_xoa.setText("Kích hoạt");
-        btn_xoa.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #20c020; foreground: #ffffff;");
-        btn_xoa.setIcon(new FlatSVGIcon("icons/reset.svg", 30, 30));
-    } else {
-        btn_xoa.setText("Xóa");
-        btn_xoa.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ee2020; foreground: #ffffff;");
-    }
-    return user;
-}
 
-    
-    private void searchUser(){
+    private void searchUser() {
         String search = txt_tim.getText();
         String kieu = cbb_kieu.getSelectedItem().toString();
-        if(!search.isEmpty() && kieu != null)
+        if (!search.isEmpty() && kieu != null) {
             loadUserTable(userBUS.search(search, kieu));
+        }
     }
-    
-    private void deleteActivateUser(UserDTO user){
-        if(user.getUserStatus() == 1){
+
+    private void deleteActivateUser(UserDTO user) {
+        if (user.getUserStatus() == 1) {
             user.setUserStatus(0);
-            if(userBUS.update(user)){
+            if (userBUS.update(user)) {
                 JOptionPane.showMessageDialog(this, "Khóa tài khoản thành công");
                 loadUserTable();
             }
-        } else{
+        } else {
             user.setUserStatus(1);
-            if(userBUS.update(user)){
+            if (userBUS.update(user)) {
                 JOptionPane.showMessageDialog(this, "Kích hoạt tài khoản thành công");
                 loadUserTable();
             }
         }
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,6 +207,7 @@ public class SinhVienPanel extends javax.swing.JPanel {
         jScrollPane4 = new javax.swing.JScrollPane();
         table_sinhvien = new javax.swing.JTable();
         btn_capnhat = new javax.swing.JButton();
+        log = new javax.swing.JButton();
 
         jPanel5.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #ffffff");
 
@@ -380,12 +390,24 @@ public class SinhVienPanel extends javax.swing.JPanel {
             }
         });
 
+        log.putClientProperty(FlatClientProperties.STYLE, "arc: 10; background: #3276c3; foreground: #ffffff;");
+        log.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        log.setText("Lịch sử hoạt động");
+        log.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        log.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(log)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_xoa)
                 .addGap(27, 27, 27)
                 .addComponent(btn_capnhat)
@@ -404,7 +426,8 @@ public class SinhVienPanel extends javax.swing.JPanel {
                     .addComponent(btn_taomoi)
                     .addComponent(btn_chitiet)
                     .addComponent(btn_xoa)
-                    .addComponent(btn_capnhat))
+                    .addComponent(btn_capnhat)
+                    .addComponent(log))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
         );
@@ -434,7 +457,7 @@ public class SinhVienPanel extends javax.swing.JPanel {
     private void btn_timActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timActionPerformed
         // TODO add your handling code here:
         searchUser();
-        if(txt_tim.getText().isEmpty())
+        if (txt_tim.getText().isEmpty())
             loadUserTable();
     }//GEN-LAST:event_btn_timActionPerformed
 
@@ -444,26 +467,28 @@ public class SinhVienPanel extends javax.swing.JPanel {
 
     private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
         // TODO add your handling code here:
-        if(btn_xoa.getText().equals("Xóa")){
+        if (btn_xoa.getText().equals("Xóa")) {
             int confirm = JOptionPane.showConfirmDialog(this, "Xác nhận khóa tài khoản ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-            if(confirm == JOptionPane.YES_OPTION)
+            if (confirm == JOptionPane.YES_OPTION) {
                 deleteActivateUser(getOneSelectedInTable());
+            }
         } else {
             int confirm = JOptionPane.showConfirmDialog(this, "Kích hoạt tài khoản ?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-            if(confirm == JOptionPane.YES_OPTION)
+            if (confirm == JOptionPane.YES_OPTION) {
                 deleteActivateUser(getOneSelectedInTable());
+            }
         }
-        
+
     }//GEN-LAST:event_btn_xoaActionPerformed
 
     private void btn_chitietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chitietActionPerformed
         // TODO add your handling code here:
-        mainView.showCustomDialog(null, new detailUser(getOneSelectedInTable(),true), "Chi tiết người dùng");
+        mainView.showCustomDialog(null, new detailUser(getOneSelectedInTable(), true), "Chi tiết người dùng");
     }//GEN-LAST:event_btn_chitietActionPerformed
 
     private void cbb_kieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_kieuActionPerformed
         // TODO add your handling code here:
-        if(cbb_kieu.getSelectedIndex() == 0){
+        if (cbb_kieu.getSelectedIndex() == 0) {
             loadUserTable();
             txt_tim.setText("");
         }
@@ -480,10 +505,23 @@ public class SinhVienPanel extends javax.swing.JPanel {
 
     private void btn_capnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_capnhatActionPerformed
         // TODO add your handling code here:
-        for(UserDTO user : userBUS.getAll())
+        for (UserDTO user : userBUS.getAll()) {
             System.out.println(user.toString());
+        }
         loadUserTable();
     }//GEN-LAST:event_btn_capnhatActionPerformed
+
+    private void logActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logActionPerformed
+
+        int selectedRow = table_sinhvien.getSelectedRow();
+        if (selectedRow != -1) {
+            int userID = (int) table_sinhvien.getValueAt(selectedRow, 4);
+
+            UserDTO user = userBUS.findOne(userID);
+
+            mainView.showCustomDialog(null, new Logs(user), "Lịch Sử Hoạt Động");
+        }
+    }//GEN-LAST:event_logActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -498,6 +536,7 @@ public class SinhVienPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JButton log;
     private javax.swing.JTable table_sinhvien;
     private javax.swing.JTextField txt_tim;
     // End of variables declaration//GEN-END:variables

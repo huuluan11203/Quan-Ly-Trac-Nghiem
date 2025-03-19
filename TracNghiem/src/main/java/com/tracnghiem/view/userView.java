@@ -6,6 +6,7 @@ package com.tracnghiem.view;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.tracnghiem.bus.LogBUS;
 import com.tracnghiem.dto.UserDTO;
 import com.tracnghiem.view.panel.BaiThiPanel;
 import com.tracnghiem.view.panel.Info;
@@ -38,6 +39,7 @@ public class userView extends javax.swing.JFrame {
     private BaiThiPanel baiThiPanel;
     private XemDiemPanel xemDiemPanel;
     private final UserDTO user;
+    private LogBUS logBUS = new LogBUS();
 
     public userView(UserDTO user) {
         initComponents();
@@ -429,6 +431,7 @@ public class userView extends javax.swing.JFrame {
                     } else {
                         if ((int) showLogoutDialog() == JOptionPane.YES_OPTION) {
                             //tro ve dang nhap
+                             logBUS.saveLog(user.getUserFullName() + " Đăng xuất.", user.getUserID(), "");
                             new loginView().setVisible(true);
                             dispose();
                             //
