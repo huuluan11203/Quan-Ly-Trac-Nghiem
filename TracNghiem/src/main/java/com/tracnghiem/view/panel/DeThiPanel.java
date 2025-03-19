@@ -156,13 +156,13 @@ public class DeThiPanel extends javax.swing.JPanel {
             // Định dạng ngày thành dd/MM/yyyy
             String formattedDate = test.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            System.out.println("Ngày đã format: " + formattedDate);
+            ArrayList<String> l = eBus.getExamCodesByTestCode(test.getTestCode());
 
             model.addRow(new Object[]{
                 test.getTestID(), // ID
                 test.getTestCode(), // Mã đề thi từ bảng exams
                 test.getTestTittle(), // Tiêu đề
-                "", // Chủ đề
+                l.stream().collect(Collectors.joining(",")), // All mã đề
                 formattedDate, // Thời gian
                 test.getTestTime(), // Giờ làm
                 test.getTestLimit(), // Giới hạn thời gian làm bài
@@ -269,10 +269,9 @@ public class DeThiPanel extends javax.swing.JPanel {
             try (XWPFDocument document = new XWPFDocument()) {
 
                 for (ExamDTO exam : listE) {
-                  
 
                     // 📝 Thêm tiêu đề Exam
-                      // 🏫 Thêm thông tin trường vào file Word
+                    // 🏫 Thêm thông tin trường vào file Word
                     XWPFParagraph schoolPara = document.createParagraph();
                     schoolPara.setPageBreak(true);
                     schoolPara.setAlignment(ParagraphAlignment.LEFT);
@@ -302,7 +301,7 @@ public class DeThiPanel extends javax.swing.JPanel {
 
                     // Tạo khoảng trống
                     document.createParagraph();
-                    
+
                     XWPFParagraph examCode = document.createParagraph();
                     XWPFRun runExamCode = examCode.createRun();
                     runExamCode.setBold(true);
@@ -579,7 +578,7 @@ public class DeThiPanel extends javax.swing.JPanel {
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "ID", "Mã đề thi", "Tiêu đề", "Chủ đề", "Ngày thi", "Giờ làm( phút)","Lượt", "Tổng số câu"
+                "ID", "Mã đề thi", "Tiêu đề", "SL mã đề", "Ngày thi", "Giờ làm( phút)","Lượt", "Tổng số câu"
             }
 
         ) {
@@ -676,6 +675,8 @@ public class DeThiPanel extends javax.swing.JPanel {
         exportToWord();
     }//GEN-LAST:event_nhap_excelActionPerformed
 
+
+    
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         //update
         int selectedRow = jTable4.getSelectedRow();

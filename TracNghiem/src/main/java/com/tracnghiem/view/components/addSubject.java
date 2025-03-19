@@ -101,6 +101,8 @@ public class addSubject extends javax.swing.JPanel {
         }
     }
 
+    
+    
     private int getSelectedParentId() {
         String selectedTitle = (String) cbb_parentID.getSelectedItem();
         if (selectedTitle.equals("--Trống--")) {

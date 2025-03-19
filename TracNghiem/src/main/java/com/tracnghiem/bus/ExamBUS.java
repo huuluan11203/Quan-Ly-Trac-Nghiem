@@ -85,11 +85,26 @@ public class ExamBUS {
     public ArrayList<String> getExamCodesByTestCode(String testCode) {
         return eDAO.getExamCodesByTestCode(testCode);
     }
+    
+    public ArrayList<String> getExamOrdersByTestCode(String testCode) {
+        listExams = getAll();
+        ArrayList<String> rs = new ArrayList<>();
+        for (ExamDTO listExam : listExams) {
+            if (listExam.getTestCode().equals(testCode)) {
+                rs.add(listExam.getExOrder());
+            }
+        }
+        return rs;
+    }
+    
+    
 
     public ExamDTO geExamByExCode(String exCode) {
         return eDAO.getExamByExCode(exCode);
     }
 
+    
+    
     public ArrayList<ExamDTO> getUserExam(int userId) {
         return eDAO.getUserExam(userId);
     }

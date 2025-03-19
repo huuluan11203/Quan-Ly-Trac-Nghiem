@@ -10,15 +10,48 @@ import java.util.Map;
 public class ResultBUS {
 
     private final ResultDAO resultDAO = ResultDAO.getInstance();
-    public static ArrayList<ResultDTO> listTest = new ArrayList<>();
+    public static ArrayList<ResultDTO> listRS = new ArrayList<>();
 
     public ResultBUS() {
-        listTest = resultDAO.selectAll();
+        listRS = resultDAO.selectAll();
     }
 
     public ArrayList<ResultDTO> getAll(){
         return resultDAO.selectAll();
     }
+    
+    public ArrayList<ResultDTO> findAllByExCode(String exCode) {
+        ArrayList<ResultDTO> rs = new ArrayList<>();
+        for (ResultDTO r : listRS) {
+            if (r.getExCode().equals(exCode) ) {
+                rs.add(r);
+            }
+        }
+        return rs;
+        
+    }
+    public ResultDTO findOneByUserIDAndExCode(int userID, String exCode) {
+        listRS = resultDAO.selectAll();
+        for (ResultDTO r : listRS) {
+            if (r.getUserID() == userID && r.getExCode().equals(exCode) ) {
+                return r;
+            }
+        }
+        return null;
+        
+    }
+    
+    public int getTimesByTestCodeAndUserID(String testCode, int uID) {
+        int d = 0;
+        for (ResultDTO r : listRS) {
+            String t = r.getExCode().substring(0, r.getExCode().length() - 1);
+            if (r.getUserID() == uID && t.equals(testCode)) {
+                d++;
+            }
+        }
+        return d;
+    }
+    
     
     public String convertMapToString(Map<Integer, Integer> userAnswers) {
         StringBuilder sb = new StringBuilder();
@@ -48,6 +81,10 @@ public class ResultBUS {
 
     //Lưu kết quả bài thi
     public float submitExam(int userID, String exCode, String ex_questionIDs, Map<Integer, Integer> userAnswers) {
+        
+        
+//        userAnswers.put(question.getQID(), selectedAwID);
+        
         Map<Integer, Integer> correctAnswers = getCorrectAnswers(ex_questionIDs);
         int correctCount = 0;
 
@@ -81,6 +118,28 @@ public class ResultBUS {
     
     public Map<Integer, Integer> getCorrectAnswers(String ex_questionIDs){
         return resultDAO.getCorrectAnswers(ex_questionIDs);
+    }
+    
+    public int getQuantityByExCode(String exCode) {
+        int t =0;
+        for (ResultDTO r : listRS) {
+            if (r.getExCode().equals(exCode)) {
+                t++;
+            }
+        }
+        
+        return t;
+    }
+    
+    public double getMaxMarkByExCode(String exCode) {
+        double t = 0;
+        for (ResultDTO r : listRS) {
+            if (r.getRsMark() > t && r.getExCode().equals(exCode)) {
+                t = r.getRsMark();
+            }
+        }
+        
+        return t;
     }
 
 }

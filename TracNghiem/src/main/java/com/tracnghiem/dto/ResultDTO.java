@@ -13,7 +13,7 @@ import java.util.Map;
  * @author X
  */
 public class ResultDTO {
-    private int rsID;
+    private int rsNum;
     private int userID;
     private String exCode;
     private String rsAnswer;
@@ -29,7 +29,7 @@ public class ResultDTO {
     }
 
     public ResultDTO(int rsID, int userID, String exCode, String rsAnswer, double rsMark, LocalDateTime rsDate) {
-        this.rsID = rsID;
+        this.rsNum = rsID;
         this.userID = userID;
         this.exCode = exCode;
         this.rsAnswer = rsAnswer;
@@ -40,12 +40,12 @@ public class ResultDTO {
     public ResultDTO() {
     }
 
-    public int getRsID() {
-        return rsID;
+    public int getRsNum() {
+        return rsNum;
     }
 
-    public void setRsID(int rsID) {
-        this.rsID = rsID;
+    public void setRsNum(int rsNum) {
+        this.rsNum = rsNum;
     }
 
     public int getUserID() {
@@ -90,7 +90,7 @@ public class ResultDTO {
     
     @Override
     public String toString() {
-        return "ResultDTO{" + "rsID=" + rsID + ", userID=" + userID + ", exCode=" + exCode + ", rsAnswer=" + rsAnswer + ", rsMark=" + rsMark + ", rsDate=" + rsDate + '}';
+        return "ResultDTO{" + "rsID=" + rsNum + ", userID=" + userID + ", exCode=" + exCode + ", rsAnswer=" + rsAnswer + ", rsMark=" + rsMark + ", rsDate=" + rsDate + '}';
     }
 
     

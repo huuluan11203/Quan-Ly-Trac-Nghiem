@@ -11,6 +11,7 @@ import com.tracnghiem.bus.ExamBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.ResultBUS;
 import com.tracnghiem.bus.TestBUS;
+import com.tracnghiem.bus.TestStructureBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.ExamDTO;
@@ -26,6 +27,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+import java.util.stream.Collectors;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -60,6 +63,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
     private ExamBUS examBUS = new ExamBUS();
     private AnswerBUS answerBUS = new AnswerBUS();
     private QuestionBUS questionBUS = new QuestionBUS();
+    private TestStructureBUS tsBUS = new TestStructureBUS();
     private TopicBUS tpBUS = new TopicBUS();
     private ArrayList<ExamDTO> examList = new ArrayList<>();
     private ArrayList<TestDTO> testList = new ArrayList<>();
@@ -89,9 +93,34 @@ public class BaiThiPanel extends javax.swing.JPanel {
         radioButtons = new JRadioButton[]{rbtnA, rbtnB, rbtnC, rbtnD, rbtnE};
         examList = examBUS.getUserExam(user.getUserID());
         testList = tBUS.getAll();
-        loadExamToTable(examList, testList);
+//        loadExamToTable(examList, testList);
+        load(testList);
         card = (CardLayout) jPanel4.getLayout();
         card.show(jPanel4, "card1");
+    }
+
+    private boolean validateExam(int row) {
+        //Ngày
+        Object value = jTable1.getValueAt(row, 4);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date = LocalDate.parse((String) value, formatter);
+
+        if (!date.isEqual(LocalDate.now())) {
+            JOptionPane.showMessageDialog(null, "Chưa tới thời gian làm bài kiếm tra");
+            return false;
+        }
+
+        //Lượt
+        String testCode = (String) jTable1.getValueAt(row, 0);
+        int limit = (int) jTable1.getValueAt(row, 3);
+//        int limit = Integer.parseInt((String) value1);
+        int t = new ResultBUS().getTimesByTestCodeAndUserID(testCode, user.getUserID());
+
+        if (t >= limit) {
+            JOptionPane.showMessageDialog(null, "Hết số lượt làm bài kiểm tra này!");
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -158,7 +187,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
             new Object [][] {
             },
             new String [] {
-                "Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"
+                "Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Lượt", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -546,14 +575,21 @@ public class BaiThiPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn một bài kiểm tra!");
             return;
         }
+
+        if (!validateExam(row)) {
+            return;
+        }
+
         String testCode = (String) jTable1.getValueAt(row, 0);
         String exOrder = getRandomExCode((String) jTable1.getValueAt(row, 2));
-        String t = (String) jTable1.getValueAt(row, 5);
-        testTime = Integer.parseInt(t.replaceAll("[^0-9]", "")); // Chỉ giữ lại số
+        Object value = jTable1.getValueAt(row, 5);
+        String t = value.toString();  // Chuyển thành chuỗi an toàn
+        testTime = Integer.parseInt(t.replaceAll("[^0-9]", ""));
 
+//        String t = (String) jTable1.getValueAt(row, 5);
+//        testTime = Integer.parseInt(t.replaceAll("[^0-9]", "")); // Chỉ giữ lại số
         // Gộp testCode + exOrder để lấy exCode
         String selectedExCode = testCode + exOrder;
-        System.out.println(selectedExCode);
         exam = examBUS.geExamByExCode(selectedExCode);
         loadExam(exam);
         loadQuestion(questionList.getFirst());
@@ -572,15 +608,43 @@ public class BaiThiPanel extends javax.swing.JPanel {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         if (selectedQ != totalQ) {
-            System.out.println(selectedQ);
-            System.out.println(totalQ);
-            JOptionPane.showMessageDialog(null, "Bạn chưa hoàn thành hết câu hỏi.", "Cảnh báo", JOptionPane.ERROR_MESSAGE);
-            return;
+//            System.out.println(selectedQ);
+//            System.out.println(totalQ);
+//            JOptionPane.showMessageDialog(null, "Bạn chưa hoàn thành hết câu hỏi.", "Cảnh báo", JOptionPane.ERROR_MESSAGE);
+//            return;
+
+           
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Bạn chưa hoàn thành hết câu hỏi. \nBạn có muốn nộp bài?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                // Tách danh sách câu hỏi từ ex_quesIDs
+                String[] questionIds = exam.getExQuesIDs().split(";");
+                int[] intQuestionIds = Arrays.stream(questionIds)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                totalQ = questionIds.length;
+
+                for (int i = selectedQ; i < intQuestionIds.length; i++) {
+                    if (!selectedAnswers.containsKey(intQuestionIds[i])) {
+                        selectedAnswers.put(intQuestionIds[i], -1); // Sử dụng intQuestionIds[i] thay vì questionIds[i]
+                    }
+                }
+
+                mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
+                JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                card.show(jPanel4, "card1");
+            }
         }
 
-        mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
-        JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        card.show(jPanel4, "card1");
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void rbtnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBActionPerformed
@@ -597,42 +661,38 @@ public class BaiThiPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton9ActionPerformed
 
-//    private void loadExamToTable(ArrayList<ExamDTO> examList, ArrayList<TestDTO> testList) {
-//        DefaultTableModel model = new DefaultTableModel(
-//                new Object[]{"Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"}, 0
-//        );
-//
-//        // Duyệt qua danh sách đề thi
-//        for (ExamDTO exam : examList) {
-//            // Tìm bài kiểm tra tương ứng với testCode
-//            TestDTO matchingTest = testList.stream()
-//                    .filter(test -> test.getTestCode().equals(exam.getTestCode()))
-//                    .findFirst()
-//                    .orElse(null);
-//
-//            if (matchingTest != null) {
-//                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle(); // Lấy tên chủ đề
-//                String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")); // Định dạng ngày
-//                int numQuestions = exam.getExQuesIDs().split(";").length; // Đếm số câu hỏi trong đề
-//                String shortCode = exam.getExCode().substring(exam.getExCode().length() - 1);
-//                model.addRow(new Object[]{
-//                    matchingTest.getTestCode(), // Mã bài kiểm tra
-//                    matchingTest.getTestTitle(),// Tiêu đề bài kiểm tra
-//                    shortCode, // Mã đề
-//                    topicName, // Chủ đề
-//                    formattedDate, // Ngày kiểm tra
-//                    matchingTest.getTestTime() + " phút", // Thời gian làm bài
-//                    numQuestions // Số câu hỏi trong đề
-//                });
-//            }
-//        }
-//
-//        jTable1.setModel(model); // Gán model cho JTable
-//    }
+    private void load(ArrayList<TestDTO> list) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Xóa dữ liệu cũ
+
+        if (list.isEmpty()) {
+            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "", ""});
+            return;
+        }
+
+        for (TestDTO test : list) {
+            if (!test.getTestDate().isBefore(LocalDate.now())) {
+
+                ArrayList<String> l = examBUS.getExamOrdersByTestCode(test.getTestCode());
+                // Định dạng ngày thành dd/MM/yyyy
+                String formattedDate = test.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                model.addRow(new Object[]{
+                    test.getTestCode(),
+                    test.getTestTittle(), // Tiêu đề
+                    l.stream().collect(Collectors.joining(",")), // SL tham gia
+                    test.getTestLimit(), // Thời gian
+                    formattedDate, // Điểm cao nhất
+                    test.getTestTime(),
+                    tsBUS.getTotalQuesByTestCode(test.getTestCode()), // tổng số câu hỏi
+                });
+            }
+
+        }
+    }
+
     private void loadExamToTable(ArrayList<ExamDTO> examList, ArrayList<TestDTO> testList) {
-        DefaultTableModel model = new DefaultTableModel(
-                new Object[]{"Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"}, 0
-        );
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         // Sử dụng Map để gom nhóm dữ liệu theo testCode
         Map<String, Object[]> examMap = new LinkedHashMap<>();
@@ -659,8 +719,8 @@ public class BaiThiPanel extends javax.swing.JPanel {
                         matchingTest.getTestCode(), // Mã bài kiểm tra
                         matchingTest.getTestTittle(), // Tên bài kiểm tra
                         shortCode, // Mã đề (sẽ được cập nhật nếu có nhiều đề)
-//                        topicName, // Chủ đề
-                        "", // Chủ đề
+                        //                        topicName, // Chủ đề
+                        matchingTest.getTestLimit(), // Chủ đề
                         formattedDate, // Ngày kiểm tra
                         matchingTest.getTestTime() + " phút", // Thời gian làm bài
                         numQuestions // Số câu hỏi trong đề

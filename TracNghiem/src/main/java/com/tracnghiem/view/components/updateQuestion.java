@@ -123,6 +123,8 @@ public class updateQuestion extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cbbStatus = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -221,6 +223,17 @@ public class updateQuestion extends javax.swing.JPanel {
 
         jLabel3.setText("Bài học");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel7.setText("Trạng thái");
+
+        cbbStatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cbbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hidden", "Acitve"}));
+        cbbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbStatusActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -236,11 +249,15 @@ public class updateQuestion extends javax.swing.JPanel {
                     .addComponent(jLabel2))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(luu, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
                     .addComponent(baihocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(160, 160, 160)
+                        .addComponent(luu, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -252,12 +269,15 @@ public class updateQuestion extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(jLabel2)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(monhocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chudeCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(baihocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(monhocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chudeCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(baihocCBB, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbStatus))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -343,7 +363,7 @@ public class updateQuestion extends javax.swing.JPanel {
                                 .addComponent(jButton6)))))
                 .addGap(18, 18, 18)
                 .addComponent(anh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,6 +800,7 @@ public class updateQuestion extends javax.swing.JPanel {
         }  
         
         //
+        cbbStatus.setSelectedIndex(q.getQStatus());
         cbbLevel.setSelectedItem(q.getQLevel());
         tenhinh.setText(q.getQPictures().isEmpty() ? "Chưa chọn ảnh" : q.getQPictures());
         noidung.setText(q.getQContent());
@@ -1039,7 +1060,7 @@ public class updateQuestion extends javax.swing.JPanel {
         String updateQContent = noidung.getText();
         String updateQPicture = tenhinh.getText();
         String updateQLevel = (String)cbbLevel.getSelectedItem();
-        int updateQStatus = 1;
+        int updateQStatus = cbbStatus.getSelectedIndex();
         
         q = new QuestionDTO(qID, updateQContent, updateQPicture, updateQTopicID, updateQLevel, updateQStatus);
         
@@ -1067,13 +1088,13 @@ public class updateQuestion extends javax.swing.JPanel {
             }
         }
         
-        System.out.println(q.toString());
-        for (int i = 0; i < listA.size(); i++) {
-            System.out.println(listA.get(i).getAwContent());
-        }
-        for (File f : listImg) {
-            System.out.println(f.getName());
-        }
+//        System.out.println(q.toString());
+//        for (int i = 0; i < listA.size(); i++) {
+//            System.out.println(listA.get(i).getAwContent());
+//        }
+//        for (File f : listImg) {
+//            System.out.println(f.getName());
+//        }
         
     }
     
@@ -1122,6 +1143,25 @@ public class updateQuestion extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_hinhEMouseClicked
 
+    private void handleEditQues() {
+        if (!qBUS.update(q)) {
+            JOptionPane.showMessageDialog(null, "Lưu câu hỏi thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        for (AnswerDTO a : listA) {
+            if (!aBUS.update(a)) {
+                JOptionPane.showMessageDialog(null, "Lưu đáp án thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        for (File file : listImg) {
+            if (!UploadUtil.uploadToResources(file)) {
+                JOptionPane.showMessageDialog(null, "Lưu đáp án thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+    }
+    
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
         int confirm = JOptionPane.showConfirmDialog(
@@ -1162,6 +1202,10 @@ public class updateQuestion extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_luuActionPerformed
 
+    private void cbbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbStatusActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel aID1;
@@ -1172,6 +1216,7 @@ public class updateQuestion extends javax.swing.JPanel {
     private javax.swing.JPanel anh;
     private javax.swing.JComboBox<String> baihocCBB;
     private javax.swing.JComboBox<String> cbbLevel;
+    private javax.swing.JComboBox<String> cbbStatus;
     private javax.swing.JComboBox<String> chudeCBB;
     private javax.swing.JTextArea dapanA;
     private javax.swing.JTextArea dapanB;
@@ -1201,6 +1246,7 @@ public class updateQuestion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

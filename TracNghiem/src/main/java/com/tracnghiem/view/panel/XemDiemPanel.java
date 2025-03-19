@@ -84,7 +84,7 @@ public class XemDiemPanel extends javax.swing.JPanel {
             new Object [][] {
             },
             new String [] {
-                "Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"
+                "Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Lượt", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -142,41 +142,70 @@ public class XemDiemPanel extends javax.swing.JPanel {
         mainView.showCustomDialog(null, new result(exam), "Chi tiết");
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    
+//    private void load(ArrayList<TestDTO> list, int userID) {
+//        
+//         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//        model.setRowCount(0); // Xóa dữ liệu cũ
+//
+//        if (list.isEmpty()) {
+//            model.addRow(new Object[]{"", "", "Không có dữ liệu", "", "", "", ""});
+//            return;
+//        }
+//
+//        for (TestDTO t : list) {
+//            ArrayList<String> l = examBUS.getExamCodesByTestCode(t.getTestCode());
+//            for (String string : l) {
+//                resultBUS.
+//            }
+//            
+//            model.addRow(new Object[]{
+//                
+//            });
+//            
+//            
+//        }
+//        
+//        
+//    }
+    
    private void loadExamToTable(ArrayList<ExamDTO> examList, ArrayList<TestDTO> testList, ArrayList<ResultDTO> resultList, int userID) {
-    DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Chủ đề", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"}, 0
+     DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"Mã bài kiểm tra", "Tên bài kiểm tra", "Mã đề", "Lượt làm", "Ngày kiểm tra", "Thời gian", "Số câu hỏi"}, 0
     );
 
-    // Lọc danh sách bài thi mà user đã làm
-    Set<String> userExamCodes = resultList.stream()
-            .filter(result -> result.getUserID() == userID)
-            .map(ResultDTO::getExCode)
-            .collect(Collectors.toSet());
-
-    for (ExamDTO exam : examList) {
-        // Chỉ hiển thị bài thi mà user đã làm
-        if (userExamCodes.contains(exam.getExCode())) {
-            TestDTO matchingTest = testList.stream()
-                    .filter(test -> test.getTestCode().equals(exam.getTestCode()))
+    // Duyệt qua danh sách kết quả của user
+    for (ResultDTO result : resultList) {
+        if (result.getUserID() == userID) {
+            // Tìm ExamDTO tương ứng với exCode của ResultDTO
+            ExamDTO matchingExam = examList.stream()
+                    .filter(exam -> exam.getExCode().equals(result.getExCode()))
                     .findFirst()
                     .orElse(null);
 
-            if (matchingTest != null) {
-//                String topicName = tpBUS.findOne(matchingTest.getTpID()).getTpTitle();
-                String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                int numQuestions = exam.getExQuesIDs().split(";").length;
-                String shortCode = exam.getExCode().substring(exam.getExCode().length() - 1);
-                model.addRow(new Object[]{
-                        matchingTest.getTestCode(),
-                        matchingTest.getTestTittle(),
-                        shortCode,
-//                        topicName,
-                        "",
-                        formattedDate,
-                        matchingTest.getTestTime() + " phút",
-                        numQuestions,
-                       
-                });
+            if (matchingExam != null) {
+                // Tìm TestDTO tương ứng với testCode của ExamDTO
+                TestDTO matchingTest = testList.stream()
+                        .filter(test -> test.getTestCode().equals(matchingExam.getTestCode()))
+                        .findFirst()
+                        .orElse(null);
+
+                if (matchingTest != null) {
+                    String formattedDate = matchingTest.getTestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    int numQuestions = matchingExam.getExQuesIDs().split(";").length;
+                    String shortCode = matchingExam.getExCode().substring(matchingExam.getExCode().length() - 1);
+
+                    // Thêm từng lần làm của user vào bảng
+                    model.addRow(new Object[]{
+                            matchingTest.getTestCode(),
+                            matchingTest.getTestTittle(),
+                            shortCode,
+                            result.getRsNum(), // Lượt làm riêng lẻ của từng lần làm
+                            formattedDate,
+                            matchingTest.getTestTime() + " phút",
+                            numQuestions,
+                    });
+                }
             }
         }
     }

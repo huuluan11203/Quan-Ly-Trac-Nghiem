@@ -215,13 +215,21 @@ public class addTest extends javax.swing.JPanel {
     private void loadTableQuestion(ArrayList<QuestionDTO> list) {
         DefaultTableModel model = (DefaultTableModel) table_question.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ
-
+        
+        ArrayList<QuestionDTO> t = new ArrayList<>();
+        
+        for (QuestionDTO ques : list) {
+            if (ques.getQStatus() == 1) {
+                t.add(ques);
+            }
+        }
+        
         if (list.isEmpty()) {
             model.addRow(new Object[]{"", "Không có dữ liệu", "", ""});
             return;
         }
 
-        for (QuestionDTO question : list) {
+        for (QuestionDTO question : t) {
             model.addRow(new Object[]{
                 question.getQID(),
                 question.getQContent(),
@@ -387,7 +395,7 @@ public class addTest extends javax.swing.JPanel {
                     nM++;
                 }
                 if (questionDTO.getQLevel().equals("Diff")) {
-                    nD++;
+                    nD++;   
                 }
             }
             
@@ -1048,6 +1056,11 @@ public class addTest extends javax.swing.JPanel {
 
     private void tim_btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tim_btn2ActionPerformed
         // TODO add your handling code here:
+        if (idTopicParent == -1) {
+            
+            return;
+        }
+        
         int[] selectedRows = table_question.getSelectedRows();
         for (int row : selectedRows) {
             qIDSelected = (int) table_question.getValueAt(row, 0);
@@ -1100,11 +1113,13 @@ public class addTest extends javax.swing.JPanel {
             listQSelected.clear();
             DefaultTableModel model = (DefaultTableModel) table_selected_quesion.getModel();
             model.setRowCount(0); // Xóa dữ liệu cũ
+            DefaultTableModel model1 = (DefaultTableModel) table_question.getModel();
+            model1.setRowCount(0); // Xóa dữ liệu cũ
             totalQuestion.setText(listQSelected.size() + "");
         }
 
     }//GEN-LAST:event_jButton16ActionPerformed
-
+    
     private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
         // TODO add your handling code here:
         if (validDataAddNew()) {

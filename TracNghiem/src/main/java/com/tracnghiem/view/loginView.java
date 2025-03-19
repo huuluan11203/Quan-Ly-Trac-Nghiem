@@ -8,6 +8,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.tracnghiem.bus.UserBUS;
 import com.tracnghiem.dto.UserDTO;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
@@ -30,6 +31,36 @@ public class loginView extends javax.swing.JFrame {
                 + "showRevealButton:true;" + "showCapsLock:true;");
 
         setLocationRelativeTo(null);
+    }
+    
+    
+    private void login() {
+        
+        String username = username_field.getText();
+        String password = new String(password_field.getPassword());
+
+        // Kiểm tra Username và Password
+        if (username.trim().trim().isEmpty()) {
+            setErrorBorder(username_field);
+        } else if (password.trim().isEmpty()) {
+            setErrorBorder(password_field);
+        } else {
+
+            UserDTO user = userBUS.login(username, password);
+            System.out.println(user);
+            if (user != null) {
+                if (user.getIsAdmin() == 1) {
+                    new mainView(user).setVisible(true); // Mở giao diện Admin
+                } else {
+                    new userView(user).setVisible(true); // Mở giao diện User
+                }
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
     }
 
     /**
@@ -64,6 +95,12 @@ public class loginView extends javax.swing.JFrame {
         jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 380, 90));
 
         username_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                username_fieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                username_fieldKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 username_fieldKeyTyped(evt);
             }
@@ -76,6 +113,9 @@ public class loginView extends javax.swing.JFrame {
             }
         });
         password_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                password_fieldKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 password_fieldKeyTyped(evt);
             }
@@ -115,43 +155,35 @@ public class loginView extends javax.swing.JFrame {
 
     private void submit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submit_btnActionPerformed
 
-        String username = username_field.getText();
-        String password = new String(password_field.getPassword());
-
-        // Kiểm tra Username và Password
-        if (username.trim().trim().isEmpty()) {
-            setErrorBorder(username_field);
-        } else if (password.trim().isEmpty()) {
-            setErrorBorder(password_field);
-        } else {
-
-            UserDTO user = userBUS.login(username, password);
-            System.out.println(user);
-            if (user != null) {
-                if (user.getIsAdmin() == 1) {
-                    new mainView(user).setVisible(true); 
-                    dispose();// Mở giao diện Admin
-                } else {
-                    new userView(user).setVisible(true); // Mở giao diện User
-                    dispose();
-                }
-                
-            }else{
-                JOptionPane.showMessageDialog(this, "Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-
-        }
-
+        login();
 
     }//GEN-LAST:event_submit_btnActionPerformed
 
     private void username_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_fieldKeyTyped
         resetBorder(username_field);
+        
     }//GEN-LAST:event_username_fieldKeyTyped
 
     private void password_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_fieldKeyTyped
         resetBorder(password_field);
     }//GEN-LAST:event_password_fieldKeyTyped
+
+    private void username_fieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_fieldKeyPressed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_username_fieldKeyPressed
+
+    private void username_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_fieldKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_username_fieldKeyReleased
+
+    private void password_fieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_fieldKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            // Thực hiện hành động mong muốn ở đây...
+            login();
+        }
+    }//GEN-LAST:event_password_fieldKeyPressed
 
     // Đặt viền đỏ khi có lỗi
     private static void setErrorBorder(JComponent component) {

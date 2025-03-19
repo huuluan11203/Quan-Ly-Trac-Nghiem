@@ -928,15 +928,13 @@ public class addQuestion extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 đáp án đúng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+
         //
-        
         if (qBUS.isExist(noidung.getText().trim(), tIDSelected)) {
             JOptionPane.showMessageDialog(null, "Nội dung câu hỏi đã tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
-        
+
         return true;
     }
 
@@ -1081,7 +1079,6 @@ public class addQuestion extends javax.swing.JPanel {
                 }
 
             }
-            
 
             showCustomDialog(null, new previewAddQuestion(questionList, answerMap), "Xem trước");
 
@@ -1091,20 +1088,17 @@ public class addQuestion extends javax.swing.JPanel {
         }
     }
 
+    private void handleAddNewQuestion() {
+        if (!validDataAddNew()) {
+            return;
+        }
 
-    private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
-        // TODO add your handling code here:
-         if (!validDataAddNew()) {
-                return;
-         }
-        
         int confirm = JOptionPane.showConfirmDialog(
                 null, "Bạn có muốn lưu dữ liệu không?", "Xác nhận lưu",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-           
 
             buildDataQuestion();
 
@@ -1134,8 +1128,14 @@ public class addQuestion extends javax.swing.JPanel {
                 ((JDialog) window).dispose();
             }
         }
+    }
+
+    private void luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luuActionPerformed
+        // TODO add your handling code here:
+        handleAddNewQuestion();
     }//GEN-LAST:event_luuActionPerformed
 
+    
     private void nhap_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nhap_excelActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
@@ -1144,7 +1144,6 @@ public class addQuestion extends javax.swing.JPanel {
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             importFromExcel(file);
-            
 
         }
     }//GEN-LAST:event_nhap_excelActionPerformed

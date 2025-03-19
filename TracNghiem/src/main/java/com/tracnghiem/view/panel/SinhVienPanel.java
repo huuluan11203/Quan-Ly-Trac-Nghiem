@@ -30,6 +30,8 @@ public class SinhVienPanel extends javax.swing.JPanel {
         loadUserTable();
     }
     
+    
+    
     public void loadUserTable(){
         List<UserDTO> users = userBUS.getAll();
         DefaultTableModel model = new DefaultTableModel(
