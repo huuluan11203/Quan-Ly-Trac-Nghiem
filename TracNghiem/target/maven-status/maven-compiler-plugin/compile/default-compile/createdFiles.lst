@@ -159,6 +159,7 @@ com\tracnghiem\view\components\addSubject.class
 com\tracnghiem\view\components\addUser.class
 com\tracnghiem\view\panel\ThongKePanel$4.class
 com\tracnghiem\view\userView$1.class
+com\tracnghiem\bus\LogBUS.class
 com\tracnghiem\view\panel\DeThiPanel$5.class
 com\tracnghiem\view\panel\DiemPanel$4.class
 com\tracnghiem\dto\UserDTO.class

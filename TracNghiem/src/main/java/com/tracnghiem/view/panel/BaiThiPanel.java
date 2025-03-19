@@ -8,6 +8,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.AnswerBUS;
 import com.tracnghiem.bus.ExamBUS;
+import com.tracnghiem.bus.LogBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.ResultBUS;
 import com.tracnghiem.bus.TestBUS;
@@ -64,6 +65,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
     private AnswerBUS answerBUS = new AnswerBUS();
     private QuestionBUS questionBUS = new QuestionBUS();
     private TestStructureBUS tsBUS = new TestStructureBUS();
+    private LogBUS logBUS = new LogBUS();
     private TopicBUS tpBUS = new TopicBUS();
     private ArrayList<ExamDTO> examList = new ArrayList<>();
     private ArrayList<TestDTO> testList = new ArrayList<>();
@@ -585,12 +587,14 @@ public class BaiThiPanel extends javax.swing.JPanel {
         Object value = jTable1.getValueAt(row, 5);
         String t = value.toString();  // Chuyển thành chuỗi an toàn
         testTime = Integer.parseInt(t.replaceAll("[^0-9]", ""));
-
-//        String t = (String) jTable1.getValueAt(row, 5);
-//        testTime = Integer.parseInt(t.replaceAll("[^0-9]", "")); // Chỉ giữ lại số
-        // Gộp testCode + exOrder để lấy exCode
         String selectedExCode = testCode + exOrder;
+        System.out.println(selectedExCode);
+        
         exam = examBUS.geExamByExCode(selectedExCode);
+        
+        //Save log
+        logBUS.saveLog("Làm bài kiểm tra " + exam.getTestCode(), user.getUserID(), exam.getExCode());
+        
         loadExam(exam);
         loadQuestion(questionList.getFirst());
         startCountdown(testTime);
@@ -640,8 +644,34 @@ public class BaiThiPanel extends javax.swing.JPanel {
 
                 mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
                 JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                
+                //Save log
+                logBUS.saveLog("Nộp bài", user.getUserID(), exam.getExCode());
+                
                 card.show(jPanel4, "card1");
             }
+        }else{
+             // Tách danh sách câu hỏi từ ex_quesIDs
+                String[] questionIds = exam.getExQuesIDs().split(";");
+                int[] intQuestionIds = Arrays.stream(questionIds)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                totalQ = questionIds.length;
+
+                for (int i = selectedQ; i < intQuestionIds.length; i++) {
+                    if (!selectedAnswers.containsKey(intQuestionIds[i])) {
+                        selectedAnswers.put(intQuestionIds[i], -1); // Sử dụng intQuestionIds[i] thay vì questionIds[i]
+                    }
+                }
+
+                mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
+                JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                
+                //Save log
+                logBUS.saveLog("Nộp bài " + exam.getTestCode() + " - Điểm: " + mark, user.getUserID(), exam.getExCode());
+                
+                card.show(jPanel4, "card1");
         }
 
 
@@ -857,7 +887,8 @@ public class BaiThiPanel extends javax.swing.JPanel {
                 questionButtons[currentQuestionIndex].putClientProperty(FlatClientProperties.STYLE, "background: #94dcff;");
                 if (!isSelected) {
                     selectedQ++;
-                }
+                } 
+                logBUS.saveLog("Lưu đáp án: Câu " + question.getQID() + " - " + selectedAnswers.get(question.getQID()), user.getUserID(),exam.getExCode());
                 isSelected = true;
             });
         }
@@ -889,14 +920,12 @@ public class BaiThiPanel extends javax.swing.JPanel {
         for (JRadioButton radioButton : radioButtons) {
             if (radioButton.isSelected()) {
                 selectedAnswers.put(questionID, (Integer) radioButton.getClientProperty("awID"));
-                hasSelection = true;
-                System.out.println("Lưu đáp án: Câu " + questionID + " -> " + selectedAnswers.get(questionID));
+                hasSelection = true;                                
                 break;
             }
         }
         if (!hasSelection) {
             selectedAnswers.remove(questionID); // Xóa đáp án nếu không có lựa chọn
-            System.out.println(" Xóa đáp án: Câu " + questionID);
         }
     }
 
