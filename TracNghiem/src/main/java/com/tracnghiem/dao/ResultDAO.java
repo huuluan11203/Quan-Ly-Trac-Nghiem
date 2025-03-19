@@ -169,25 +169,10 @@ public class ResultDAO implements InterfaceDAO<ResultDTO> {
             e.printStackTrace();
         }
         
-        
-        
-        
-        
-        
         try (Connection conn = JDBCUtil.getConnection(); PreparedStatement countStmt = conn.prepareStatement(getCountSQL)) {
 
             countStmt.setInt(1, userID);
             ResultSet rs = countStmt.executeQuery();
-//            int rsNum = 1;
-//            if (rs.next()) {
-//                rsNum = rs.getInt(1) + 1;
-//            }
-
-//            // Chuyển danh sách câu trả lời thành JSON
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String jsonAnswers = objectMapper.writeValueAsString(answers);
-
-           
             
             String rsAns = answers.stream()
                          .map(String::valueOf) // Chuyển Integer thành String

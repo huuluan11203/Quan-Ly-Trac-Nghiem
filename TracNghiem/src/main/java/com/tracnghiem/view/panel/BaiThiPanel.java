@@ -8,6 +8,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.tracnghiem.bus.AnswerBUS;
 import com.tracnghiem.bus.ExamBUS;
+import com.tracnghiem.bus.LogBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.ResultBUS;
 import com.tracnghiem.bus.TestBUS;
@@ -15,6 +16,7 @@ import com.tracnghiem.bus.TestStructureBUS;
 import com.tracnghiem.bus.TopicBUS;
 import com.tracnghiem.dto.AnswerDTO;
 import com.tracnghiem.dto.ExamDTO;
+import com.tracnghiem.dto.LogDTO;
 import com.tracnghiem.dto.QuestionDTO;
 import com.tracnghiem.dto.TestDTO;
 import com.tracnghiem.dto.UserDTO;
@@ -28,6 +30,7 @@ import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -578,6 +581,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int row = jTable1.getSelectedRow(); // Lấy hàng được chọn
         if (row == -1) {
@@ -608,6 +612,7 @@ public class BaiThiPanel extends javax.swing.JPanel {
         }
         card.show(jPanel4, "card2");
 
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private String getRandomExCode(String exCodes) {
@@ -615,45 +620,42 @@ public class BaiThiPanel extends javax.swing.JPanel {
         return codes[new Random().nextInt(codes.length)];
     }
 
+
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        int confirm = JOptionPane.YES_OPTION;
+        
         if (selectedQ != totalQ) {
-//            System.out.println(selectedQ);
-//            System.out.println(totalQ);
-//            JOptionPane.showMessageDialog(null, "Bạn chưa hoàn thành hết câu hỏi.", "Cảnh báo", JOptionPane.ERROR_MESSAGE);
-//            return;
-
-           
-
-            int confirm = JOptionPane.showConfirmDialog(
+            confirm = JOptionPane.showConfirmDialog(
                     this,
                     "Bạn chưa hoàn thành hết câu hỏi. \nBạn có muốn nộp bài?",
                     "Xác nhận",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE
             );
-            if (confirm == JOptionPane.YES_OPTION) {
-
-                // Tách danh sách câu hỏi từ ex_quesIDs
-                String[] questionIds = exam.getExQuesIDs().split(";");
-                int[] intQuestionIds = Arrays.stream(questionIds)
-                        .mapToInt(Integer::parseInt)
-                        .toArray();
-
-                totalQ = questionIds.length;
-
-                for (int i = selectedQ; i < intQuestionIds.length; i++) {
-                    if (!selectedAnswers.containsKey(intQuestionIds[i])) {
-                        selectedAnswers.put(intQuestionIds[i], -1); // Sử dụng intQuestionIds[i] thay vì questionIds[i]
-                    }
-                }
-
-                mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
-                JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                card.show(jPanel4, "card1");
-            }
         }
+        if (confirm == JOptionPane.YES_OPTION) {
 
+            // Tách danh sách câu hỏi từ ex_quesIDs
+            String[] questionIds = exam.getExQuesIDs().split(";");
+            int[] intQuestionIds = Arrays.stream(questionIds)
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
 
+            totalQ = questionIds.length;
+
+            for (int i = selectedQ; i < intQuestionIds.length; i++) {
+                if (!selectedAnswers.containsKey(intQuestionIds[i])) {
+                    selectedAnswers.put(intQuestionIds[i], -1); // Sử dụng intQuestionIds[i] thay vì questionIds[i]
+                }
+            }
+
+//                for (Map.Entry<Integer, Integer> entry : selectedAnswers.entrySet()) {
+//                    System.out.println("idQ: " + entry.getKey() + ", idA: " + entry.getValue());
+//                }
+            mark = resultBUS.submitExam(user.getUserID(), exam.getExCode(), exam.getExQuesIDs(), selectedAnswers);
+            JOptionPane.showMessageDialog(null, "Điểm của bạn là: " + mark + " điểm.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            card.show(jPanel4, "card1");
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void rbtnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnBActionPerformed
@@ -900,6 +902,10 @@ public class BaiThiPanel extends javax.swing.JPanel {
                 selectedAnswers.put(questionID, (Integer) radioButton.getClientProperty("awID"));
                 hasSelection = true;
                 System.out.println("Lưu đáp án: Câu " + questionID + " -> " + selectedAnswers.get(questionID));
+                
+                LogDTO newLog = new LogDTO((Integer) radioButton.getClientProperty("awID")+"", user.getUserID(), exam.getExCode(), LocalDateTime.now());
+                new LogBUS().add(newLog);
+                
                 break;
             }
         }

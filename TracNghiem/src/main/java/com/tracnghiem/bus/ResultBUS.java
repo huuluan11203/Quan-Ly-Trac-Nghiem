@@ -82,9 +82,6 @@ public class ResultBUS {
     //Lưu kết quả bài thi
     public float submitExam(int userID, String exCode, String ex_questionIDs, Map<Integer, Integer> userAnswers) {
         
-        
-//        userAnswers.put(question.getQID(), selectedAwID);
-        
         Map<Integer, Integer> correctAnswers = getCorrectAnswers(ex_questionIDs);
         int correctCount = 0;
 

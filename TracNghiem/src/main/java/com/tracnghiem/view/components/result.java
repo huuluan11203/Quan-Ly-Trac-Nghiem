@@ -4,6 +4,7 @@
  */
 package com.tracnghiem.view.components;
 
+import com.tracnghiem.bus.AnswerBUS;
 import com.tracnghiem.bus.QuestionBUS;
 import com.tracnghiem.bus.ResultBUS;
 import com.tracnghiem.dto.ExamDTO;
@@ -37,6 +38,12 @@ public class result extends javax.swing.JPanel {
         loadResultToTable(exam);
     }
 
+     public result(ResultDTO r) {
+        initComponents();
+
+        loadResultToTable(r);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,6 +134,69 @@ public class result extends javax.swing.JPanel {
         add(totalQ, new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 6, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    private void loadResultToTable(ResultDTO r) {
+        DefaultTableModel model = new DefaultTableModel(
+                new String[]{"Câu hỏi", "Kết quả", "Điểm"}, 0
+        );
+        
+        String[] l = r.getRsAnswer().split(";");
+
+        mark.setText(r.getRsMark()+"");
+        totalQ.setText((l.length / 2) +"");
+   
+        String formattedDate = r.getRsDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        time.setText(formattedDate);
+   
+        ArrayList<Integer> lQ = new ArrayList<>();
+        ArrayList<Integer> lA = new ArrayList<>();
+        
+        for (int i = 0; i < l.length; i++) {    
+            if (i % 2 == 0) {
+                lQ.add(Integer.valueOf(l[i].trim()));
+            } else 
+                lA.add(Integer.valueOf(l[i].trim()));
+        }
+        
+        int countR = 0;
+        for (Integer integer : lA) {
+            if (integer != -1) {
+                if (new AnswerBUS().findOne(integer).isIsRight()) {
+                    countR++;
+                }
+            }
+        }
+        
+        caudung.setText(countR+"");
+        causai.setText((lQ.size() - countR) +"");
+        
+        
+        
+        // Tính điểm mỗi câu
+        double pointPerQuestion = 10f / lQ.size();
+
+        for(int i = 0; i < lQ.size(); i++) {
+            QuestionDTO q = questionBUS.findOne(lQ.get(i));
+            
+            String qContent = q.getQContent();
+            String aRs = "";
+            double p = 0.0;
+            if (lA.get(i) == -1) {
+                aRs = "Sai";
+                p=0.0;
+            } else {
+                aRs = new AnswerBUS().findOne(lA.get(i)).isIsRight() ? "Đúng" : "Sai";
+                p = new AnswerBUS().findOne(lA.get(i)).isIsRight() ? pointPerQuestion : 0.0;
+            }
+            
+            model.addRow(new Object[]{qContent, aRs, p});
+        }
+        
+  
+        jTable1.setModel(model); // Cập nhật dữ liệu cho JTable
+    }
+    
     private void loadResultToTable(ExamDTO exam) {
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"Câu hỏi", "Kết quả", "Điểm"}, 0
